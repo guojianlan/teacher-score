@@ -36,14 +36,14 @@ export function AppShell({ me, children }: { me: Me; children: React.ReactNode }
   const pct = Math.min(100, Math.round((used / quota) * 100));
 
   return (
-    <Flex minH="100vh" bg="bg.page">
+    <Flex minH="100vh" bg="bg.canvas">
       {/* Sidebar */}
       <Box
         w="248px"
         flexShrink={0}
-        bg="bg.panel"
+        bg="bg.surface"
         borderRight="1px solid"
-        borderColor="border.base"
+        borderColor="border.default"
         display="flex"
         flexDirection="column"
         position="sticky"
@@ -56,7 +56,7 @@ export function AppShell({ me, children }: { me: Me; children: React.ReactNode }
             <Flex align="center" gap={2} cursor="pointer">
               <Box
                 w="32px" h="32px" borderRadius="lg"
-                bg="brand.600" color="white"
+                bg="interactive.primary.bg" color="white"
                 display="flex" alignItems="center" justifyContent="center"
                 fontFamily="serif" fontWeight={600} fontSize="lg"
               >
@@ -66,7 +66,7 @@ export function AppShell({ me, children }: { me: Me; children: React.ReactNode }
                 <Text fontFamily="heading" fontWeight={600} fontSize="md" color="text.fg" lineHeight={1.1}>
                   教师批改
                 </Text>
-                <Text fontFamily="mono" fontSize="2xs" color="text.fgSubtext" letterSpacing="0.04em">
+                <Text fontFamily="mono" fontSize="2xs" color="fg.subtle" letterSpacing="0.04em">
                   teacher-score
                 </Text>
               </Box>
@@ -86,9 +86,9 @@ export function AppShell({ me, children }: { me: Me; children: React.ReactNode }
                   px={3}
                   borderRadius="md"
                   cursor="pointer"
-                  bg={active ? 'brand.50' : 'transparent'}
-                  color={active ? 'brand.700' : 'text.fgMuted'}
-                  _hover={{ bg: active ? 'brand.50' : 'bg.subtle' }}
+                  bg={active ? 'bg.brandSubtle' : 'transparent'}
+                  color={active ? 'interactive.primary.bgHover' : 'fg.muted'}
+                  _hover={{ bg: active ? 'bg.brandSubtle' : 'bg.surfaceSubtle' }}
                   fontSize="sm"
                   fontWeight={active ? 600 : 500}
                   transition="all 120ms ease"
@@ -97,7 +97,7 @@ export function AppShell({ me, children }: { me: Me; children: React.ReactNode }
                   <Text
                     as="span"
                     mr={3}
-                    color={active ? 'brand.600' : 'text.fgSubtext'}
+                    color={active ? 'interactive.primary.bg' : 'fg.subtle'}
                     fontSize="md"
                     w="16px"
                     textAlign="center"
@@ -113,12 +113,12 @@ export function AppShell({ me, children }: { me: Me; children: React.ReactNode }
         </Box>
 
         {/* Quota */}
-        <Box mx={4} mb={3} p={4} bg="bg.subtle" borderRadius="lg">
+        <Box mx={4} mb={3} p={4} bg="bg.surfaceSubtle" borderRadius="lg">
           <Flex justify="space-between" align="baseline" mb={2}>
-            <Text fontSize="xs" color="text.fgSubtle" fontWeight={500}>
+            <Text fontSize="xs" color="fg.subtle" fontWeight={500}>
               本月配额
             </Text>
-            <Text fontSize="xs" color="text.fgMuted" fontFamily="mono" fontWeight={600}>
+            <Text fontSize="xs" color="fg.muted" fontFamily="mono" fontWeight={600}>
               {used}/{quota}
             </Text>
           </Flex>
@@ -126,11 +126,11 @@ export function AppShell({ me, children }: { me: Me; children: React.ReactNode }
             <Box
               h="100%"
               w={`${pct}%`}
-              bg={pct > 85 ? 'red.600' : 'brand.600'}
+              bg={pct > 85 ? 'status.danger.solid' : 'interactive.primary.bg'}
               transition="width 200ms ease"
             />
           </Box>
-          <Text mt={2} fontSize="xs" color="text.fgSubtext" fontFamily="mono">
+          <Text mt={2} fontSize="xs" color="fg.subtle" fontFamily="mono">
             {me.quota.yearMonth}
           </Text>
         </Box>
@@ -142,14 +142,14 @@ export function AppShell({ me, children }: { me: Me; children: React.ReactNode }
               <Text fontSize="sm" color="text.fg" fontWeight={600} noOfLines={1}>
                 {me.user.email.split('@')[0]}
               </Text>
-              <Text fontSize="xs" color="text.fgSubtext" noOfLines={1}>
+              <Text fontSize="xs" color="fg.subtle" noOfLines={1}>
                 {me.user.email}
               </Text>
             </Box>
             <Box
               as="button"
               fontSize="xs"
-              color="text.fgSubtle"
+              color="fg.subtle"
               _hover={{ color: 'text.fg' }}
               onClick={onSignOut}
               px={2}

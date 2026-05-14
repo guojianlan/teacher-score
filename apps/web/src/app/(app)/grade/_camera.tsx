@@ -59,7 +59,7 @@ export function CameraCapture({ onCaptured }: { onCaptured: (key: string) => voi
   if (!supported) return null;
 
   return (
-    <Box flex="1" borderWidth="1px" borderColor="border.base" borderRadius="6px" p={4}>
+    <Box flex="1" borderWidth="1px" borderColor="border.default" borderRadius="6px" p={4}>
       {!active && (
         <Button onClick={start} variant="outline" size="sm" w="100%">
           📷 打开摄像头

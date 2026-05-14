@@ -50,11 +50,11 @@ export default function SettingsPage() {
         <form onSubmit={changePassword}>
           <Stack spacing={4} maxW="sm">
             <FormControl isRequired>
-              <FormLabel fontSize="sm" color="text.fgMuted" mb={1.5}>当前密码</FormLabel>
+              <FormLabel fontSize="sm" color="fg.muted" mb={1.5}>当前密码</FormLabel>
               <Input type="password" value={oldPassword} onChange={(e) => setOldPassword(e.target.value)} autoComplete="current-password" />
             </FormControl>
             <FormControl isRequired>
-              <FormLabel fontSize="sm" color="text.fgMuted" mb={1.5}>新密码</FormLabel>
+              <FormLabel fontSize="sm" color="fg.muted" mb={1.5}>新密码</FormLabel>
               <Input type="password" value={newPassword} onChange={(e) => setNewPassword(e.target.value)} autoComplete="new-password" />
             </FormControl>
             <Box><Button type="submit" isLoading={pwLoading}>修改密码</Button></Box>
@@ -63,7 +63,7 @@ export default function SettingsPage() {
       </Section>
 
       <Section label="数据导出">
-        <Text color="text.fgSubtle" fontSize="sm" mb={4} lineHeight={1.6}>
+        <Text color="fg.subtle" fontSize="sm" mb={4} lineHeight={1.6}>
           导出当前组织下所有学生、批改记录、错题本、模板的 JSON 文件。
         </Text>
         <Button as="a" href="/api/me/export" download="teacher-score-export.json" variant="outline">
@@ -72,11 +72,11 @@ export default function SettingsPage() {
       </Section>
 
       <Section label="危险操作" danger>
-        <Text color="text.fgSubtle" fontSize="sm" mb={4} lineHeight={1.6}>
+        <Text color="fg.subtle" fontSize="sm" mb={4} lineHeight={1.6}>
           注销账户将永久删除你的所有数据。此操作不可恢复。
         </Text>
-        <Button variant="outline" color="red.700" borderColor="red.700"
-          _hover={{ bg: 'red.50', borderColor: 'red.700' }}
+        <Button variant="outline" color="status.danger.fg" borderColor="status.danger.fg"
+          _hover={{ bg: 'status.danger.bg', borderColor: 'status.danger.fg' }}
           onClick={deleteAccount} isLoading={delLoading}>
           注销账户
         </Button>
@@ -87,8 +87,8 @@ export default function SettingsPage() {
 
 function Section({ label, danger, children }: { label: string; danger?: boolean; children: React.ReactNode }) {
   return (
-    <Box pb={8} borderBottom="1px solid" borderColor="border.base">
-      <Text fontFamily="mono" fontSize="xs" color={danger ? 'red.700' : 'text.fgSubtle'} letterSpacing="0.08em" textTransform="uppercase" mb={4}>
+    <Box pb={8} borderBottom="1px solid" borderColor="border.default">
+      <Text fontFamily="mono" fontSize="xs" color={danger ? 'status.danger.fg' : 'fg.subtle'} letterSpacing="0.08em" textTransform="uppercase" mb={4}>
         {label}
       </Text>
       {children}

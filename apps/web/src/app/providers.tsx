@@ -2,131 +2,132 @@
 
 import { CacheProvider } from '@chakra-ui/next-js';
 import { ChakraProvider, extendTheme, type ThemeConfig } from '@chakra-ui/react';
+import {
+  colors, fonts, fontSizes, fontWeights, lineHeights, letterSpacings,
+  space, radii, borderWidths, shadows, durations,
+  light, dark, textStyles,
+} from '@/styles/tokens';
 
-// 全部颜色 / 字号 / 间距值来自 Slidepilot V1 (docs/claude/token.json)。
-// CSS 变量见 apps/web/src/styles/tokens.css（自动生成）。
+// Chakra 的 semanticTokens 支持 _light / _dark 字段，原生支持主题切换。
+// 我们把 semantic/light.ts + semantic/dark.ts 灌进去。
 
 const config: ThemeConfig = { initialColorMode: 'light', useSystemColorMode: false };
+
+// 将嵌套的语义化对象铺平为 Chakra 的 dot-notation key
+function flattenSemantic(p: typeof light, prefix = ''): Record<string, string> {
+  const out: Record<string, string> = {};
+  for (const [k, v] of Object.entries(p)) {
+    const key = prefix ? `${prefix}.${k}` : k;
+    if (v && typeof v === 'object' && !Array.isArray(v)) {
+      Object.assign(out, flattenSemantic(v as unknown as typeof light, key));
+    } else {
+      out[key] = String(v);
+    }
+  }
+  return out;
+}
+
+const lightFlat = flattenSemantic(light);
+const darkFlat = flattenSemantic(dark);
+const semanticColors: Record<string, { default: string; _dark: string }> = {};
+for (const k of Object.keys(lightFlat)) {
+  semanticColors[k] = { default: lightFlat[k]!, _dark: darkFlat[k] ?? lightFlat[k]! };
+}
 
 const theme = extendTheme({
   config,
   fonts: {
-    heading: "var(--font-display-loaded), 'Open Sans', system-ui, sans-serif",
-    body: "var(--font-body-loaded), 'Open Sans', system-ui, sans-serif",
-    mono: "var(--font-mono-loaded), 'Figtree', ui-monospace, monospace",
-    serif: "var(--font-serif-loaded), 'Source Serif 4', Georgia, serif",
+    body: fonts.sans,
+    heading: fonts.sans,
+    mono: fonts.mono,
+    serif: fonts.serif,
+    display: fonts.display,
   },
-  fontSizes: {
-    '2xs': '10px', xs: '12px', sm: '14px', md: '16px', lg: '18px',
-    xl: '20px', '2xl': '24px', '3xl': '30px', '4xl': '36px', '5xl': '48px', '6xl': '60px', '7xl': '72px',
+  fontSizes,
+  fontWeights,
+  lineHeights,
+  letterSpacings,
+  space,
+  radii,
+  borders: borderWidths,
+  shadows,
+  transition: {
+    duration: durations,
   },
-  radii: { none: '0', xs: '2px', sm: '4px', md: '6px', lg: '8px', xl: '10px', '2xl': '12px', '3xl': '16px', '4xl': '24px', full: '9999px' },
-  colors: {
-    gray: {
-      50: '#fafafa', 100: '#f3f4f6', 150: '#ebebeb', 200: '#e5e5e5', 300: '#d8d8d8',
-      400: '#bfbfbf', 500: '#999999', 600: '#808080', 700: '#666666', 800: '#4d4d4d',
-      900: '#333333', 950: '#191922', 960: '#141413',
-    },
-    blue: {
-      30: '#F7F9FF', 50: '#F2F6FF', 100: '#E8F0FF', 200: '#C5D7FB', 300: '#A3BCF7',
-      400: '#81A0F3', 500: '#6182EF', 600: '#4263EB', 700: '#2943C3', 800: '#16289C', 900: '#081374',
-    },
-    yellow: {
-      20: '#F7F6F2', 50: '#fffbe8', 100: '#fff4c8', 200: '#ffeba8', 300: '#ffdf87',
-      400: '#ffd470', 500: '#ffc247', 600: '#d2952c', 700: '#a66d17', 800: '#835b0b',
-    },
-    red: { 50: '#fef2f2', 100: '#fee2e2', 200: '#fecaca', 600: '#dc2626', 700: '#b91c1c' },
-    green: { 50: '#E8FFEA', 100: '#d1fae5', 600: '#16a34a', 700: '#15803d' },
-    orange: { 50: '#FFF7E8', 600: '#ea580c', 700: '#c2410c' },
-    brand: {
-      50: '#F2F6FF', 100: '#E8F0FF', 200: '#C5D7FB', 300: '#A3BCF7', 400: '#81A0F3',
-      500: '#6182EF', 600: '#4263EB', 700: '#2943C3', 800: '#16289C', 900: '#081374',
-    },
-  },
-  semanticTokens: {
-    colors: {
-      'bg.page': '#F7F6F2',
-      'bg.panel': '#ffffff',
-      'bg.subtle': 'gray.100',
-      'bg.muted': '#e8e9eb',
-      'bg.emphasized': 'gray.300',
-      'bg.inverted': '#141413',
-      'bg.info': '#F2F6FF',
-      'bg.success': '#E8FFEA',
-      'bg.warning': '#FFF7E8',
-      'bg.error': '#fef2f2',
-      'text.fg': '#141413',
-      'text.fgMuted': '#333333',
-      'text.fgSubtle': '#666666',
-      'text.fgSubtext': '#999999',
-      'text.fgInverted': '#ffffff',
-      'text.fgInfo': 'blue.700',
-      'text.fgSuccess': 'green.700',
-      'text.fgWarning': 'orange.700',
-      'text.fgError': 'red.700',
-      'border.base': 'gray.200',
-      'border.subtle': 'gray.100',
-      'border.muted': 'gray.150',
-      'border.emphasized': 'gray.300',
-      'border.hover': 'gray.400',
-    },
-  },
+  // Base token 色阶 —— 给 semantic 引用，业务代码请优先使用 semantic
+  colors,
+  // 语义化 —— 业务代码请用这些（bg.canvas / fg.default / interactive.primary.bg / ...）
+  semanticTokens: { colors: semanticColors },
+  // 命名组合样式 —— 业务代码用 `<Text textStyle="body.md" />`
+  textStyles,
+
   styles: {
     global: {
       'html, body': {
-        bg: 'bg.page',
-        color: 'text.fg',
+        bg: 'bg.canvas',
+        color: 'fg.default',
         textRendering: 'optimizeLegibility',
         WebkitFontSmoothing: 'antialiased',
         MozOsxFontSmoothing: 'grayscale',
       },
-      '::selection': { bg: 'blue.100', color: 'blue.700' },
+      '::selection': { bg: 'bg.brandSubtle', color: 'fg.brand' },
     },
   },
+
   components: {
     Heading: {
-      baseStyle: { fontFamily: 'heading', fontWeight: 600, color: 'text.fg', letterSpacing: '-0.01em' },
+      baseStyle: { fontFamily: 'heading', fontWeight: 'semibold', color: 'fg.default', letterSpacing: 'tight' },
       sizes: {
-        '2xl': { fontSize: ['32px', '40px'], lineHeight: 1.15, fontWeight: 600 },
-        xl: { fontSize: ['26px', '30px'], lineHeight: 1.2, fontWeight: 600 },
-        lg: { fontSize: '22px', lineHeight: 1.25, fontWeight: 600 },
-        md: { fontSize: '18px', lineHeight: 1.35, fontWeight: 600 },
-        sm: { fontSize: '15px', lineHeight: 1.4, fontWeight: 600 },
+        '2xl': { fontSize: ['4xl', '5xl'], lineHeight: 'tight' },
+        xl: { fontSize: ['3xl', '4xl'], lineHeight: 'snug' },
+        lg: { fontSize: '3xl', lineHeight: 'snug' },
+        md: { fontSize: '2xl', lineHeight: 'snug' },
+        sm: { fontSize: 'xl', lineHeight: 'snug' },
       },
     },
     Button: {
-      baseStyle: { fontFamily: 'body', fontWeight: 500, borderRadius: 'lg' },
+      baseStyle: { fontFamily: 'body', fontWeight: 'medium', borderRadius: 'lg' },
       sizes: {
-        sm: { h: '32px', px: '12px', fontSize: 'sm' },
-        md: { h: '40px', px: '16px', fontSize: 'md' },
-        lg: { h: '44px', px: '20px', fontSize: 'md' },
+        sm: { h: '32px', px: 3, fontSize: 'sm' },
+        md: { h: '40px', px: 4, fontSize: 'md' },
+        lg: { h: '44px', px: 5, fontSize: 'md' },
       },
       variants: {
         solid: {
-          bg: 'brand.600', color: 'white',
-          _hover: { bg: 'brand.700', _disabled: { bg: 'brand.600' } },
-          _active: { bg: 'brand.800' },
+          bg: 'interactive.primary.bg', color: 'interactive.primary.fg',
+          _hover: { bg: 'interactive.primary.bgHover', _disabled: { bg: 'interactive.primary.bg' } },
+          _active: { bg: 'interactive.primary.bgActive' },
         },
         outline: {
-          border: '1px solid', borderColor: 'border.base', color: 'text.fg', bg: 'bg.panel',
-          _hover: { bg: 'bg.subtle', borderColor: 'border.hover' },
+          bg: 'interactive.secondary.bg',
+          color: 'interactive.secondary.fg',
+          border: '1px solid',
+          borderColor: 'interactive.secondary.border',
+          _hover: { bg: 'interactive.secondary.bgHover' },
+          _active: { bg: 'interactive.secondary.bgActive' },
         },
         ghost: {
-          color: 'text.fgMuted', bg: 'transparent',
-          _hover: { bg: 'bg.subtle' },
+          bg: 'interactive.ghost.bg', color: 'interactive.ghost.fg',
+          _hover: { bg: 'interactive.ghost.bgHover' },
+          _active: { bg: 'interactive.ghost.bgActive' },
         },
-        link: { color: 'brand.600', _hover: { color: 'brand.700', textDecoration: 'underline' } },
+        danger: {
+          bg: 'interactive.danger.bg', color: 'interactive.danger.fg',
+          _hover: { bg: 'interactive.danger.bgHover' },
+          _active: { bg: 'interactive.danger.bgActive' },
+        },
+        link: { color: 'fg.link', _hover: { color: 'fg.linkHover', textDecoration: 'underline' } },
       },
       defaultProps: { variant: 'solid' },
     },
     Input: {
-      sizes: { md: { field: { h: '40px', px: '12px', fontSize: 'md', borderRadius: 'lg' } } },
+      sizes: { md: { field: { h: '40px', px: 3, fontSize: 'md', borderRadius: 'lg' } } },
       variants: {
         outline: {
           field: {
-            border: '1px solid', borderColor: 'border.base', bg: 'bg.panel',
-            _hover: { borderColor: 'border.hover' },
-            _focus: { borderColor: 'brand.500', boxShadow: '0 0 0 3px rgba(66,99,235,0.18)' },
+            border: '1px solid', borderColor: 'border.default', bg: 'bg.surface',
+            _hover: { borderColor: 'border.strong' },
+            _focusVisible: { borderColor: 'border.focus', boxShadow: shadows.focus },
           },
         },
       },
@@ -135,9 +136,9 @@ const theme = extendTheme({
     Textarea: {
       variants: {
         outline: {
-          border: '1px solid', borderColor: 'border.base', bg: 'bg.panel', borderRadius: 'lg',
-          _hover: { borderColor: 'border.hover' },
-          _focus: { borderColor: 'brand.500', boxShadow: '0 0 0 3px rgba(66,99,235,0.18)' },
+          border: '1px solid', borderColor: 'border.default', bg: 'bg.surface', borderRadius: 'lg',
+          _hover: { borderColor: 'border.strong' },
+          _focusVisible: { borderColor: 'border.focus', boxShadow: shadows.focus },
         },
       },
     },
@@ -145,25 +146,24 @@ const theme = extendTheme({
       variants: {
         outline: {
           field: {
-            border: '1px solid', borderColor: 'border.base', bg: 'bg.panel', borderRadius: 'lg',
-            _hover: { borderColor: 'border.hover' },
-            _focus: { borderColor: 'brand.500', boxShadow: '0 0 0 3px rgba(66,99,235,0.18)' },
+            border: '1px solid', borderColor: 'border.default', bg: 'bg.surface', borderRadius: 'lg',
+            _hover: { borderColor: 'border.strong' },
+            _focusVisible: { borderColor: 'border.focus', boxShadow: shadows.focus },
           },
         },
       },
     },
     Badge: {
-      baseStyle: {
-        textTransform: 'none', fontWeight: 500, borderRadius: 'sm', px: 2, py: '3px', fontSize: 'xs',
-      },
+      baseStyle: { textTransform: 'none', fontWeight: 'medium', borderRadius: 'sm', px: 2, py: '3px', fontSize: 'xs' },
     },
     Table: {
       baseStyle: {
         th: {
-          fontFamily: 'mono', fontSize: 'xs', letterSpacing: '0.06em',
-          textTransform: 'uppercase', color: 'text.fgSubtext', fontWeight: 500, borderColor: 'border.base',
+          fontFamily: 'mono', fontSize: 'xs', letterSpacing: 'wider',
+          textTransform: 'uppercase', color: 'fg.subtle', fontWeight: 'semibold',
+          borderColor: 'border.default',
         },
-        td: { borderColor: 'border.subtle', color: 'text.fgMuted', fontSize: 'md' },
+        td: { borderColor: 'border.subtle', color: 'fg.default', fontSize: 'md' },
       },
     },
   },

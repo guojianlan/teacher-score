@@ -47,13 +47,13 @@ export default function SignUpPage() {
   return (
     <Stack spacing={8}>
       <Box>
-        <Text fontFamily="mono" fontSize="xs" color="text.fgSubtle" letterSpacing="0.12em" textTransform="uppercase" mb={2}>
+        <Text fontFamily="mono" fontSize="xs" color="fg.subtle" letterSpacing="0.12em" textTransform="uppercase" mb={2}>
           New account
         </Text>
         <Heading as="h1" size="xl" fontStyle="italic" fontWeight={400}>
           注册
         </Heading>
-        <Text mt={2} color="text.fgSubtle" fontSize="sm">
+        <Text mt={2} color="fg.subtle" fontSize="sm">
           注册即自动开通个人工作区，免费层每月 50 次批改。
         </Text>
       </Box>
@@ -61,15 +61,15 @@ export default function SignUpPage() {
       <form onSubmit={onSubmit}>
         <Stack spacing={5}>
           <FormControl isRequired>
-            <FormLabel fontSize="sm" color="text.fgMuted" mb={1.5}>姓名</FormLabel>
+            <FormLabel fontSize="sm" color="fg.muted" mb={1.5}>姓名</FormLabel>
             <Input value={name} onChange={(e) => setName(e.target.value)} autoComplete="name" />
           </FormControl>
           <FormControl isRequired>
-            <FormLabel fontSize="sm" color="text.fgMuted" mb={1.5}>邮箱</FormLabel>
+            <FormLabel fontSize="sm" color="fg.muted" mb={1.5}>邮箱</FormLabel>
             <Input type="email" value={email} onChange={(e) => setEmail(e.target.value)} autoComplete="email" />
           </FormControl>
           <FormControl isRequired>
-            <FormLabel fontSize="sm" color="text.fgMuted" mb={1.5}>密码 <Text as="span" color="text.fgSubtle" fontFamily="mono" fontSize="xs">/ ≥8</Text></FormLabel>
+            <FormLabel fontSize="sm" color="fg.muted" mb={1.5}>密码 <Text as="span" color="fg.subtle" fontFamily="mono" fontSize="xs">/ ≥8</Text></FormLabel>
             <Input type="password" value={password} onChange={(e) => setPassword(e.target.value)} autoComplete="new-password" />
           </FormControl>
           <Button type="submit" isLoading={loading} size="lg" mt={2}>
@@ -78,7 +78,7 @@ export default function SignUpPage() {
         </Stack>
       </form>
 
-      <Text fontSize="sm" color="text.fgSubtle" pt={4} borderTop="1px solid" borderColor="border.base">
+      <Text fontSize="sm" color="fg.subtle" pt={4} borderTop="1px solid" borderColor="border.default">
         已有账号？{' '}
         <Link href="/sign-in" style={{ color: '#0969DA', textDecoration: 'underline', textUnderlineOffset: '3px' }}>
           登录

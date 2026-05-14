@@ -30,7 +30,7 @@ function ResetPasswordInner() {
   return (
     <Stack spacing={8}>
       <Box>
-        <Text fontFamily="mono" fontSize="xs" color="text.fgSubtle" letterSpacing="0.12em" textTransform="uppercase" mb={2}>
+        <Text fontFamily="mono" fontSize="xs" color="fg.subtle" letterSpacing="0.12em" textTransform="uppercase" mb={2}>
           Reset
         </Text>
         <Heading as="h1" size="xl" fontStyle="italic" fontWeight={400}>重置密码</Heading>
@@ -38,7 +38,7 @@ function ResetPasswordInner() {
       <form onSubmit={onSubmit}>
         <Stack spacing={5}>
           <FormControl isRequired>
-            <FormLabel fontSize="sm" color="text.fgMuted" mb={1.5}>新密码 <Text as="span" color="text.fgSubtle" fontFamily="mono" fontSize="xs">/ ≥8</Text></FormLabel>
+            <FormLabel fontSize="sm" color="fg.muted" mb={1.5}>新密码 <Text as="span" color="fg.subtle" fontFamily="mono" fontSize="xs">/ ≥8</Text></FormLabel>
             <Input type="password" value={password} onChange={(e) => setPassword(e.target.value)} autoComplete="new-password" />
           </FormControl>
           <Button type="submit" isLoading={loading} isDisabled={!token} size="lg">确认重置 →</Button>

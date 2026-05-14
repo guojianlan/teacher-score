@@ -186,61 +186,61 @@ function ResultView({ record, reload }: { record: GradingRecord; reload: () => v
       />
 
       {/* Score grid */}
-      <Box borderTop="1px solid" borderBottom="1px solid" borderColor="border.base" py={6}>
+      <Box borderTop="1px solid" borderBottom="1px solid" borderColor="border.default" py={6}>
         <Flex gap={[6, 12]} wrap="wrap">
           <Stat label="总分" main={
             <Flex align="baseline" gap={1}>
               <Text fontFamily="mono" fontSize="4xl" fontWeight={500}>{total}</Text>
-              <Text fontFamily="mono" color="text.fgSubtle" fontSize="lg">/{max}</Text>
+              <Text fontFamily="mono" color="fg.subtle" fontSize="lg">/{max}</Text>
             </Flex>
           } />
           <Stat label="正确率" main={
-            <Text fontFamily="mono" fontSize="4xl" fontWeight={500}>{pct}<Text as="span" fontSize="lg" color="text.fgSubtle">%</Text></Text>
+            <Text fontFamily="mono" fontSize="4xl" fontWeight={500}>{pct}<Text as="span" fontSize="lg" color="fg.subtle">%</Text></Text>
           } />
           <Stat label="错题数" main={
-            <Text fontFamily="mono" fontSize="4xl" fontWeight={500} color={wrong > 0 ? 'red.700' : 'text.fg'}>{wrong}</Text>
+            <Text fontFamily="mono" fontSize="4xl" fontWeight={500} color={wrong > 0 ? 'status.danger.fg' : 'text.fg'}>{wrong}</Text>
           } />
         </Flex>
         {record.overallComment && (
-          <Text mt={6} pt={6} borderTop="1px solid" borderColor="border.base" color="text.fgMuted" fontSize="md" fontStyle="italic" lineHeight={1.65}>
+          <Text mt={6} pt={6} borderTop="1px solid" borderColor="border.default" color="fg.muted" fontSize="md" fontStyle="italic" lineHeight={1.65}>
             “{record.overallComment}”
           </Text>
         )}
       </Box>
 
       {/* Question by question */}
-      <Stack spacing={0} borderTop="1px solid" borderColor="border.base">
+      <Stack spacing={0} borderTop="1px solid" borderColor="border.default">
         {results.map((q) => (
-          <Box key={q.no} py={6} borderBottom="1px solid" borderColor="border.base">
+          <Box key={q.no} py={6} borderBottom="1px solid" borderColor="border.default">
             <Flex align="baseline" gap={3} mb={3} wrap="wrap">
-              <Text fontFamily="mono" fontSize="sm" color="text.fgSubtext" w="32px">Q{q.no}</Text>
-              <Badge bg={q.isCorrect ? 'green.50' : 'red.50'} color={q.isCorrect ? 'green.700' : 'red.700'}>
+              <Text fontFamily="mono" fontSize="sm" color="fg.subtle" w="32px">Q{q.no}</Text>
+              <Badge bg={q.isCorrect ? 'status.success.bg' : 'status.danger.bg'} color={q.isCorrect ? 'status.success.fg' : 'status.danger.fg'}>
                 {q.isCorrect ? '正确' : '错误'}
               </Badge>
               <Badge
-                bg={q.confidence === 'high' ? 'bg.muted' : q.confidence === 'medium' ? 'orange.50' : 'red.50'}
-                color={q.confidence === 'high' ? 'text.fgSubtle' : q.confidence === 'medium' ? 'orange.700' : 'red.700'}
+                bg={q.confidence === 'high' ? 'bg.muted' : q.confidence === 'medium' ? 'status.warning.bg' : 'status.danger.bg'}
+                color={q.confidence === 'high' ? 'fg.subtle' : q.confidence === 'medium' ? 'status.warning.fg' : 'status.danger.fg'}
               >
                 信心 {q.confidence}
               </Badge>
-              {q.teacherModified && <Badge bg="brand.50" color="brand.800">老师改分</Badge>}
+              {q.teacherModified && <Badge bg="bg.brandSubtle" color="brand.800">老师改分</Badge>}
             </Flex>
 
-            <Text fontSize="md" color="text.fgMuted" mb={2} lineHeight={1.6}>{q.stem}</Text>
+            <Text fontSize="md" color="fg.muted" mb={2} lineHeight={1.6}>{q.stem}</Text>
 
-            <Stack spacing={1.5} fontSize="sm" color="text.fgSubtle" mb={4}>
+            <Stack spacing={1.5} fontSize="sm" color="fg.subtle" mb={4}>
               <Flex gap={3}>
-                <Text fontFamily="mono" w="60px" flexShrink={0} color="text.fgSubtext">学生</Text>
-                <Text color="text.fgMuted">{q.studentAnswer || '（空）'}</Text>
+                <Text fontFamily="mono" w="60px" flexShrink={0} color="fg.subtle">学生</Text>
+                <Text color="fg.muted">{q.studentAnswer || '（空）'}</Text>
               </Flex>
               <Flex gap={3}>
-                <Text fontFamily="mono" w="60px" flexShrink={0} color="text.fgSubtext">参考</Text>
-                <Text color="text.fgMuted">{q.correctAnswer ?? '—'}</Text>
+                <Text fontFamily="mono" w="60px" flexShrink={0} color="fg.subtle">参考</Text>
+                <Text color="fg.muted">{q.correctAnswer ?? '—'}</Text>
               </Flex>
             </Stack>
 
             <Flex gap={3} align="center" wrap="wrap">
-              <Text fontFamily="mono" fontSize="xs" color="text.fgSubtle" letterSpacing="0.06em">SCORE</Text>
+              <Text fontFamily="mono" fontSize="xs" color="fg.subtle" letterSpacing="0.06em">SCORE</Text>
               <Input
                 size="sm"
                 w="80px"
@@ -249,7 +249,7 @@ function ResultView({ record, reload }: { record: GradingRecord; reload: () => v
                 fontFamily="mono"
                 onBlur={(e) => { const s = Number(e.target.value); if (s !== q.score) onOverride(q.no, s, q.comment); }}
               />
-              <Text fontFamily="mono" fontSize="sm" color="text.fgSubtle">/ {q.maxScore}</Text>
+              <Text fontFamily="mono" fontSize="sm" color="fg.subtle">/ {q.maxScore}</Text>
               <Textarea
                 size="sm"
                 placeholder="单题评语"
@@ -270,7 +270,7 @@ function ResultView({ record, reload }: { record: GradingRecord; reload: () => v
 function Stat({ label, main }: { label: string; main: React.ReactNode }) {
   return (
     <Box>
-      <Text fontFamily="mono" fontSize="xs" color="text.fgSubtle" letterSpacing="0.08em" textTransform="uppercase" mb={1}>
+      <Text fontFamily="mono" fontSize="xs" color="fg.subtle" letterSpacing="0.08em" textTransform="uppercase" mb={1}>
         {label}
       </Text>
       {main}

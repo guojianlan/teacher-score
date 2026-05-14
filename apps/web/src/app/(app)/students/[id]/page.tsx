@@ -27,19 +27,19 @@ export default async function StudentDetailPage({ params }: { params: Promise<{ 
 
       <Section label="学科汇总">
         {sums.length === 0 ? (
-          <Text color="text.fgSubtle" fontSize="sm">暂无数据</Text>
+          <Text color="fg.subtle" fontSize="sm">暂无数据</Text>
         ) : (
           <Flex gap={8} wrap="wrap">
             {sums.map((s) => (
               <Box key={s.subject}>
-                <Text fontFamily="mono" fontSize="xs" color="text.fgSubtle" letterSpacing="0.08em" textTransform="uppercase" mb={1}>
+                <Text fontFamily="mono" fontSize="xs" color="fg.subtle" letterSpacing="0.08em" textTransform="uppercase" mb={1}>
                   {SUBJECT_LABELS[s.subject] ?? s.subject}
                 </Text>
                 <Flex align="baseline" gap={1}>
                   <Text fontFamily="mono" fontSize="3xl" fontWeight={500}>{Math.round(s.avgPct)}</Text>
-                  <Text fontFamily="mono" color="text.fgSubtle" fontSize="sm">%</Text>
+                  <Text fontFamily="mono" color="fg.subtle" fontSize="sm">%</Text>
                 </Flex>
-                <Text fontFamily="mono" fontSize="xs" color="text.fgSubtle">{s.count} 次平均</Text>
+                <Text fontFamily="mono" fontSize="xs" color="fg.subtle">{s.count} 次平均</Text>
               </Box>
             ))}
           </Flex>
@@ -48,13 +48,13 @@ export default async function StudentDetailPage({ params }: { params: Promise<{ 
 
       <Section label="知识点热力">
         {tags.length === 0 ? (
-          <Text color="text.fgSubtle" fontSize="sm">暂无错题数据</Text>
+          <Text color="fg.subtle" fontSize="sm">暂无错题数据</Text>
         ) : (
           <Flex gap={2} wrap="wrap">
             {tags.slice(0, 50).map((h) => {
               const intensity = h.count / maxTag;
               return (
-                <Tag key={h.tag} bg={`rgba(207, 34, 46, ${0.08 + intensity * 0.45})`} color="red.700" border="1px solid" borderColor="red.50">
+                <Tag key={h.tag} bg={`rgba(207, 34, 46, ${0.08 + intensity * 0.45})`} color="status.danger.fg" border="1px solid" borderColor="status.danger.bg">
                   {h.tag} <Text as="span" ml={1} fontFamily="mono">×{h.count}</Text>
                 </Tag>
               );
@@ -65,19 +65,19 @@ export default async function StudentDetailPage({ params }: { params: Promise<{ 
 
       <Section label="进步曲线">
         {points.length === 0 ? (
-          <Text color="text.fgSubtle" fontSize="sm">暂无批改记录</Text>
+          <Text color="fg.subtle" fontSize="sm">暂无批改记录</Text>
         ) : (
           <Stack spacing={2}>
             {points.map((p) => (
               <Flex key={p.gradingId} align="center" gap={4}>
-                <Text fontFamily="mono" fontSize="xs" w="80px" color="text.fgSubtle" flexShrink={0}>
+                <Text fontFamily="mono" fontSize="xs" w="80px" color="fg.subtle" flexShrink={0}>
                   {p.at ? new Date(p.at).toLocaleDateString('zh-CN') : '—'}
                 </Text>
                 <Text fontSize="sm" w="60px" flexShrink={0}>{SUBJECT_LABELS[p.subject] ?? p.subject}</Text>
                 <Box flex="1" h="6px" bg="bg.muted" borderRadius="full" overflow="hidden">
-                  <Box h="100%" w={`${Math.min(100, p.pct)}%`} bg="brand.500" />
+                  <Box h="100%" w={`${Math.min(100, p.pct)}%`} bg="bg.brandSubtle0" />
                 </Box>
-                <Text fontFamily="mono" fontSize="sm" w="100px" textAlign="right" color="text.fgMuted">
+                <Text fontFamily="mono" fontSize="sm" w="100px" textAlign="right" color="fg.muted">
                   {p.score}/{p.maxScore} · {p.pct}%
                 </Text>
               </Flex>
@@ -91,8 +91,8 @@ export default async function StudentDetailPage({ params }: { params: Promise<{ 
 
 function Section({ label, children }: { label: string; children: React.ReactNode }) {
   return (
-    <Box pb={8} borderBottom="1px solid" borderColor="border.base">
-      <Text fontFamily="mono" fontSize="xs" color="text.fgSubtle" letterSpacing="0.08em" textTransform="uppercase" mb={4}>
+    <Box pb={8} borderBottom="1px solid" borderColor="border.default">
+      <Text fontFamily="mono" fontSize="xs" color="fg.subtle" letterSpacing="0.08em" textTransform="uppercase" mb={4}>
         {label}
       </Text>
       {children}

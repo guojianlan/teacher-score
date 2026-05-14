@@ -71,7 +71,7 @@ export default function GradePage() {
         <Section number="01" title="学生 / 学科">
           <Stack spacing={4} direction={['column', 'row']}>
             <FormControl isRequired flex="1">
-              <FormLabel fontSize="sm" color="text.fgMuted" mb={1.5}>学生</FormLabel>
+              <FormLabel fontSize="sm" color="fg.muted" mb={1.5}>学生</FormLabel>
               <Select value={studentId} onChange={(e) => setStudentId(e.target.value)} size="md">
                 <option value="">请选择</option>
                 {students.map((s) => (
@@ -80,7 +80,7 @@ export default function GradePage() {
               </Select>
             </FormControl>
             <FormControl isRequired flex="1">
-              <FormLabel fontSize="sm" color="text.fgMuted" mb={1.5}>学科</FormLabel>
+              <FormLabel fontSize="sm" color="fg.muted" mb={1.5}>学科</FormLabel>
               <Select value={subject} onChange={(e) => setSubject(e.target.value)} size="md">
                 {SUBJECTS.map((s) => <option key={s} value={s}>{SUBJECT_LABELS[s]}</option>)}
               </Select>
@@ -89,8 +89,8 @@ export default function GradePage() {
 
           {templates.length > 0 && (
             <FormControl mt={4}>
-              <FormLabel fontSize="sm" color="text.fgMuted" mb={1.5}>
-                试卷模板 <Text as="span" color="text.fgSubtle" fontSize="xs">/ 可选，复用时跳过题目识别</Text>
+              <FormLabel fontSize="sm" color="fg.muted" mb={1.5}>
+                试卷模板 <Text as="span" color="fg.subtle" fontSize="xs">/ 可选，复用时跳过题目识别</Text>
               </FormLabel>
               <Select value={examPaperId} onChange={(e) => setExamPaperId(e.target.value)} size="md">
                 <option value="">不使用模板</option>
@@ -110,12 +110,12 @@ export default function GradePage() {
 
             {imageKeys.length > 0 && (
               <Box pt={2}>
-                <Text fontFamily="mono" fontSize="xs" color="text.fgSubtle" letterSpacing="0.06em" mb={3}>
+                <Text fontFamily="mono" fontSize="xs" color="fg.subtle" letterSpacing="0.06em" mb={3}>
                   已上传 {imageKeys.length} 张
                 </Text>
                 <Stack direction="row" spacing={3} wrap="wrap">
                   {imageKeys.map((k) => (
-                    <Box key={k} borderWidth="1px" borderColor="border.base" borderRadius="6px" overflow="hidden" maxW="100px">
+                    <Box key={k} borderWidth="1px" borderColor="border.default" borderRadius="6px" overflow="hidden" maxW="100px">
                       <Image src={`/api/upload/${encodeURIComponent(k)}`} alt="preview" />
                     </Box>
                   ))}
@@ -125,11 +125,11 @@ export default function GradePage() {
           </Stack>
         </Section>
 
-        <Box pt={4} borderTop="1px solid" borderColor="border.base">
+        <Box pt={4} borderTop="1px solid" borderColor="border.default">
           <Button onClick={onSubmit} isLoading={submitting} size="lg">
             开始批改 →
           </Button>
-          <Text mt={3} fontSize="xs" color="text.fgSubtle" fontFamily="mono">
+          <Text mt={3} fontSize="xs" color="fg.subtle" fontFamily="mono">
             提交后会进入处理状态页，3 秒轮询一次。完成后自动跳到结果页。
           </Text>
         </Box>
@@ -141,8 +141,8 @@ export default function GradePage() {
 function Section({ number, title, children }: { number: string; title: string; children: React.ReactNode }) {
   return (
     <Box>
-      <Box mb={5} pb={3} borderBottom="1px solid" borderColor="border.base">
-        <Text fontFamily="mono" fontSize="xs" color="text.fgSubtle" letterSpacing="0.08em" textTransform="uppercase" mb={1}>
+      <Box mb={5} pb={3} borderBottom="1px solid" borderColor="border.default">
+        <Text fontFamily="mono" fontSize="xs" color="fg.subtle" letterSpacing="0.08em" textTransform="uppercase" mb={1}>
           Step {number}
         </Text>
         <Text fontSize="lg" fontWeight={500}>{title}</Text>

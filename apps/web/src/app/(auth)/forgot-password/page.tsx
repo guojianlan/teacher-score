@@ -25,20 +25,20 @@ export default function ForgotPasswordPage() {
   return (
     <Stack spacing={8}>
       <Box>
-        <Text fontFamily="mono" fontSize="xs" color="text.fgSubtle" letterSpacing="0.12em" textTransform="uppercase" mb={2}>
+        <Text fontFamily="mono" fontSize="xs" color="fg.subtle" letterSpacing="0.12em" textTransform="uppercase" mb={2}>
           Recover
         </Text>
         <Heading as="h1" size="xl" fontStyle="italic" fontWeight={400}>忘记密码</Heading>
       </Box>
       {sent ? (
-        <Text color="text.fgMuted" lineHeight={1.6}>
+        <Text color="fg.muted" lineHeight={1.6}>
           如果该邮箱已注册，重置链接已发送，请查收。
         </Text>
       ) : (
         <form onSubmit={onSubmit}>
           <Stack spacing={5}>
             <FormControl isRequired>
-              <FormLabel fontSize="sm" color="text.fgMuted" mb={1.5}>邮箱</FormLabel>
+              <FormLabel fontSize="sm" color="fg.muted" mb={1.5}>邮箱</FormLabel>
               <Input type="email" value={email} onChange={(e) => setEmail(e.target.value)} autoComplete="email" />
             </FormControl>
             <Button type="submit" isLoading={loading} size="lg">发送重置链接 →</Button>

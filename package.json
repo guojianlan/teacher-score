@@ -23,7 +23,7 @@
     "db:push": "dotenv -e .env -- pnpm --filter @teacher-score/db push",
     "seed:demo": "dotenv -e .env -- tsx scripts/seed-demo.ts",
     "fixtures:synth": "tsx scripts/generate-synthetic-fixtures.ts",
-    "tokens:build": "tsx scripts/build-tokens.ts",
+    "tokens:build": "tsx apps/web/src/styles/tokens/build.ts",
     "accuracy": "dotenv -e .env -- tsx scripts/accuracy-test.ts",
     "e2e": "pnpm --filter @teacher-score/e2e test",
     "format": "prettier --write \"**/*.{ts,tsx,js,json,md}\""

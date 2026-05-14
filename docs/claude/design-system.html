@@ -2,517 +2,924 @@
 <html lang="zh-CN">
 <head>
 <meta charset="utf-8">
-<title>Design System — 教师批改 SaaS</title>
+<title>Design System — 教师批改</title>
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&family=Figtree:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 :root {
-  --FocusRing-yellow: [object Object],[object Object];
-  --FocusRing-Orange: [object Object],[object Object];
-  --FocusRing-teal: [object Object],[object Object];
-  --FocusRing-blue: [object Object],[object Object];
-  --FocusRing-pink: [object Object],[object Object];
-  --FocusRing-purple: [object Object],[object Object];
-  --bg-base: #ffffff;
-  --bg-page: #F7F6F2;
-  --bg-secondary: #F7F9FF;
-  --bg-altSubtle: #F7F6F2;
-  --bg-subtle: #f3f4f6;
-  --bg-muted: #e8e9eb;
-  --bg-altEmphasized: #DEDFE0;
-  --bg-emphasized: #d8d8d8;
-  --bg-inverted: #141413;
-  --bg-panel: #ffffff;
-  --bg-error: #fef2f2;
-  --bg-warning: #FFF7E8;
-  --bg-success: #E8FFEA;
-  --bg-info: #F2F6FF;
-  --bg-editor: #f2f4f7;
-  --bg-badge: #331b00;
-  --border-base: #e5e5e5;
-  --border-subtle: #f3f4f6;
-  --border-muted: #ebebeb;
-  --border-emphasized: #d8d8d8;
-  --border-hover: #bfbfbf;
-  --border-inverted: #4d4d4d;
-  --border-error: #dc2626;
-  --border-warning: #D25F00;
-  --border-success: #009A29;
-  --border-info: #2943C3;
-  --text-fg: #141413;
-  --text-fgMuted: #333333;
-  --text-fgSubtle: #666666;
-  --text-fgSubtext: #999999;
-  --text-fgInverted: #ffffff;
-  --text-fgError: #dc2626;
-  --text-fgWarning: #D25F00;
-  --text-fgSuccess: #009A29;
-  --text-fgInfo: #2943C3;
-  --black-contrast: #ffffff;
-  --black-fg: #141413;
-  --black-subtle: #f3f4f6;
-  --black-muted: #e8e9eb;
-  --black-emphasized: #d8d8d8;
-  --black-solid: #141413;
-  --black-focusRing: #4d4d4d;
-  --black-hover: #666666;
-  --red-contrast: #ffffff;
-  --red-fg: #dc2626;
-  --red-subtle: #fef2f2;
-  --red-muted: #fee2e2;
-  --red-emphasized: #fecaca;
-  --red-solid: #dc2626;
-  --red-focusRing: #f87171;
-  --pink-contrast: #ffffff;
-  --pink-fg: #a41752;
-  --pink-subtle: #fce7f3;
-  --pink-muted: #fbcfe8;
-  --pink-emphasized: #f9a8d4;
-  --pink-solid: #db2777;
-  --pink-focusRing: #f472b6;
-  --purple-contrast: #ffffff;
-  --purple-fg: #641ba3;
-  --purple-subtle: #f3e8ff;
-  --purple-muted: #e9d5ff;
-  --purple-emphasized: #d8b4fe;
-  --purple-solid: #9333ea;
-  --purple-focusRing: #c084fc;
-  --cyan-contrast: #ffffff;
-  --cyan-fg: #0c5c72;
-  --cyan-subtle: #cffafe;
-  --cyan-muted: #a5f3fc;
-  --cyan-emphasized: #67e8f9;
-  --cyan-solid: #0891b2;
-  --cyan-focusRing: #22d3ee;
-  --blue-contrast: #ffffff;
-  --blue-fg: #2943C3;
-  --blue-subtle: #F2F6FF;
-  --blue-muted: #E8F0FF;
-  --blue-emphasized: #C5D7FB;
-  --blue-solid: #4263EB;
-  --blue-focusRing: #81A0F3;
-  --teal-contrast: #ffffff;
-  --teal-fg: #0c5d56;
-  --teal-subtle: #ccfbf1;
-  --teal-muted: #99f6e4;
-  --teal-emphasized: #5eead4;
-  --teal-solid: #0d9488;
-  --teal-focusRing: #2dd4bf;
-  --green-contrast: #ffffff;
-  --green-fg: #009A29;
-  --green-subtle: #E8FFEA;
-  --green-muted: #CCF0CF;
-  --green-emphasized: #AFF0B5;
-  --green-solid: #00B42A;
-  --green-focusRing: #4CD263;
-  --yellow-contrast: #000000;
-  --yellow-fg: #835b0b;
-  --yellow-subtle: #fff4c8;
-  --yellow-muted: #ffeba8;
-  --yellow-emphasized: #ffdf87;
-  --yellow-solid: #ffdf87;
-  --yellow-focusRing: #ffd470;
-  --orange-contrast: #ffffff;
-  --orange-fg: #D25F00;
-  --orange-subtle: #FFF7E8;
-  --orange-muted: #FFF0D9;
-  --orange-emphasized: #FFE4BA;
-  --orange-solid: #FF7D00;
-  --orange-focusRing: #FFB65D;
-  --fg-base: #141413;
-  --fg-muted: #999999;
-  --fg-subtle: #bfbfbf;
-  --fg-inverted: #ffffff;
-  --fg-error: #dc2626;
-  --fg-warning: #D25F00;
-  --fg-success: #009A29;
-  --fg-info: #2943C3;
-  --primary-contrast: #000000;
-  --primary-fg: #835b0b;
-  --primary-subtle: #ffc24726;
-  --primary-muted: #ffeba8;
-  --primary-emphasized: #a66d17;
-  --primary-solid: #ffc247;
-  --primary-focusRing: #ffd470;
-  --secondary-contrast: #ffffff;
-  --secondary-fg: #2943C3;
-  --secondary-subtle: #E8F0FF;
-  --secondary-muted: #C5D7FB;
-  --secondary-emphasized: #A3BCF7;
-  --secondary-solid: #4263EB;
-  --secondary-focusRing: #6182EF;
-  --secondary-hover: #F2F6FF;
-  --Container-proseWidth: 996px;
-  --Container-maxWidth: 1536px;
-  --breakpoint-md: 996px;
-  --breakpoint-xl: 1376px;
-  --purpleBlue-contrast: #ffffff;
-  --purpleBlue-fg: #2921ba;
-  --purpleBlue-subtle: #eee8ff;
-  --purpleBlue-muted: #cdc1f8;
-  --purpleBlue-emphasized: #ab9bf2;
-  --purpleBlue-solid: #4335de;
-  --purpleBlue-focusRing: #8977eb;
-  --gray-contrast: #ffffff;
-  --gray-fg: #141413;
-  --gray-subtle: #f3f4f6;
-  --gray-muted: #e8e9eb;
-  --gray-emphasized: #d8d8d8;
-  --gray-solid: #999999;
-  --gray-focusRing: #141413;
-  --gray-hover: #ffffff;
-  --white-contrast: #141413;
-  --white-fg: #141413;
-  --white-subtle: #f3f4f6;
-  --white-muted: #e8e9eb;
-  --white-emphasized: #d8d8d8;
-  --white-solid: #ffffff;
-  --white-focusRing: #e8e9eb;
-  --white-hover: #ffffff1a;
+  --bg-canvas: #FAFAF9;
+  --bg-surface: #FFFFFF;
+  --bg-surface-subtle: #FAFAF9;
+  --bg-surface-hover: #F5F5F4;
+  --bg-muted: #F5F5F4;
+  --bg-inverse: #1C1917;
+  --bg-overlay: rgba(0,0,0,0.36);
+  --bg-brand: #2849E8;
+  --bg-brand-subtle: #EFF4FF;
+  --bg-brand-muted: #DBE7FE;
+  --fg-default: #1C1917;
+  --fg-muted: #44403C;
+  --fg-subtle: #78716C;
+  --fg-disabled: #A8A29E;
+  --fg-inverse: #FFFFFF;
+  --fg-on-brand: #FFFFFF;
+  --fg-brand: #2138D4;
+  --fg-link: #2849E8;
+  --fg-link-hover: #2138D4;
+  --border-default: #E7E5E4;
+  --border-subtle: #EFEEEC;
+  --border-strong: #D6D3D1;
+  --border-focus: #3D66F5;
+  --border-brand: #2849E8;
+  --interactive-primary-bg: #2849E8;
+  --interactive-primary-bg-hover: #2138D4;
+  --interactive-primary-bg-active: #2030AB;
+  --interactive-primary-fg: #FFFFFF;
+  --interactive-primary-border: #2849E8;
+  --interactive-secondary-bg: #FFFFFF;
+  --interactive-secondary-bg-hover: #FAFAF9;
+  --interactive-secondary-bg-active: #F5F5F4;
+  --interactive-secondary-fg: #1C1917;
+  --interactive-secondary-border: #D6D3D1;
+  --interactive-ghost-bg: transparent;
+  --interactive-ghost-bg-hover: #F5F5F4;
+  --interactive-ghost-bg-active: #E7E5E4;
+  --interactive-ghost-fg: #44403C;
+  --interactive-ghost-border: transparent;
+  --interactive-danger-bg: #DC2626;
+  --interactive-danger-bg-hover: #B91C1C;
+  --interactive-danger-bg-active: #991B1B;
+  --interactive-danger-fg: #FFFFFF;
+  --interactive-danger-border: #DC2626;
+  --status-info-bg: #EFF4FF;
+  --status-info-fg: #2138D4;
+  --status-info-border: #BFD3FE;
+  --status-info-solid: #2849E8;
+  --status-success-bg: #F0FDF4;
+  --status-success-fg: #15803D;
+  --status-success-border: #BBF7D0;
+  --status-success-solid: #16A34A;
+  --status-warning-bg: #FFF7ED;
+  --status-warning-fg: #C2410C;
+  --status-warning-border: #FED7AA;
+  --status-warning-solid: #EA580C;
+  --status-danger-bg: #FEF2F2;
+  --status-danger-fg: #B91C1C;
+  --status-danger-border: #FECACA;
+  --status-danger-solid: #DC2626;
+  --status-neutral-bg: #F5F5F4;
+  --status-neutral-fg: #44403C;
+  --status-neutral-border: #E7E5E4;
+  --status-neutral-solid: #57534E;
 }
 * { box-sizing: border-box; }
 body {
   margin: 0;
-  background: #F7F6F2;
-  color: #141413;
+  background: #FAFAF9;
+  color: #1C1917;
   font-family: 'Open Sans', system-ui, sans-serif;
-  font-size: 15px;
-  line-height: 1.55;
+  font-size: 14px;
+  line-height: 1.5;
   -webkit-font-smoothing: antialiased;
 }
-.app { max-width: 1100px; margin: 0 auto; padding: 56px 32px 80px; }
-.brand { display: flex; align-items: baseline; gap: 12px; margin-bottom: 40px; padding-bottom: 24px; border-bottom: 1px solid #e5e5e5; }
-.brand h1 { font-family: 'Poppins'; font-weight: 600; font-size: 32px; margin: 0; letter-spacing: -0.01em; }
-.brand .sub { color: #999999; font-family: 'Figtree'; font-size: 13px; }
-.toc { display: flex; flex-wrap: wrap; gap: 16px 24px; margin-bottom: 56px; font-family: 'Figtree'; font-size: 13px; }
-.toc a { color: #4263EB; text-decoration: none; }
+.app { max-width: 1080px; margin: 0 auto; padding: 56px 32px 80px; }
+.brand { display: flex; align-items: baseline; gap: 16px; margin-bottom: 32px; padding-bottom: 24px; border-bottom: 1px solid #E7E5E4; }
+.brand h1 { font-family: 'Poppins'; font-weight: 600; font-size: 32px; margin: 0; letter-spacing: -0.02em; }
+.brand .sub { color: #78716C; font-family: 'JetBrains Mono'; font-size: 12px; }
+.intro { background: #FFFFFF; border: 1px solid #E7E5E4; border-radius: 12px; padding: 24px; margin-bottom: 48px; }
+.intro h2 { font-family: 'Source Serif 4'; font-weight: 600; font-size: 22px; margin: 0 0 12px; }
+.intro p { margin: 0 0 8px; color: #44403C; line-height: 1.65; }
+.intro code { font-family: 'JetBrains Mono'; font-size: 13px; background: #F5F5F4; padding: 1px 6px; border-radius: 4px; }
+.toc { display: flex; flex-wrap: wrap; gap: 16px 24px; margin-bottom: 48px; font-family: 'JetBrains Mono'; font-size: 12px; }
+.toc a { color: #2138D4; text-decoration: none; }
 .toc a:hover { text-decoration: underline; }
-.block { margin-bottom: 64px; }
-.block h3 { font-family: 'Source Serif 4'; font-weight: 600; font-size: 22px; margin: 0 0 16px; letter-spacing: -0.01em; }
-.block h4 { font-family: 'Source Serif 4'; font-weight: 600; font-size: 17px; margin: 0 0 12px; }
+h2.section { font-family: 'Source Serif 4'; font-weight: 600; font-size: 28px; margin: 56px 0 24px; padding-bottom: 12px; border-bottom: 1px solid #E7E5E4; letter-spacing: -0.01em; }
+.block { margin-bottom: 48px; }
+.block h3 { font-family: 'Open Sans'; font-weight: 600; font-size: 18px; margin: 0 0 14px; }
+.block h4 { font-family: 'Open Sans'; font-weight: 600; font-size: 14px; margin: 0 0 10px; color: #44403C; }
 .scale {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(96px, 1fr));
   gap: 1px;
-  border: 1px solid #e5e5e5;
-  background: #e5e5e5;
+  border: 1px solid #E7E5E4;
+  background: #E7E5E4;
   border-radius: 8px;
   overflow: hidden;
 }
-.sw { padding: 14px 12px 12px; display: flex; flex-direction: column; gap: 2px; font-size: 12px; }
-.sw span { font-family: 'Figtree'; font-weight: 500; }
-.sw code { font-family: 'Figtree'; font-size: 11px; opacity: 0.7; }
+.sw { padding: 14px 10px 10px; display: flex; flex-direction: column; gap: 2px; font-size: 11px; }
+.sw-name { font-family: 'Open Sans'; font-weight: 600; font-size: 12px; }
+.sw code { font-family: 'JetBrains Mono'; font-size: 10px; opacity: 0.75; }
 table { width: 100%; border-collapse: collapse; font-size: 13px; }
-table td { padding: 8px 12px; border-bottom: 1px solid #f3f4f6; vertical-align: middle; }
-table td:first-child code { font-family: 'Figtree'; font-weight: 500; color: #333333; }
-table td code { font-family: 'Figtree'; font-size: 12px; color: #666666; }
-.chip { display: inline-block; width: 28px; height: 16px; border-radius: 3px; border: 1px solid #ebebeb; vertical-align: middle; }
-.num { font-family: 'Figtree'; font-size: 12px; color: #666666; }
-.numbers td:nth-child(2) { text-align: right; font-family: 'Figtree'; }
+table td { padding: 8px 12px; border-bottom: 1px solid #EFEEEC; vertical-align: middle; }
+.token-name { font-family: 'JetBrains Mono'; font-size: 12px; color: #1C1917; font-weight: 500; }
+.hex { font-family: 'JetBrains Mono'; font-size: 12px; color: #78716C; }
+.chip { display: inline-block; width: 32px; height: 18px; border-radius: 4px; border: 1px solid #E7E5E4; vertical-align: middle; }
+.num-table td:nth-child(2) { text-align: right; font-family: 'JetBrains Mono'; }
 .radii-row { display: flex; gap: 12px; flex-wrap: wrap; }
 .radius-card {
-  width: 88px; height: 88px;
-  background: #f3f4f6;
-  border: 1px solid #e5e5e5;
+  width: 96px; height: 96px;
+  background: #F5F5F4;
+  border: 1px solid #E7E5E4;
   display: flex; flex-direction: column; align-items: center; justify-content: center;
   gap: 4px;
 }
-.radius-card span { font-family: 'Figtree'; font-weight: 500; font-size: 13px; }
-.radius-card code { font-family: 'Figtree'; font-size: 11px; color: #666666; }
-.spec { display: flex; flex-direction: column; gap: 8px; }
-.spec-row { display: flex; align-items: baseline; gap: 24px; padding: 8px 0; border-bottom: 1px solid #f3f4f6; }
-.spec-name { font-family: 'Figtree'; font-size: 11px; color: #666666; min-width: 180px; }
-.spec-text { font-weight: 400; }
-.components { display: grid; grid-template-columns: minmax(0, 1fr); gap: 24px; }
-.card { background: #ffffff; border: 1px solid #e5e5e5; border-radius: 12px; padding: 24px; }
-.eyebrow { margin: 0 0 8px; font-family: 'Figtree'; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: #999999; }
-.card-title { margin: 0 0 8px; font-family: 'Source Serif 4'; font-weight: 600; font-size: 20px; }
-.card-body { margin: 0; color: #666666; }
-.btn { font-family: 'Open Sans'; font-weight: 500; font-size: 14px; padding: 8px 16px; border-radius: 8px; border: 1px solid transparent; cursor: pointer; }
-.btn-primary { background: #4263EB; color: #fff; }
-.btn-primary:hover { background: #2943C3; }
-.btn-secondary { background: #ffffff; color: #141413; border-color: #e5e5e5; }
-.btn-secondary:hover { background: #f3f4f6; }
-.btn-ghost { background: transparent; color: #333333; }
-.btn-ghost:hover { background: #f3f4f6; }
-.status-row { display: flex; gap: 8px; flex-wrap: wrap; }
-.badge { font-family: 'Figtree'; font-size: 12px; padding: 4px 10px; border-radius: 4px; }
-.badge-info { background: #F2F6FF; color: #2943C3; }
-.badge-success { background: #E8FFEA; color: #009A29; }
-.badge-warning { background: #FFF7E8; color: #D25F00; }
-.badge-error { background: #fef2f2; color: #dc2626; }
-.badge-neutral { background: #f3f4f6; color: #666666; }
+.radius-card span { font-family: 'Open Sans'; font-weight: 600; font-size: 13px; }
+.radius-card code { font-family: 'JetBrains Mono'; font-size: 11px; color: #78716C; }
+.ts-list { display: flex; flex-direction: column; gap: 12px; }
+.ts-row { display: grid; grid-template-columns: 220px 1fr; gap: 24px; padding: 12px 0; border-bottom: 1px solid #EFEEEC; align-items: baseline; }
+.ts-meta { display: flex; flex-direction: column; gap: 4px; }
+.ts-name { font-family: 'JetBrains Mono'; font-size: 12px; font-weight: 600; color: #1C1917; }
+.ts-rule { font-family: 'JetBrains Mono'; font-size: 10px; color: #78716C; }
+.row { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; }
+.btn { font-family: 'Open Sans'; font-weight: 500; font-size: 14px; padding: 8px 16px; border-radius: 8px; border: 1px solid transparent; cursor: pointer; transition: all 120ms ease; }
+.btn-primary { background: #2849E8; color: #FFFFFF; }
+.btn-primary:hover { background: #2138D4; }
+.btn-secondary { background: #FFFFFF; color: #1C1917; border-color: #D6D3D1; }
+.btn-secondary:hover { background: #FAFAF9; }
+.btn-ghost { background: transparent; color: #44403C; }
+.btn-ghost:hover { background: #F5F5F4; }
+.btn-danger { background: #DC2626; color: #FFFFFF; }
+.btn-danger:hover { background: #B91C1C; }
+.badge { font-family: 'Open Sans'; font-size: 12px; padding: 3px 8px; border-radius: 4px; font-weight: 500; }
+.badge-info { background: #EFF4FF; color: #2138D4; }
+.badge-success { background: #F0FDF4; color: #15803D; }
+.badge-warning { background: #FFF7ED; color: #C2410C; }
+.badge-danger { background: #FEF2F2; color: #B91C1C; }
+.badge-neutral { background: #F5F5F4; color: #44403C; }
+.card { background: #FFFFFF; border: 1px solid #E7E5E4; border-radius: 12px; padding: 20px; max-width: 480px; }
+.overline { font-family: 'JetBrains Mono'; font-size: 11px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: #78716C; margin: 0 0 8px; }
 </style>
 </head>
 <body>
 <div class="app">
   <header class="brand">
-    <h1>Teacher Score · Design System</h1>
-    <span class="sub">基于 Slidepilot V1 · 自动从 token.json 生成</span>
+    <h1>Design System · 教师批改</h1>
+    <span class="sub">v1 · generated from apps/web/src/styles/tokens/*.ts</span>
   </header>
+
+  <div class="intro">
+    <h2>两层架构</h2>
+    <p><strong>Base tokens</strong>（<code>base.ts</code>）—— 原料：色阶、字体、字号、间距、圆角等。业务代码<strong>不</strong>直接使用。</p>
+    <p><strong>Semantic tokens</strong>（<code>semantic.ts</code>）—— 语义化命名：<code>bg.canvas</code>、<code>fg.default</code>、<code>interactive.primary.bg</code>。<strong>所有组件 / 页面只用这一层</strong>。切换 light/dark 主题只需重新映射这一层，业务代码零修改。</p>
+    <p><strong>Text styles</strong>（<code>text-styles.ts</code>）—— 命名组合样式：<code>display.lg</code>、<code>body.md</code>、<code>overline</code>。JSX 里 <code>&lt;Text textStyle="body.md"&gt;</code> 直接引用。</p>
+    <p style="margin-top:16px">改 token 后跑 <code>pnpm tokens:build</code> 重新生成 CSS 变量和这份文档。</p>
+  </div>
 
   <nav class="toc">
     <a href="#semantic">语义化 tokens</a>
-    <a href="#colors">颜色色阶</a>
-    <a href="#type">字体</a>
-    <a href="#sizing">间距与圆角</a>
+    <a href="#text-styles">textStyles</a>
     <a href="#components">组件样例</a>
+    <a href="#scales">色阶（base）</a>
+    <a href="#sizing">间距 / 圆角 / 边框</a>
   </nav>
 
-  <h2 id="semantic" style="font-family:'Source Serif 4';font-weight:600;font-size:28px;margin:0 0 24px;border-bottom:1px solid #e5e5e5;padding-bottom:12px">语义化 tokens — 业务代码里应该用这些</h2>
-  <section class="block">
-      <h3>bg</h3>
-      <table><tr><td><code>bg.base</code></td><td><span class="chip" style="background:#ffffff"></span></td><td><code>#ffffff</code></td></tr><tr><td><code>bg.page</code></td><td><span class="chip" style="background:#F7F6F2"></span></td><td><code>#F7F6F2</code></td></tr><tr><td><code>bg.secondary</code></td><td><span class="chip" style="background:#F7F9FF"></span></td><td><code>#F7F9FF</code></td></tr><tr><td><code>bg.altSubtle</code></td><td><span class="chip" style="background:#F7F6F2"></span></td><td><code>#F7F6F2</code></td></tr><tr><td><code>bg.subtle</code></td><td><span class="chip" style="background:#f3f4f6"></span></td><td><code>#f3f4f6</code></td></tr><tr><td><code>bg.muted</code></td><td><span class="chip" style="background:#e8e9eb"></span></td><td><code>#e8e9eb</code></td></tr><tr><td><code>bg.altEmphasized</code></td><td><span class="chip" style="background:#DEDFE0"></span></td><td><code>#DEDFE0</code></td></tr><tr><td><code>bg.emphasized</code></td><td><span class="chip" style="background:#d8d8d8"></span></td><td><code>#d8d8d8</code></td></tr><tr><td><code>bg.inverted</code></td><td><span class="chip" style="background:#141413"></span></td><td><code>#141413</code></td></tr><tr><td><code>bg.panel</code></td><td><span class="chip" style="background:#ffffff"></span></td><td><code>#ffffff</code></td></tr><tr><td><code>bg.error</code></td><td><span class="chip" style="background:#fef2f2"></span></td><td><code>#fef2f2</code></td></tr><tr><td><code>bg.warning</code></td><td><span class="chip" style="background:#FFF7E8"></span></td><td><code>#FFF7E8</code></td></tr><tr><td><code>bg.success</code></td><td><span class="chip" style="background:#E8FFEA"></span></td><td><code>#E8FFEA</code></td></tr><tr><td><code>bg.info</code></td><td><span class="chip" style="background:#F2F6FF"></span></td><td><code>#F2F6FF</code></td></tr><tr><td><code>bg.editor</code></td><td><span class="chip" style="background:#f2f4f7"></span></td><td><code>#f2f4f7</code></td></tr><tr><td><code>bg.badge</code></td><td><span class="chip" style="background:#331b00"></span></td><td><code>#331b00</code></td></tr></table>
-    </section><section class="block">
-      <h3>text</h3>
-      <table><tr><td><code>text.fg</code></td><td><span class="chip" style="background:#141413"></span></td><td><code>#141413</code></td></tr><tr><td><code>text.fgMuted</code></td><td><span class="chip" style="background:#333333"></span></td><td><code>#333333</code></td></tr><tr><td><code>text.fgSubtle</code></td><td><span class="chip" style="background:#666666"></span></td><td><code>#666666</code></td></tr><tr><td><code>text.fgSubtext</code></td><td><span class="chip" style="background:#999999"></span></td><td><code>#999999</code></td></tr><tr><td><code>text.fgInverted</code></td><td><span class="chip" style="background:#ffffff"></span></td><td><code>#ffffff</code></td></tr><tr><td><code>text.fgError</code></td><td><span class="chip" style="background:#dc2626"></span></td><td><code>#dc2626</code></td></tr><tr><td><code>text.fgWarning</code></td><td><span class="chip" style="background:#D25F00"></span></td><td><code>#D25F00</code></td></tr><tr><td><code>text.fgSuccess</code></td><td><span class="chip" style="background:#009A29"></span></td><td><code>#009A29</code></td></tr><tr><td><code>text.fgInfo</code></td><td><span class="chip" style="background:#2943C3"></span></td><td><code>#2943C3</code></td></tr></table>
-    </section><section class="block">
-      <h3>border</h3>
-      <table><tr><td><code>border.base</code></td><td><span class="chip" style="background:#e5e5e5"></span></td><td><code>#e5e5e5</code></td></tr><tr><td><code>border.subtle</code></td><td><span class="chip" style="background:#f3f4f6"></span></td><td><code>#f3f4f6</code></td></tr><tr><td><code>border.muted</code></td><td><span class="chip" style="background:#ebebeb"></span></td><td><code>#ebebeb</code></td></tr><tr><td><code>border.emphasized</code></td><td><span class="chip" style="background:#d8d8d8"></span></td><td><code>#d8d8d8</code></td></tr><tr><td><code>border.hover</code></td><td><span class="chip" style="background:#bfbfbf"></span></td><td><code>#bfbfbf</code></td></tr><tr><td><code>border.inverted</code></td><td><span class="chip" style="background:#4d4d4d"></span></td><td><code>#4d4d4d</code></td></tr><tr><td><code>border.error</code></td><td><span class="chip" style="background:#dc2626"></span></td><td><code>#dc2626</code></td></tr><tr><td><code>border.warning</code></td><td><span class="chip" style="background:#D25F00"></span></td><td><code>#D25F00</code></td></tr><tr><td><code>border.success</code></td><td><span class="chip" style="background:#009A29"></span></td><td><code>#009A29</code></td></tr><tr><td><code>border.info</code></td><td><span class="chip" style="background:#2943C3"></span></td><td><code>#2943C3</code></td></tr></table>
-    </section><section class="block">
-      <h3>blue</h3>
-      <table><tr><td><code>blue.contrast</code></td><td><span class="chip" style="background:#ffffff"></span></td><td><code>#ffffff</code></td></tr><tr><td><code>blue.fg</code></td><td><span class="chip" style="background:#2943C3"></span></td><td><code>#2943C3</code></td></tr><tr><td><code>blue.subtle</code></td><td><span class="chip" style="background:#F2F6FF"></span></td><td><code>#F2F6FF</code></td></tr><tr><td><code>blue.muted</code></td><td><span class="chip" style="background:#E8F0FF"></span></td><td><code>#E8F0FF</code></td></tr><tr><td><code>blue.emphasized</code></td><td><span class="chip" style="background:#C5D7FB"></span></td><td><code>#C5D7FB</code></td></tr><tr><td><code>blue.solid</code></td><td><span class="chip" style="background:#4263EB"></span></td><td><code>#4263EB</code></td></tr><tr><td><code>blue.focusRing</code></td><td><span class="chip" style="background:#81A0F3"></span></td><td><code>#81A0F3</code></td></tr></table>
-    </section><section class="block">
-      <h3>red</h3>
-      <table><tr><td><code>red.contrast</code></td><td><span class="chip" style="background:#ffffff"></span></td><td><code>#ffffff</code></td></tr><tr><td><code>red.fg</code></td><td><span class="chip" style="background:#dc2626"></span></td><td><code>#dc2626</code></td></tr><tr><td><code>red.subtle</code></td><td><span class="chip" style="background:#fef2f2"></span></td><td><code>#fef2f2</code></td></tr><tr><td><code>red.muted</code></td><td><span class="chip" style="background:#fee2e2"></span></td><td><code>#fee2e2</code></td></tr><tr><td><code>red.emphasized</code></td><td><span class="chip" style="background:#fecaca"></span></td><td><code>#fecaca</code></td></tr><tr><td><code>red.solid</code></td><td><span class="chip" style="background:#dc2626"></span></td><td><code>#dc2626</code></td></tr><tr><td><code>red.focusRing</code></td><td><span class="chip" style="background:#f87171"></span></td><td><code>#f87171</code></td></tr></table>
-    </section><section class="block">
-      <h3>green</h3>
-      <table><tr><td><code>green.contrast</code></td><td><span class="chip" style="background:#ffffff"></span></td><td><code>#ffffff</code></td></tr><tr><td><code>green.fg</code></td><td><span class="chip" style="background:#009A29"></span></td><td><code>#009A29</code></td></tr><tr><td><code>green.subtle</code></td><td><span class="chip" style="background:#E8FFEA"></span></td><td><code>#E8FFEA</code></td></tr><tr><td><code>green.muted</code></td><td><span class="chip" style="background:#CCF0CF"></span></td><td><code>#CCF0CF</code></td></tr><tr><td><code>green.emphasized</code></td><td><span class="chip" style="background:#AFF0B5"></span></td><td><code>#AFF0B5</code></td></tr><tr><td><code>green.solid</code></td><td><span class="chip" style="background:#00B42A"></span></td><td><code>#00B42A</code></td></tr><tr><td><code>green.focusRing</code></td><td><span class="chip" style="background:#4CD263"></span></td><td><code>#4CD263</code></td></tr></table>
-    </section><section class="block">
-      <h3>orange</h3>
-      <table><tr><td><code>orange.contrast</code></td><td><span class="chip" style="background:#ffffff"></span></td><td><code>#ffffff</code></td></tr><tr><td><code>orange.fg</code></td><td><span class="chip" style="background:#D25F00"></span></td><td><code>#D25F00</code></td></tr><tr><td><code>orange.subtle</code></td><td><span class="chip" style="background:#FFF7E8"></span></td><td><code>#FFF7E8</code></td></tr><tr><td><code>orange.muted</code></td><td><span class="chip" style="background:#FFF0D9"></span></td><td><code>#FFF0D9</code></td></tr><tr><td><code>orange.emphasized</code></td><td><span class="chip" style="background:#FFE4BA"></span></td><td><code>#FFE4BA</code></td></tr><tr><td><code>orange.solid</code></td><td><span class="chip" style="background:#FF7D00"></span></td><td><code>#FF7D00</code></td></tr><tr><td><code>orange.focusRing</code></td><td><span class="chip" style="background:#FFB65D"></span></td><td><code>#FFB65D</code></td></tr></table>
-    </section><section class="block">
-      <h3>yellow</h3>
-      <table><tr><td><code>yellow.contrast</code></td><td><span class="chip" style="background:#000000"></span></td><td><code>#000000</code></td></tr><tr><td><code>yellow.fg</code></td><td><span class="chip" style="background:#835b0b"></span></td><td><code>#835b0b</code></td></tr><tr><td><code>yellow.subtle</code></td><td><span class="chip" style="background:#fff4c8"></span></td><td><code>#fff4c8</code></td></tr><tr><td><code>yellow.muted</code></td><td><span class="chip" style="background:#ffeba8"></span></td><td><code>#ffeba8</code></td></tr><tr><td><code>yellow.emphasized</code></td><td><span class="chip" style="background:#ffdf87"></span></td><td><code>#ffdf87</code></td></tr><tr><td><code>yellow.solid</code></td><td><span class="chip" style="background:#ffdf87"></span></td><td><code>#ffdf87</code></td></tr><tr><td><code>yellow.focusRing</code></td><td><span class="chip" style="background:#ffd470"></span></td><td><code>#ffd470</code></td></tr></table>
-    </section><section class="block">
-      <h3>purple</h3>
-      <table><tr><td><code>purple.contrast</code></td><td><span class="chip" style="background:#ffffff"></span></td><td><code>#ffffff</code></td></tr><tr><td><code>purple.fg</code></td><td><span class="chip" style="background:#641ba3"></span></td><td><code>#641ba3</code></td></tr><tr><td><code>purple.subtle</code></td><td><span class="chip" style="background:#f3e8ff"></span></td><td><code>#f3e8ff</code></td></tr><tr><td><code>purple.muted</code></td><td><span class="chip" style="background:#e9d5ff"></span></td><td><code>#e9d5ff</code></td></tr><tr><td><code>purple.emphasized</code></td><td><span class="chip" style="background:#d8b4fe"></span></td><td><code>#d8b4fe</code></td></tr><tr><td><code>purple.solid</code></td><td><span class="chip" style="background:#9333ea"></span></td><td><code>#9333ea</code></td></tr><tr><td><code>purple.focusRing</code></td><td><span class="chip" style="background:#c084fc"></span></td><td><code>#c084fc</code></td></tr></table>
-    </section><section class="block">
-      <h3>pink</h3>
-      <table><tr><td><code>pink.contrast</code></td><td><span class="chip" style="background:#ffffff"></span></td><td><code>#ffffff</code></td></tr><tr><td><code>pink.fg</code></td><td><span class="chip" style="background:#a41752"></span></td><td><code>#a41752</code></td></tr><tr><td><code>pink.subtle</code></td><td><span class="chip" style="background:#fce7f3"></span></td><td><code>#fce7f3</code></td></tr><tr><td><code>pink.muted</code></td><td><span class="chip" style="background:#fbcfe8"></span></td><td><code>#fbcfe8</code></td></tr><tr><td><code>pink.emphasized</code></td><td><span class="chip" style="background:#f9a8d4"></span></td><td><code>#f9a8d4</code></td></tr><tr><td><code>pink.solid</code></td><td><span class="chip" style="background:#db2777"></span></td><td><code>#db2777</code></td></tr><tr><td><code>pink.focusRing</code></td><td><span class="chip" style="background:#f472b6"></span></td><td><code>#f472b6</code></td></tr></table>
-    </section><section class="block">
-      <h3>cyan</h3>
-      <table><tr><td><code>cyan.contrast</code></td><td><span class="chip" style="background:#ffffff"></span></td><td><code>#ffffff</code></td></tr><tr><td><code>cyan.fg</code></td><td><span class="chip" style="background:#0c5c72"></span></td><td><code>#0c5c72</code></td></tr><tr><td><code>cyan.subtle</code></td><td><span class="chip" style="background:#cffafe"></span></td><td><code>#cffafe</code></td></tr><tr><td><code>cyan.muted</code></td><td><span class="chip" style="background:#a5f3fc"></span></td><td><code>#a5f3fc</code></td></tr><tr><td><code>cyan.emphasized</code></td><td><span class="chip" style="background:#67e8f9"></span></td><td><code>#67e8f9</code></td></tr><tr><td><code>cyan.solid</code></td><td><span class="chip" style="background:#0891b2"></span></td><td><code>#0891b2</code></td></tr><tr><td><code>cyan.focusRing</code></td><td><span class="chip" style="background:#22d3ee"></span></td><td><code>#22d3ee</code></td></tr></table>
-    </section><section class="block">
-      <h3>teal</h3>
-      <table><tr><td><code>teal.contrast</code></td><td><span class="chip" style="background:#ffffff"></span></td><td><code>#ffffff</code></td></tr><tr><td><code>teal.fg</code></td><td><span class="chip" style="background:#0c5d56"></span></td><td><code>#0c5d56</code></td></tr><tr><td><code>teal.subtle</code></td><td><span class="chip" style="background:#ccfbf1"></span></td><td><code>#ccfbf1</code></td></tr><tr><td><code>teal.muted</code></td><td><span class="chip" style="background:#99f6e4"></span></td><td><code>#99f6e4</code></td></tr><tr><td><code>teal.emphasized</code></td><td><span class="chip" style="background:#5eead4"></span></td><td><code>#5eead4</code></td></tr><tr><td><code>teal.solid</code></td><td><span class="chip" style="background:#0d9488"></span></td><td><code>#0d9488</code></td></tr><tr><td><code>teal.focusRing</code></td><td><span class="chip" style="background:#2dd4bf"></span></td><td><code>#2dd4bf</code></td></tr></table>
-    </section>
+  <h2 id="semantic" class="section">语义化 tokens —— 业务代码用这些</h2>
+  <section class="block"><h3>bg</h3><table><tr>
+        <td><code class="token-name">bg.canvas</code></td>
+        <td><span class="chip" style="background:#FAFAF9"></span></td>
+        <td><code class="hex">#FAFAF9</code></td>
+      </tr><tr>
+        <td><code class="token-name">bg.surface</code></td>
+        <td><span class="chip" style="background:#FFFFFF"></span></td>
+        <td><code class="hex">#FFFFFF</code></td>
+      </tr><tr>
+        <td><code class="token-name">bg.surfaceSubtle</code></td>
+        <td><span class="chip" style="background:#FAFAF9"></span></td>
+        <td><code class="hex">#FAFAF9</code></td>
+      </tr><tr>
+        <td><code class="token-name">bg.surfaceHover</code></td>
+        <td><span class="chip" style="background:#F5F5F4"></span></td>
+        <td><code class="hex">#F5F5F4</code></td>
+      </tr><tr>
+        <td><code class="token-name">bg.muted</code></td>
+        <td><span class="chip" style="background:#F5F5F4"></span></td>
+        <td><code class="hex">#F5F5F4</code></td>
+      </tr><tr>
+        <td><code class="token-name">bg.inverse</code></td>
+        <td><span class="chip" style="background:#1C1917"></span></td>
+        <td><code class="hex">#1C1917</code></td>
+      </tr><tr>
+        <td><code class="token-name">bg.overlay</code></td>
+        <td><span class="chip" style="background:rgba(0,0,0,0.36)"></span></td>
+        <td><code class="hex">rgba(0,0,0,0.36)</code></td>
+      </tr><tr>
+        <td><code class="token-name">bg.brand</code></td>
+        <td><span class="chip" style="background:#2849E8"></span></td>
+        <td><code class="hex">#2849E8</code></td>
+      </tr><tr>
+        <td><code class="token-name">bg.brandSubtle</code></td>
+        <td><span class="chip" style="background:#EFF4FF"></span></td>
+        <td><code class="hex">#EFF4FF</code></td>
+      </tr><tr>
+        <td><code class="token-name">bg.brandMuted</code></td>
+        <td><span class="chip" style="background:#DBE7FE"></span></td>
+        <td><code class="hex">#DBE7FE</code></td>
+      </tr></table></section>
+  <section class="block"><h3>fg</h3><table><tr>
+        <td><code class="token-name">fg.default</code></td>
+        <td><span class="chip" style="background:#1C1917"></span></td>
+        <td><code class="hex">#1C1917</code></td>
+      </tr><tr>
+        <td><code class="token-name">fg.muted</code></td>
+        <td><span class="chip" style="background:#44403C"></span></td>
+        <td><code class="hex">#44403C</code></td>
+      </tr><tr>
+        <td><code class="token-name">fg.subtle</code></td>
+        <td><span class="chip" style="background:#78716C"></span></td>
+        <td><code class="hex">#78716C</code></td>
+      </tr><tr>
+        <td><code class="token-name">fg.disabled</code></td>
+        <td><span class="chip" style="background:#A8A29E"></span></td>
+        <td><code class="hex">#A8A29E</code></td>
+      </tr><tr>
+        <td><code class="token-name">fg.inverse</code></td>
+        <td><span class="chip" style="background:#FFFFFF"></span></td>
+        <td><code class="hex">#FFFFFF</code></td>
+      </tr><tr>
+        <td><code class="token-name">fg.onBrand</code></td>
+        <td><span class="chip" style="background:#FFFFFF"></span></td>
+        <td><code class="hex">#FFFFFF</code></td>
+      </tr><tr>
+        <td><code class="token-name">fg.brand</code></td>
+        <td><span class="chip" style="background:#2138D4"></span></td>
+        <td><code class="hex">#2138D4</code></td>
+      </tr><tr>
+        <td><code class="token-name">fg.link</code></td>
+        <td><span class="chip" style="background:#2849E8"></span></td>
+        <td><code class="hex">#2849E8</code></td>
+      </tr><tr>
+        <td><code class="token-name">fg.linkHover</code></td>
+        <td><span class="chip" style="background:#2138D4"></span></td>
+        <td><code class="hex">#2138D4</code></td>
+      </tr></table></section>
+  <section class="block"><h3>border</h3><table><tr>
+        <td><code class="token-name">border.default</code></td>
+        <td><span class="chip" style="background:#E7E5E4"></span></td>
+        <td><code class="hex">#E7E5E4</code></td>
+      </tr><tr>
+        <td><code class="token-name">border.subtle</code></td>
+        <td><span class="chip" style="background:#EFEEEC"></span></td>
+        <td><code class="hex">#EFEEEC</code></td>
+      </tr><tr>
+        <td><code class="token-name">border.strong</code></td>
+        <td><span class="chip" style="background:#D6D3D1"></span></td>
+        <td><code class="hex">#D6D3D1</code></td>
+      </tr><tr>
+        <td><code class="token-name">border.focus</code></td>
+        <td><span class="chip" style="background:#3D66F5"></span></td>
+        <td><code class="hex">#3D66F5</code></td>
+      </tr><tr>
+        <td><code class="token-name">border.brand</code></td>
+        <td><span class="chip" style="background:#2849E8"></span></td>
+        <td><code class="hex">#2849E8</code></td>
+      </tr></table></section>
+  <section class="block"><h3>interactive</h3><table><tr>
+          <td><code class="token-name">interactive.primary.bg</code></td>
+          <td><span class="chip" style="background:#2849E8"></span></td>
+          <td><code class="hex">#2849E8</code></td>
+        </tr><tr>
+          <td><code class="token-name">interactive.primary.bgHover</code></td>
+          <td><span class="chip" style="background:#2138D4"></span></td>
+          <td><code class="hex">#2138D4</code></td>
+        </tr><tr>
+          <td><code class="token-name">interactive.primary.bgActive</code></td>
+          <td><span class="chip" style="background:#2030AB"></span></td>
+          <td><code class="hex">#2030AB</code></td>
+        </tr><tr>
+          <td><code class="token-name">interactive.primary.fg</code></td>
+          <td><span class="chip" style="background:#FFFFFF"></span></td>
+          <td><code class="hex">#FFFFFF</code></td>
+        </tr><tr>
+          <td><code class="token-name">interactive.primary.border</code></td>
+          <td><span class="chip" style="background:#2849E8"></span></td>
+          <td><code class="hex">#2849E8</code></td>
+        </tr><tr>
+          <td><code class="token-name">interactive.secondary.bg</code></td>
+          <td><span class="chip" style="background:#FFFFFF"></span></td>
+          <td><code class="hex">#FFFFFF</code></td>
+        </tr><tr>
+          <td><code class="token-name">interactive.secondary.bgHover</code></td>
+          <td><span class="chip" style="background:#FAFAF9"></span></td>
+          <td><code class="hex">#FAFAF9</code></td>
+        </tr><tr>
+          <td><code class="token-name">interactive.secondary.bgActive</code></td>
+          <td><span class="chip" style="background:#F5F5F4"></span></td>
+          <td><code class="hex">#F5F5F4</code></td>
+        </tr><tr>
+          <td><code class="token-name">interactive.secondary.fg</code></td>
+          <td><span class="chip" style="background:#1C1917"></span></td>
+          <td><code class="hex">#1C1917</code></td>
+        </tr><tr>
+          <td><code class="token-name">interactive.secondary.border</code></td>
+          <td><span class="chip" style="background:#D6D3D1"></span></td>
+          <td><code class="hex">#D6D3D1</code></td>
+        </tr><tr>
+          <td><code class="token-name">interactive.ghost.bg</code></td>
+          <td><span class="chip" style="background:transparent"></span></td>
+          <td><code class="hex">transparent</code></td>
+        </tr><tr>
+          <td><code class="token-name">interactive.ghost.bgHover</code></td>
+          <td><span class="chip" style="background:#F5F5F4"></span></td>
+          <td><code class="hex">#F5F5F4</code></td>
+        </tr><tr>
+          <td><code class="token-name">interactive.ghost.bgActive</code></td>
+          <td><span class="chip" style="background:#E7E5E4"></span></td>
+          <td><code class="hex">#E7E5E4</code></td>
+        </tr><tr>
+          <td><code class="token-name">interactive.ghost.fg</code></td>
+          <td><span class="chip" style="background:#44403C"></span></td>
+          <td><code class="hex">#44403C</code></td>
+        </tr><tr>
+          <td><code class="token-name">interactive.ghost.border</code></td>
+          <td><span class="chip" style="background:transparent"></span></td>
+          <td><code class="hex">transparent</code></td>
+        </tr><tr>
+          <td><code class="token-name">interactive.danger.bg</code></td>
+          <td><span class="chip" style="background:#DC2626"></span></td>
+          <td><code class="hex">#DC2626</code></td>
+        </tr><tr>
+          <td><code class="token-name">interactive.danger.bgHover</code></td>
+          <td><span class="chip" style="background:#B91C1C"></span></td>
+          <td><code class="hex">#B91C1C</code></td>
+        </tr><tr>
+          <td><code class="token-name">interactive.danger.bgActive</code></td>
+          <td><span class="chip" style="background:#991B1B"></span></td>
+          <td><code class="hex">#991B1B</code></td>
+        </tr><tr>
+          <td><code class="token-name">interactive.danger.fg</code></td>
+          <td><span class="chip" style="background:#FFFFFF"></span></td>
+          <td><code class="hex">#FFFFFF</code></td>
+        </tr><tr>
+          <td><code class="token-name">interactive.danger.border</code></td>
+          <td><span class="chip" style="background:#DC2626"></span></td>
+          <td><code class="hex">#DC2626</code></td>
+        </tr></table></section>
+  <section class="block"><h3>status</h3><table><tr>
+          <td><code class="token-name">status.info.bg</code></td>
+          <td><span class="chip" style="background:#EFF4FF"></span></td>
+          <td><code class="hex">#EFF4FF</code></td>
+        </tr><tr>
+          <td><code class="token-name">status.info.fg</code></td>
+          <td><span class="chip" style="background:#2138D4"></span></td>
+          <td><code class="hex">#2138D4</code></td>
+        </tr><tr>
+          <td><code class="token-name">status.info.border</code></td>
+          <td><span class="chip" style="background:#BFD3FE"></span></td>
+          <td><code class="hex">#BFD3FE</code></td>
+        </tr><tr>
+          <td><code class="token-name">status.info.solid</code></td>
+          <td><span class="chip" style="background:#2849E8"></span></td>
+          <td><code class="hex">#2849E8</code></td>
+        </tr><tr>
+          <td><code class="token-name">status.success.bg</code></td>
+          <td><span class="chip" style="background:#F0FDF4"></span></td>
+          <td><code class="hex">#F0FDF4</code></td>
+        </tr><tr>
+          <td><code class="token-name">status.success.fg</code></td>
+          <td><span class="chip" style="background:#15803D"></span></td>
+          <td><code class="hex">#15803D</code></td>
+        </tr><tr>
+          <td><code class="token-name">status.success.border</code></td>
+          <td><span class="chip" style="background:#BBF7D0"></span></td>
+          <td><code class="hex">#BBF7D0</code></td>
+        </tr><tr>
+          <td><code class="token-name">status.success.solid</code></td>
+          <td><span class="chip" style="background:#16A34A"></span></td>
+          <td><code class="hex">#16A34A</code></td>
+        </tr><tr>
+          <td><code class="token-name">status.warning.bg</code></td>
+          <td><span class="chip" style="background:#FFF7ED"></span></td>
+          <td><code class="hex">#FFF7ED</code></td>
+        </tr><tr>
+          <td><code class="token-name">status.warning.fg</code></td>
+          <td><span class="chip" style="background:#C2410C"></span></td>
+          <td><code class="hex">#C2410C</code></td>
+        </tr><tr>
+          <td><code class="token-name">status.warning.border</code></td>
+          <td><span class="chip" style="background:#FED7AA"></span></td>
+          <td><code class="hex">#FED7AA</code></td>
+        </tr><tr>
+          <td><code class="token-name">status.warning.solid</code></td>
+          <td><span class="chip" style="background:#EA580C"></span></td>
+          <td><code class="hex">#EA580C</code></td>
+        </tr><tr>
+          <td><code class="token-name">status.danger.bg</code></td>
+          <td><span class="chip" style="background:#FEF2F2"></span></td>
+          <td><code class="hex">#FEF2F2</code></td>
+        </tr><tr>
+          <td><code class="token-name">status.danger.fg</code></td>
+          <td><span class="chip" style="background:#B91C1C"></span></td>
+          <td><code class="hex">#B91C1C</code></td>
+        </tr><tr>
+          <td><code class="token-name">status.danger.border</code></td>
+          <td><span class="chip" style="background:#FECACA"></span></td>
+          <td><code class="hex">#FECACA</code></td>
+        </tr><tr>
+          <td><code class="token-name">status.danger.solid</code></td>
+          <td><span class="chip" style="background:#DC2626"></span></td>
+          <td><code class="hex">#DC2626</code></td>
+        </tr><tr>
+          <td><code class="token-name">status.neutral.bg</code></td>
+          <td><span class="chip" style="background:#F5F5F4"></span></td>
+          <td><code class="hex">#F5F5F4</code></td>
+        </tr><tr>
+          <td><code class="token-name">status.neutral.fg</code></td>
+          <td><span class="chip" style="background:#44403C"></span></td>
+          <td><code class="hex">#44403C</code></td>
+        </tr><tr>
+          <td><code class="token-name">status.neutral.border</code></td>
+          <td><span class="chip" style="background:#E7E5E4"></span></td>
+          <td><code class="hex">#E7E5E4</code></td>
+        </tr><tr>
+          <td><code class="token-name">status.neutral.solid</code></td>
+          <td><span class="chip" style="background:#57534E"></span></td>
+          <td><code class="hex">#57534E</code></td>
+        </tr></table></section>
 
-  <h2 id="colors" style="font-family:'Source Serif 4';font-weight:600;font-size:28px;margin:64px 0 24px;border-bottom:1px solid #e5e5e5;padding-bottom:12px">全局色阶</h2>
+  <h2 id="text-styles" class="section">textStyles</h2>
   <section class="block">
-      <h3>gray</h3>
-      <div class="scale"><div class="sw" style="background:#fafafa;color:#000"><span>50</span><code>#fafafa</code></div><div class="sw" style="background:#f7f8fa;color:#000"><span>60</span><code>#f7f8fa</code></div><div class="sw" style="background:#f2f4f7;color:#000"><span>70</span><code>#f2f4f7</code></div><div class="sw" style="background:#f3f4f6;color:#000"><span>100</span><code>#f3f4f6</code></div><div class="sw" style="background:#f0f0f0;color:#000"><span>120</span><code>#f0f0f0</code></div><div class="sw" style="background:#ebebeb;color:#000"><span>150</span><code>#ebebeb</code></div><div class="sw" style="background:#e8e9eb;color:#000"><span>170</span><code>#e8e9eb</code></div><div class="sw" style="background:#e5e5e5;color:#000"><span>200</span><code>#e5e5e5</code></div><div class="sw" style="background:#e3e4e5;color:#000"><span>220</span><code>#e3e4e5</code></div><div class="sw" style="background:#DEDFE0;color:#000"><span>240</span><code>#DEDFE0</code></div><div class="sw" style="background:#d8d8d8;color:#000"><span>300</span><code>#d8d8d8</code></div><div class="sw" style="background:#cccccc;color:#000"><span>350</span><code>#cccccc</code></div><div class="sw" style="background:#bfbfbf;color:#000"><span>400</span><code>#bfbfbf</code></div><div class="sw" style="background:#999999;color:#000"><span>500</span><code>#999999</code></div><div class="sw" style="background:#808080;color:#000"><span>600</span><code>#808080</code></div><div class="sw" style="background:#666666;color:#fff"><span>700</span><code>#666666</code></div><div class="sw" style="background:#3c3c4e;color:#fff"><span>780</span><code>#3c3c4e</code></div><div class="sw" style="background:#4d4d4d;color:#fff"><span>800</span><code>#4d4d4d</code></div><div class="sw" style="background:#2c2c3b;color:#fff"><span>880</span><code>#2c2c3b</code></div><div class="sw" style="background:#333333;color:#fff"><span>900</span><code>#333333</code></div><div class="sw" style="background:#191922;color:#fff"><span>950</span><code>#191922</code></div><div class="sw" style="background:#141413;color:#fff"><span>960</span><code>#141413</code></div></div>
-    </section><section class="block">
-      <h3>blue</h3>
-      <div class="scale"><div class="sw" style="background:#F7F9FF;color:#000"><span>30</span><code>#F7F9FF</code></div><div class="sw" style="background:#F2F6FF;color:#000"><span>50</span><code>#F2F6FF</code></div><div class="sw" style="background:#E8F0FF;color:#000"><span>100</span><code>#E8F0FF</code></div><div class="sw" style="background:#C5D7FB;color:#000"><span>200</span><code>#C5D7FB</code></div><div class="sw" style="background:#A3BCF7;color:#000"><span>300</span><code>#A3BCF7</code></div><div class="sw" style="background:#81A0F3;color:#000"><span>400</span><code>#81A0F3</code></div><div class="sw" style="background:#6182EF;color:#000"><span>500</span><code>#6182EF</code></div><div class="sw" style="background:#4263EB;color:#fff"><span>600</span><code>#4263EB</code></div><div class="sw" style="background:#2943C3;color:#fff"><span>700</span><code>#2943C3</code></div><div class="sw" style="background:#16289C;color:#fff"><span>800</span><code>#16289C</code></div><div class="sw" style="background:#081374;color:#fff"><span>900</span><code>#081374</code></div><div class="sw" style="background:#00054D;color:#fff"><span>950</span><code>#00054D</code></div></div>
-    </section><section class="block">
-      <h3>red</h3>
-      <div class="scale"><div class="sw" style="background:#fef2f2;color:#000"><span>50</span><code>#fef2f2</code></div><div class="sw" style="background:#fee2e2;color:#000"><span>100</span><code>#fee2e2</code></div><div class="sw" style="background:#fecaca;color:#000"><span>200</span><code>#fecaca</code></div><div class="sw" style="background:#fca5a5;color:#000"><span>300</span><code>#fca5a5</code></div><div class="sw" style="background:#f87171;color:#000"><span>400</span><code>#f87171</code></div><div class="sw" style="background:#ef4444;color:#fff"><span>500</span><code>#ef4444</code></div><div class="sw" style="background:#dc2626;color:#fff"><span>600</span><code>#dc2626</code></div><div class="sw" style="background:#991919;color:#fff"><span>700</span><code>#991919</code></div><div class="sw" style="background:#511111;color:#fff"><span>800</span><code>#511111</code></div><div class="sw" style="background:#300c0c;color:#fff"><span>900</span><code>#300c0c</code></div><div class="sw" style="background:#1f0808;color:#fff"><span>950</span><code>#1f0808</code></div></div>
-    </section><section class="block">
-      <h3>green</h3>
-      <div class="scale"><div class="sw" style="background:#E8FFEA;color:#000"><span>50</span><code>#E8FFEA</code></div><div class="sw" style="background:#CCF0CF;color:#000"><span>100</span><code>#CCF0CF</code></div><div class="sw" style="background:#AFF0B5;color:#000"><span>200</span><code>#AFF0B5</code></div><div class="sw" style="background:#7BE188;color:#000"><span>300</span><code>#7BE188</code></div><div class="sw" style="background:#4CD263;color:#000"><span>400</span><code>#4CD263</code></div><div class="sw" style="background:#23C343;color:#000"><span>500</span><code>#23C343</code></div><div class="sw" style="background:#00B42A;color:#fff"><span>600</span><code>#00B42A</code></div><div class="sw" style="background:#009A29;color:#fff"><span>700</span><code>#009A29</code></div><div class="sw" style="background:#008026;color:#fff"><span>800</span><code>#008026</code></div><div class="sw" style="background:#006622;color:#fff"><span>900</span><code>#006622</code></div><div class="sw" style="background:#004D1C;color:#fff"><span>950</span><code>#004D1C</code></div></div>
-    </section><section class="block">
-      <h3>yellow</h3>
-      <div class="scale"><div class="sw" style="background:#F7F6F2;color:#000"><span>20</span><code>#F7F6F2</code></div><div class="sw" style="background:#fffbe8;color:#000"><span>50</span><code>#fffbe8</code></div><div class="sw" style="background:#fff4c8;color:#000"><span>100</span><code>#fff4c8</code></div><div class="sw" style="background:#ffc24726;color:#000"><span>150</span><code>#ffc24726</code></div><div class="sw" style="background:#ffeba8;color:#000"><span>200</span><code>#ffeba8</code></div><div class="sw" style="background:#ffdf87;color:#000"><span>300</span><code>#ffdf87</code></div><div class="sw" style="background:#ffd470;color:#000"><span>400</span><code>#ffd470</code></div><div class="sw" style="background:#ffc247;color:#000"><span>500</span><code>#ffc247</code></div><div class="sw" style="background:#d2952c;color:#000"><span>600</span><code>#d2952c</code></div><div class="sw" style="background:#a66d17;color:#fff"><span>700</span><code>#a66d17</code></div><div class="sw" style="background:#835b0b;color:#fff"><span>800</span><code>#835b0b</code></div><div class="sw" style="background:#4d2900;color:#fff"><span>900</span><code>#4d2900</code></div><div class="sw" style="background:#331b00;color:#fff"><span>950</span><code>#331b00</code></div></div>
-    </section><section class="block">
-      <h3>orange</h3>
-      <div class="scale"><div class="sw" style="background:#FFF7E8;color:#000"><span>50</span><code>#FFF7E8</code></div><div class="sw" style="background:#FFF0D9;color:#000"><span>100</span><code>#FFF0D9</code></div><div class="sw" style="background:#FFE4BA;color:#000"><span>200</span><code>#FFE4BA</code></div><div class="sw" style="background:#FFCF8B;color:#000"><span>300</span><code>#FFCF8B</code></div><div class="sw" style="background:#FFB65D;color:#000"><span>400</span><code>#FFB65D</code></div><div class="sw" style="background:#FF9A2E;color:#000"><span>500</span><code>#FF9A2E</code></div><div class="sw" style="background:#FF7D00;color:#000"><span>600</span><code>#FF7D00</code></div><div class="sw" style="background:#D25F00;color:#fff"><span>700</span><code>#D25F00</code></div><div class="sw" style="background:#A64500;color:#fff"><span>800</span><code>#A64500</code></div><div class="sw" style="background:#792E00;color:#fff"><span>900</span><code>#792E00</code></div><div class="sw" style="background:#4D1B00;color:#fff"><span>950</span><code>#4D1B00</code></div></div>
-    </section><section class="block">
-      <h3>purple</h3>
-      <div class="scale"><div class="sw" style="background:#faf5ff;color:#000"><span>50</span><code>#faf5ff</code></div><div class="sw" style="background:#f3e8ff;color:#000"><span>100</span><code>#f3e8ff</code></div><div class="sw" style="background:#e9d5ff;color:#000"><span>200</span><code>#e9d5ff</code></div><div class="sw" style="background:#d8b4fe;color:#000"><span>300</span><code>#d8b4fe</code></div><div class="sw" style="background:#c084fc;color:#000"><span>400</span><code>#c084fc</code></div><div class="sw" style="background:#a855f7;color:#000"><span>500</span><code>#a855f7</code></div><div class="sw" style="background:#9333ea;color:#fff"><span>600</span><code>#9333ea</code></div><div class="sw" style="background:#641ba3;color:#fff"><span>700</span><code>#641ba3</code></div><div class="sw" style="background:#4a1772;color:#fff"><span>800</span><code>#4a1772</code></div><div class="sw" style="background:#2f0553;color:#fff"><span>900</span><code>#2f0553</code></div><div class="sw" style="background:#1a032e;color:#fff"><span>950</span><code>#1a032e</code></div></div>
-    </section><section class="block">
-      <h3>pink</h3>
-      <div class="scale"><div class="sw" style="background:#fdf2f8;color:#000"><span>50</span><code>#fdf2f8</code></div><div class="sw" style="background:#fce7f3;color:#000"><span>100</span><code>#fce7f3</code></div><div class="sw" style="background:#fbcfe8;color:#000"><span>200</span><code>#fbcfe8</code></div><div class="sw" style="background:#f9a8d4;color:#000"><span>300</span><code>#f9a8d4</code></div><div class="sw" style="background:#f472b6;color:#000"><span>400</span><code>#f472b6</code></div><div class="sw" style="background:#ec4899;color:#000"><span>500</span><code>#ec4899</code></div><div class="sw" style="background:#db2777;color:#fff"><span>600</span><code>#db2777</code></div><div class="sw" style="background:#a41752;color:#fff"><span>700</span><code>#a41752</code></div><div class="sw" style="background:#6d0e34;color:#fff"><span>800</span><code>#6d0e34</code></div><div class="sw" style="background:#45061f;color:#fff"><span>900</span><code>#45061f</code></div><div class="sw" style="background:#2c0514;color:#fff"><span>950</span><code>#2c0514</code></div></div>
-    </section><section class="block">
-      <h3>cyan</h3>
-      <div class="scale"><div class="sw" style="background:#ecfeff;color:#000"><span>50</span><code>#ecfeff</code></div><div class="sw" style="background:#cffafe;color:#000"><span>100</span><code>#cffafe</code></div><div class="sw" style="background:#a5f3fc;color:#000"><span>200</span><code>#a5f3fc</code></div><div class="sw" style="background:#67e8f9;color:#000"><span>300</span><code>#67e8f9</code></div><div class="sw" style="background:#22d3ee;color:#000"><span>400</span><code>#22d3ee</code></div><div class="sw" style="background:#06b6d4;color:#000"><span>500</span><code>#06b6d4</code></div><div class="sw" style="background:#0891b2;color:#fff"><span>600</span><code>#0891b2</code></div><div class="sw" style="background:#0c5c72;color:#fff"><span>700</span><code>#0c5c72</code></div><div class="sw" style="background:#134152;color:#fff"><span>800</span><code>#134152</code></div><div class="sw" style="background:#072a38;color:#fff"><span>900</span><code>#072a38</code></div><div class="sw" style="background:#051b24;color:#fff"><span>950</span><code>#051b24</code></div></div>
-    </section><section class="block">
-      <h3>teal</h3>
-      <div class="scale"><div class="sw" style="background:#f0fdfa;color:#000"><span>50</span><code>#f0fdfa</code></div><div class="sw" style="background:#ccfbf1;color:#000"><span>100</span><code>#ccfbf1</code></div><div class="sw" style="background:#99f6e4;color:#000"><span>200</span><code>#99f6e4</code></div><div class="sw" style="background:#5eead4;color:#000"><span>300</span><code>#5eead4</code></div><div class="sw" style="background:#2dd4bf;color:#000"><span>400</span><code>#2dd4bf</code></div><div class="sw" style="background:#14b8a6;color:#000"><span>500</span><code>#14b8a6</code></div><div class="sw" style="background:#0d9488;color:#fff"><span>600</span><code>#0d9488</code></div><div class="sw" style="background:#0c5d56;color:#fff"><span>700</span><code>#0c5d56</code></div><div class="sw" style="background:#114240;color:#fff"><span>800</span><code>#114240</code></div><div class="sw" style="background:#032726;color:#fff"><span>900</span><code>#032726</code></div><div class="sw" style="background:#021716;color:#fff"><span>950</span><code>#021716</code></div></div>
-    </section>
-
-  <h2 id="type" style="font-family:'Source Serif 4';font-weight:600;font-size:28px;margin:64px 0 24px;border-bottom:1px solid #e5e5e5;padding-bottom:12px">字体</h2>
-  <section class="block">
-      <h3>typography</h3>
-      <div class="spec">
-        
-          <div class="spec-row">
-            <code class="spec-name">2xs · 10px</code>
-            <div class="spec-text" style="font-size:10px">老师批改 — Teacher Score</div>
-          </div>
-        
-          <div class="spec-row">
-            <code class="spec-name">xs · 12px</code>
-            <div class="spec-text" style="font-size:12px">老师批改 — Teacher Score</div>
-          </div>
-        
-          <div class="spec-row">
-            <code class="spec-name">sm · 14px</code>
-            <div class="spec-text" style="font-size:14px">老师批改 — Teacher Score</div>
-          </div>
-        
-          <div class="spec-row">
-            <code class="spec-name">md · 16px</code>
-            <div class="spec-text" style="font-size:16px">老师批改 — Teacher Score</div>
-          </div>
-        
-          <div class="spec-row">
-            <code class="spec-name">lg · 18px</code>
-            <div class="spec-text" style="font-size:18px">老师批改 — Teacher Score</div>
-          </div>
-        
-          <div class="spec-row">
-            <code class="spec-name">xl · 20px</code>
-            <div class="spec-text" style="font-size:20px">老师批改 — Teacher Score</div>
-          </div>
-        
-          <div class="spec-row">
-            <code class="spec-name">2xl · 24px</code>
-            <div class="spec-text" style="font-size:24px">老师批改 — Teacher Score</div>
-          </div>
-        
-          <div class="spec-row">
-            <code class="spec-name">2_8xl · 28px</code>
-            <div class="spec-text" style="font-size:28px">老师批改 — Teacher Score</div>
-          </div>
-        
-          <div class="spec-row">
-            <code class="spec-name">3xl · 30px</code>
-            <div class="spec-text" style="font-size:30px">老师批改 — Teacher Score</div>
-          </div>
-        
-          <div class="spec-row">
-            <code class="spec-name">3_2xl · 32px</code>
-            <div class="spec-text" style="font-size:32px">老师批改 — Teacher Score</div>
-          </div>
-        
-          <div class="spec-row">
-            <code class="spec-name">4xl · 36px</code>
-            <div class="spec-text" style="font-size:36px">老师批改 — Teacher Score</div>
-          </div>
-        
-          <div class="spec-row">
-            <code class="spec-name">4_2xl · 40px</code>
-            <div class="spec-text" style="font-size:40px">老师批改 — Teacher Score</div>
-          </div>
-        
-          <div class="spec-row">
-            <code class="spec-name">4_8xl · 44px</code>
-            <div class="spec-text" style="font-size:44px">老师批改 — Teacher Score</div>
-          </div>
-        
-          <div class="spec-row">
-            <code class="spec-name">5xl · 48px</code>
-            <div class="spec-text" style="font-size:48px">老师批改 — Teacher Score</div>
-          </div>
-        
-          <div class="spec-row">
-            <code class="spec-name">5_8xl · 56px</code>
-            <div class="spec-text" style="font-size:56px">老师批改 — Teacher Score</div>
-          </div>
-        
-          <div class="spec-row">
-            <code class="spec-name">6xl · 60px</code>
-            <div class="spec-text" style="font-size:60px">老师批改 — Teacher Score</div>
-          </div>
-        
-          <div class="spec-row">
-            <code class="spec-name">6_2xl · 64px</code>
-            <div class="spec-text" style="font-size:64px">老师批改 — Teacher Score</div>
-          </div>
-        
-          <div class="spec-row">
-            <code class="spec-name">7xl · 72px</code>
-            <div class="spec-text" style="font-size:72px">老师批改 — Teacher Score</div>
-          </div>
-        
-          <div class="spec-row">
-            <code class="spec-name">8xl · 96px</code>
-            <div class="spec-text" style="font-size:96px">老师批改 — Teacher Score</div>
-          </div>
-        
-          <div class="spec-row">
-            <code class="spec-name">9xl · 128px</code>
-            <div class="spec-text" style="font-size:128px">老师批改 — Teacher Score</div>
-          </div>
-        
-      </div>
-      <h4 style="margin-top:32px">font families</h4>
-      <div class="spec">
-        <div class="spec-row"><code class="spec-name">heading / body — Open Sans</code><div class="spec-text" style="font-family:'Open Sans';font-size:24px">教师批改 SaaS · Teacher Score</div></div>
-        <div class="spec-row"><code class="spec-name">display — Poppins</code><div class="spec-text" style="font-family:'Poppins';font-size:24px;font-weight:600">教师批改 SaaS · Teacher Score</div></div>
-        <div class="spec-row"><code class="spec-name">serif — Source Serif 4</code><div class="spec-text" style="font-family:'Source Serif 4';font-size:24px">教师批改 SaaS · Teacher Score</div></div>
-        <div class="spec-row"><code class="spec-name">mono — Figtree</code><div class="spec-text" style="font-family:'Figtree';font-size:20px">grade_12345 · gpt-5.5</div></div>
-      </div>
-    </section>
-
-  <h2 id="sizing" style="font-family:'Source Serif 4';font-weight:600;font-size:28px;margin:64px 0 24px;border-bottom:1px solid #e5e5e5;padding-bottom:12px">间距 · 圆角 · 边框</h2>
-  <section class="block">
-      <h3>spacing</h3>
-      <table class="numbers"><tr><td><code>spacing.1</code></td><td class="num">4px</td></tr><tr><td><code>spacing.2</code></td><td class="num">8px</td></tr><tr><td><code>spacing.3</code></td><td class="num">12px</td></tr><tr><td><code>spacing.4</code></td><td class="num">16px</td></tr><tr><td><code>spacing.5</code></td><td class="num">20px</td></tr><tr><td><code>spacing.6</code></td><td class="num">24px</td></tr><tr><td><code>spacing.7</code></td><td class="num">28px</td></tr><tr><td><code>spacing.8</code></td><td class="num">32px</td></tr><tr><td><code>spacing.9</code></td><td class="num">36px</td></tr><tr><td><code>spacing.10</code></td><td class="num">40px</td></tr><tr><td><code>spacing.11</code></td><td class="num">44px</td></tr><tr><td><code>spacing.12</code></td><td class="num">48px</td></tr><tr><td><code>spacing.13</code></td><td class="num">52px</td></tr><tr><td><code>spacing.14</code></td><td class="num">56px</td></tr><tr><td><code>spacing.15</code></td><td class="num">60px</td></tr><tr><td><code>spacing.16</code></td><td class="num">64px</td></tr><tr><td><code>spacing.17</code></td><td class="num">68px</td></tr><tr><td><code>spacing.18</code></td><td class="num">72px</td></tr><tr><td><code>spacing.20</code></td><td class="num">80px</td></tr><tr><td><code>spacing.24</code></td><td class="num">96px</td></tr><tr><td><code>spacing.26</code></td><td class="num">104px</td></tr><tr><td><code>spacing.27</code></td><td class="num">108px</td></tr><tr><td><code>spacing.28</code></td><td class="num">112px</td></tr><tr><td><code>spacing.29</code></td><td class="num">116px</td></tr><tr><td><code>spacing.30</code></td><td class="num">120px</td></tr><tr><td><code>spacing.32</code></td><td class="num">128px</td></tr><tr><td><code>spacing.36</code></td><td class="num">144px</td></tr><tr><td><code>spacing.40</code></td><td class="num">160px</td></tr><tr><td><code>spacing.48</code></td><td class="num">192px</td></tr><tr><td><code>spacing.52</code></td><td class="num">208px</td></tr><tr><td><code>spacing.56</code></td><td class="num">224px</td></tr><tr><td><code>spacing.60</code></td><td class="num">240px</td></tr><tr><td><code>spacing.64</code></td><td class="num">256px</td></tr><tr><td><code>spacing.72</code></td><td class="num">288px</td></tr><tr><td><code>spacing.80</code></td><td class="num">320px</td></tr><tr><td><code>spacing.96</code></td><td class="num">384px</td></tr><tr><td><code>spacing.0_5</code></td><td class="num">2px</td></tr><tr><td><code>spacing.1_5</code></td><td class="num">6px</td></tr><tr><td><code>spacing.2_2</code></td><td class="num">9px</td></tr><tr><td><code>spacing.2_5</code></td><td class="num">10px</td></tr><tr><td><code>spacing.3_5</code></td><td class="num">14px</td></tr><tr><td><code>spacing.4_5</code></td><td class="num">18px</td></tr><tr><td><code>spacing.19_5</code></td><td class="num">78px</td></tr><tr><td><code>spacing.72_5</code></td><td class="num">290px</td></tr><tr><td><code>spacing.-24</code></td><td class="num">-96</td></tr><tr><td><code>spacing.-18</code></td><td class="num">-72</td></tr></table>
-    </section>
-  <section class="block"><h3>radii</h3><div class="radii-row"><div class="radius-card" style="border-radius:0px">
-          <span>none</span><code>0px</code>
-        </div><div class="radius-card" style="border-radius:1px">
-          <span>2xs</span><code>1px</code>
-        </div><div class="radius-card" style="border-radius:2px">
-          <span>xs</span><code>2px</code>
-        </div><div class="radius-card" style="border-radius:4px">
-          <span>sm</span><code>4px</code>
-        </div><div class="radius-card" style="border-radius:6px">
-          <span>md</span><code>6px</code>
-        </div><div class="radius-card" style="border-radius:8px">
-          <span>lg</span><code>8px</code>
-        </div><div class="radius-card" style="border-radius:10px">
-          <span>xl</span><code>10px</code>
-        </div><div class="radius-card" style="border-radius:12px">
-          <span>2xl</span><code>12px</code>
-        </div><div class="radius-card" style="border-radius:16px">
-          <span>3xl</span><code>16px</code>
-        </div><div class="radius-card" style="border-radius:20px">
-          <span>3_5xl</span><code>20px</code>
-        </div><div class="radius-card" style="border-radius:24px">
-          <span>4xl</span><code>24px</code>
-        </div><div class="radius-card" style="border-radius:32px">
-          <span>5xl</span><code>32px</code>
-        </div><div class="radius-card" style="border-radius:9999px">
-          <span>full</span><code>9999px</code>
-        </div></div></section>
-  <section class="block">
-      <h3>border widths</h3>
-      <table class="numbers"><tr><td><code>border widths.xs</code></td><td class="num">0.5px</td></tr><tr><td><code>border widths.sm</code></td><td class="num">1px</td></tr><tr><td><code>border widths.md</code></td><td class="num">2px</td></tr><tr><td><code>border widths.lg</code></td><td class="num">4px</td></tr><tr><td><code>border widths.xl</code></td><td class="num">6px</td></tr></table>
-    </section>
-
-  <h2 id="components" style="font-family:'Source Serif 4';font-weight:600;font-size:28px;margin:64px 0 24px;border-bottom:1px solid #e5e5e5;padding-bottom:12px">组件样例</h2>
-  
-    <section class="block">
-      <h3>components</h3>
-      <div class="components">
-        <div class="card">
-          <p class="eyebrow">EYEBROW · Section Label</p>
-          <h4 class="card-title">这是一个标题</h4>
-          <p class="card-body">正文使用 text.fgSubtle (#666666)。卡片用 bg.panel + border.base。</p>
-          <div style="margin-top:16px;display:flex;gap:8px">
-            <button class="btn btn-primary">主操作</button>
-            <button class="btn btn-secondary">次操作</button>
-            <button class="btn btn-ghost">幽灵按钮</button>
-          </div>
+    <h3>textStyles</h3>
+    <div class="ts-list"><div class="ts-row">
+        <div class="ts-meta">
+          <code class="ts-name">display.2xl</code>
+          <code class="ts-rule">72px · 600 · 1.15</code>
         </div>
-        <div class="status-row">
-          <span class="badge badge-info">info</span>
-          <span class="badge badge-success">success</span>
-          <span class="badge badge-warning">warning</span>
-          <span class="badge badge-error">error</span>
-          <span class="badge badge-neutral">neutral</span>
+        <div class="ts-sample" style="font-family:var(--font-display-loaded), 'Poppins', system-ui, sans-serif;font-size:72px;font-weight:600;line-height:1.15;letter-spacing:-0.04em;text-transform:none">
+          教师批改 — Teacher Score · The quick brown fox
         </div>
-      </div>
-    </section>
-  
+      </div><div class="ts-row">
+        <div class="ts-meta">
+          <code class="ts-name">display.xl</code>
+          <code class="ts-rule">60px · 600 · 1.15</code>
+        </div>
+        <div class="ts-sample" style="font-family:var(--font-display-loaded), 'Poppins', system-ui, sans-serif;font-size:60px;font-weight:600;line-height:1.15;letter-spacing:-0.04em;text-transform:none">
+          教师批改 — Teacher Score · The quick brown fox
+        </div>
+      </div><div class="ts-row">
+        <div class="ts-meta">
+          <code class="ts-name">display.lg</code>
+          <code class="ts-rule">48px · 600 · 1.15</code>
+        </div>
+        <div class="ts-sample" style="font-family:var(--font-display-loaded), 'Poppins', system-ui, sans-serif;font-size:48px;font-weight:600;line-height:1.15;letter-spacing:-0.02em;text-transform:none">
+          教师批改 — Teacher Score · The quick brown fox
+        </div>
+      </div><div class="ts-row">
+        <div class="ts-meta">
+          <code class="ts-name">display.md</code>
+          <code class="ts-rule">36px · 600 · 1.3</code>
+        </div>
+        <div class="ts-sample" style="font-family:var(--font-display-loaded), 'Poppins', system-ui, sans-serif;font-size:36px;font-weight:600;line-height:1.3;letter-spacing:-0.02em;text-transform:none">
+          教师批改 — Teacher Score · The quick brown fox
+        </div>
+      </div><div class="ts-row">
+        <div class="ts-meta">
+          <code class="ts-name">heading.xl</code>
+          <code class="ts-rule">30px · 600 · 1.3</code>
+        </div>
+        <div class="ts-sample" style="font-family:var(--font-body-loaded), 'Open Sans', system-ui, -apple-system, 'Segoe UI', 'PingFang SC', sans-serif;font-size:30px;font-weight:600;line-height:1.3;letter-spacing:-0.02em;text-transform:none">
+          教师批改 — Teacher Score · The quick brown fox
+        </div>
+      </div><div class="ts-row">
+        <div class="ts-meta">
+          <code class="ts-name">heading.lg</code>
+          <code class="ts-rule">24px · 600 · 1.3</code>
+        </div>
+        <div class="ts-sample" style="font-family:var(--font-body-loaded), 'Open Sans', system-ui, -apple-system, 'Segoe UI', 'PingFang SC', sans-serif;font-size:24px;font-weight:600;line-height:1.3;letter-spacing:0;text-transform:none">
+          教师批改 — Teacher Score · The quick brown fox
+        </div>
+      </div><div class="ts-row">
+        <div class="ts-meta">
+          <code class="ts-name">heading.md</code>
+          <code class="ts-rule">20px · 600 · 1.3</code>
+        </div>
+        <div class="ts-sample" style="font-family:var(--font-body-loaded), 'Open Sans', system-ui, -apple-system, 'Segoe UI', 'PingFang SC', sans-serif;font-size:20px;font-weight:600;line-height:1.3;letter-spacing:0;text-transform:none">
+          教师批改 — Teacher Score · The quick brown fox
+        </div>
+      </div><div class="ts-row">
+        <div class="ts-meta">
+          <code class="ts-name">heading.sm</code>
+          <code class="ts-rule">18px · 600 · 1.3</code>
+        </div>
+        <div class="ts-sample" style="font-family:var(--font-body-loaded), 'Open Sans', system-ui, -apple-system, 'Segoe UI', 'PingFang SC', sans-serif;font-size:18px;font-weight:600;line-height:1.3;letter-spacing:0;text-transform:none">
+          教师批改 — Teacher Score · The quick brown fox
+        </div>
+      </div><div class="ts-row">
+        <div class="ts-meta">
+          <code class="ts-name">heading.xs</code>
+          <code class="ts-rule">16px · 600 · 1.3</code>
+        </div>
+        <div class="ts-sample" style="font-family:var(--font-body-loaded), 'Open Sans', system-ui, -apple-system, 'Segoe UI', 'PingFang SC', sans-serif;font-size:16px;font-weight:600;line-height:1.3;letter-spacing:0;text-transform:none">
+          教师批改 — Teacher Score · The quick brown fox
+        </div>
+      </div><div class="ts-row">
+        <div class="ts-meta">
+          <code class="ts-name">title.serif.lg</code>
+          <code class="ts-rule">24px · 600 · 1.3</code>
+        </div>
+        <div class="ts-sample" style="font-family:var(--font-serif-loaded), 'Source Serif 4', Georgia, serif;font-size:24px;font-weight:600;line-height:1.3;letter-spacing:-0.02em;text-transform:none">
+          教师批改 — Teacher Score · The quick brown fox
+        </div>
+      </div><div class="ts-row">
+        <div class="ts-meta">
+          <code class="ts-name">title.serif.md</code>
+          <code class="ts-rule">20px · 600 · 1.3</code>
+        </div>
+        <div class="ts-sample" style="font-family:var(--font-serif-loaded), 'Source Serif 4', Georgia, serif;font-size:20px;font-weight:600;line-height:1.3;letter-spacing:0;text-transform:none">
+          教师批改 — Teacher Score · The quick brown fox
+        </div>
+      </div><div class="ts-row">
+        <div class="ts-meta">
+          <code class="ts-name">body.lg</code>
+          <code class="ts-rule">16px · 400 · 1.65</code>
+        </div>
+        <div class="ts-sample" style="font-family:var(--font-body-loaded), 'Open Sans', system-ui, -apple-system, 'Segoe UI', 'PingFang SC', sans-serif;font-size:16px;font-weight:400;line-height:1.65;letter-spacing:0;text-transform:none">
+          教师批改 — Teacher Score · The quick brown fox
+        </div>
+      </div><div class="ts-row">
+        <div class="ts-meta">
+          <code class="ts-name">body.md</code>
+          <code class="ts-rule">14px · 400 · 1.5</code>
+        </div>
+        <div class="ts-sample" style="font-family:var(--font-body-loaded), 'Open Sans', system-ui, -apple-system, 'Segoe UI', 'PingFang SC', sans-serif;font-size:14px;font-weight:400;line-height:1.5;letter-spacing:0;text-transform:none">
+          教师批改 — Teacher Score · The quick brown fox
+        </div>
+      </div><div class="ts-row">
+        <div class="ts-meta">
+          <code class="ts-name">body.sm</code>
+          <code class="ts-rule">13px · 400 · 1.5</code>
+        </div>
+        <div class="ts-sample" style="font-family:var(--font-body-loaded), 'Open Sans', system-ui, -apple-system, 'Segoe UI', 'PingFang SC', sans-serif;font-size:13px;font-weight:400;line-height:1.5;letter-spacing:0;text-transform:none">
+          教师批改 — Teacher Score · The quick brown fox
+        </div>
+      </div><div class="ts-row">
+        <div class="ts-meta">
+          <code class="ts-name">body.xs</code>
+          <code class="ts-rule">12px · 400 · 1.5</code>
+        </div>
+        <div class="ts-sample" style="font-family:var(--font-body-loaded), 'Open Sans', system-ui, -apple-system, 'Segoe UI', 'PingFang SC', sans-serif;font-size:12px;font-weight:400;line-height:1.5;letter-spacing:0;text-transform:none">
+          教师批改 — Teacher Score · The quick brown fox
+        </div>
+      </div><div class="ts-row">
+        <div class="ts-meta">
+          <code class="ts-name">label.lg</code>
+          <code class="ts-rule">14px · 500 · 1.3</code>
+        </div>
+        <div class="ts-sample" style="font-family:var(--font-body-loaded), 'Open Sans', system-ui, -apple-system, 'Segoe UI', 'PingFang SC', sans-serif;font-size:14px;font-weight:500;line-height:1.3;letter-spacing:0;text-transform:none">
+          教师批改 — Teacher Score · The quick brown fox
+        </div>
+      </div><div class="ts-row">
+        <div class="ts-meta">
+          <code class="ts-name">label.md</code>
+          <code class="ts-rule">13px · 500 · 1.3</code>
+        </div>
+        <div class="ts-sample" style="font-family:var(--font-body-loaded), 'Open Sans', system-ui, -apple-system, 'Segoe UI', 'PingFang SC', sans-serif;font-size:13px;font-weight:500;line-height:1.3;letter-spacing:0;text-transform:none">
+          教师批改 — Teacher Score · The quick brown fox
+        </div>
+      </div><div class="ts-row">
+        <div class="ts-meta">
+          <code class="ts-name">label.sm</code>
+          <code class="ts-rule">12px · 500 · 1.3</code>
+        </div>
+        <div class="ts-sample" style="font-family:var(--font-body-loaded), 'Open Sans', system-ui, -apple-system, 'Segoe UI', 'PingFang SC', sans-serif;font-size:12px;font-weight:500;line-height:1.3;letter-spacing:0;text-transform:none">
+          教师批改 — Teacher Score · The quick brown fox
+        </div>
+      </div><div class="ts-row">
+        <div class="ts-meta">
+          <code class="ts-name">mono.md</code>
+          <code class="ts-rule">14px · 400 · 1.3</code>
+        </div>
+        <div class="ts-sample" style="font-family:var(--font-mono-loaded), 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace;font-size:14px;font-weight:400;line-height:1.3;letter-spacing:0;text-transform:none">
+          教师批改 — Teacher Score · The quick brown fox
+        </div>
+      </div><div class="ts-row">
+        <div class="ts-meta">
+          <code class="ts-name">mono.sm</code>
+          <code class="ts-rule">13px · 400 · 1.3</code>
+        </div>
+        <div class="ts-sample" style="font-family:var(--font-mono-loaded), 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace;font-size:13px;font-weight:400;line-height:1.3;letter-spacing:0;text-transform:none">
+          教师批改 — Teacher Score · The quick brown fox
+        </div>
+      </div><div class="ts-row">
+        <div class="ts-meta">
+          <code class="ts-name">mono.xs</code>
+          <code class="ts-rule">12px · 400 · 1.3</code>
+        </div>
+        <div class="ts-sample" style="font-family:var(--font-mono-loaded), 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace;font-size:12px;font-weight:400;line-height:1.3;letter-spacing:0.02em;text-transform:none">
+          教师批改 — Teacher Score · The quick brown fox
+        </div>
+      </div><div class="ts-row">
+        <div class="ts-meta">
+          <code class="ts-name">overline</code>
+          <code class="ts-rule">12px · 600 · 1.3</code>
+        </div>
+        <div class="ts-sample" style="font-family:var(--font-mono-loaded), 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace;font-size:12px;font-weight:600;line-height:1.3;letter-spacing:0.12em;text-transform:uppercase">
+          教师批改 — Teacher Score · The quick brown fox
+        </div>
+      </div><div class="ts-row">
+        <div class="ts-meta">
+          <code class="ts-name">caption</code>
+          <code class="ts-rule">12px · 400 · 1.3</code>
+        </div>
+        <div class="ts-sample" style="font-family:var(--font-body-loaded), 'Open Sans', system-ui, -apple-system, 'Segoe UI', 'PingFang SC', sans-serif;font-size:12px;font-weight:400;line-height:1.3;letter-spacing:0;text-transform:none">
+          教师批改 — Teacher Score · The quick brown fox
+        </div>
+      </div></div>
+  </section>
 
-  <footer style="margin-top:80px;padding-top:24px;border-top:1px solid #e5e5e5;font-family:'Figtree';font-size:12px;color:#999999">
-    生成自 docs/claude/token.json · 修改 token.json 后运行 <code>pnpm tokens:build</code> 重新生成
+  <h2 id="components" class="section">组件样例</h2>
+  <section class="block">
+    <h3>components</h3>
+
+    <h4>Buttons</h4>
+    <div class="row">
+      <button class="btn btn-primary">主操作</button>
+      <button class="btn btn-secondary">次操作</button>
+      <button class="btn btn-ghost">幽灵按钮</button>
+      <button class="btn btn-danger">删除</button>
+    </div>
+
+    <h4 style="margin-top:24px">Badges</h4>
+    <div class="row">
+      <span class="badge badge-info">info</span>
+      <span class="badge badge-success">success</span>
+      <span class="badge badge-warning">warning</span>
+      <span class="badge badge-danger">danger</span>
+      <span class="badge badge-neutral">neutral</span>
+    </div>
+
+    <h4 style="margin-top:24px">Card</h4>
+    <div class="card">
+      <p class="overline">eyebrow · 卡片标签</p>
+      <h5 style="font-family:var(--font-body-loaded), 'Open Sans', system-ui, -apple-system, 'Segoe UI', 'PingFang SC', sans-serif;font-weight:600;font-size:20px;margin:0 0 8px">学生张三 · 数学</h5>
+      <p style="font-family:var(--font-body-loaded), 'Open Sans', system-ui, -apple-system, 'Segoe UI', 'PingFang SC', sans-serif;color:#44403C;margin:0 0 16px;line-height:1.65">
+        正文使用 fg.muted (#44403C)。卡片用 bg.surface + border.default。
+      </p>
+      <div class="row">
+        <button class="btn btn-primary">查看详情</button>
+        <button class="btn btn-ghost">编辑</button>
+      </div>
+    </div>
+  </section>
+
+  <h2 id="scales" class="section">色阶（base —— 给 semantic 引用，不直接用）</h2>
+  <section class="block">
+    <h3>gray</h3>
+    <div class="scale"><div class="sw" style="background:#FAFAF9;color:#000">
+        <span class="sw-name">50</span>
+        <code>#FAFAF9</code>
+      </div><div class="sw" style="background:#F5F5F4;color:#000">
+        <span class="sw-name">100</span>
+        <code>#F5F5F4</code>
+      </div><div class="sw" style="background:#EFEEEC;color:#000">
+        <span class="sw-name">150</span>
+        <code>#EFEEEC</code>
+      </div><div class="sw" style="background:#E7E5E4;color:#000">
+        <span class="sw-name">200</span>
+        <code>#E7E5E4</code>
+      </div><div class="sw" style="background:#D6D3D1;color:#000">
+        <span class="sw-name">300</span>
+        <code>#D6D3D1</code>
+      </div><div class="sw" style="background:#A8A29E;color:#000">
+        <span class="sw-name">400</span>
+        <code>#A8A29E</code>
+      </div><div class="sw" style="background:#78716C;color:#fff">
+        <span class="sw-name">500</span>
+        <code>#78716C</code>
+      </div><div class="sw" style="background:#57534E;color:#fff">
+        <span class="sw-name">600</span>
+        <code>#57534E</code>
+      </div><div class="sw" style="background:#44403C;color:#fff">
+        <span class="sw-name">700</span>
+        <code>#44403C</code>
+      </div><div class="sw" style="background:#292524;color:#fff">
+        <span class="sw-name">800</span>
+        <code>#292524</code>
+      </div><div class="sw" style="background:#1C1917;color:#fff">
+        <span class="sw-name">900</span>
+        <code>#1C1917</code>
+      </div><div class="sw" style="background:#0C0A09;color:#fff">
+        <span class="sw-name">950</span>
+        <code>#0C0A09</code>
+      </div></div>
+  </section><section class="block">
+    <h3>blue</h3>
+    <div class="scale"><div class="sw" style="background:#EFF4FF;color:#000">
+        <span class="sw-name">50</span>
+        <code>#EFF4FF</code>
+      </div><div class="sw" style="background:#DBE7FE;color:#000">
+        <span class="sw-name">100</span>
+        <code>#DBE7FE</code>
+      </div><div class="sw" style="background:#BFD3FE;color:#000">
+        <span class="sw-name">200</span>
+        <code>#BFD3FE</code>
+      </div><div class="sw" style="background:#93B4FD;color:#000">
+        <span class="sw-name">300</span>
+        <code>#93B4FD</code>
+      </div><div class="sw" style="background:#608AFA;color:#fff">
+        <span class="sw-name">400</span>
+        <code>#608AFA</code>
+      </div><div class="sw" style="background:#3D66F5;color:#fff">
+        <span class="sw-name">500</span>
+        <code>#3D66F5</code>
+      </div><div class="sw" style="background:#2849E8;color:#fff">
+        <span class="sw-name">600</span>
+        <code>#2849E8</code>
+      </div><div class="sw" style="background:#2138D4;color:#fff">
+        <span class="sw-name">700</span>
+        <code>#2138D4</code>
+      </div><div class="sw" style="background:#2030AB;color:#fff">
+        <span class="sw-name">800</span>
+        <code>#2030AB</code>
+      </div><div class="sw" style="background:#1F2D87;color:#fff">
+        <span class="sw-name">900</span>
+        <code>#1F2D87</code>
+      </div><div class="sw" style="background:#171E50;color:#fff">
+        <span class="sw-name">950</span>
+        <code>#171E50</code>
+      </div></div>
+  </section><section class="block">
+    <h3>green</h3>
+    <div class="scale"><div class="sw" style="background:#F0FDF4;color:#000">
+        <span class="sw-name">50</span>
+        <code>#F0FDF4</code>
+      </div><div class="sw" style="background:#DCFCE7;color:#000">
+        <span class="sw-name">100</span>
+        <code>#DCFCE7</code>
+      </div><div class="sw" style="background:#BBF7D0;color:#000">
+        <span class="sw-name">200</span>
+        <code>#BBF7D0</code>
+      </div><div class="sw" style="background:#22C55E;color:#fff">
+        <span class="sw-name">500</span>
+        <code>#22C55E</code>
+      </div><div class="sw" style="background:#16A34A;color:#fff">
+        <span class="sw-name">600</span>
+        <code>#16A34A</code>
+      </div><div class="sw" style="background:#15803D;color:#fff">
+        <span class="sw-name">700</span>
+        <code>#15803D</code>
+      </div><div class="sw" style="background:#166534;color:#fff">
+        <span class="sw-name">800</span>
+        <code>#166534</code>
+      </div></div>
+  </section><section class="block">
+    <h3>red</h3>
+    <div class="scale"><div class="sw" style="background:#FEF2F2;color:#000">
+        <span class="sw-name">50</span>
+        <code>#FEF2F2</code>
+      </div><div class="sw" style="background:#FEE2E2;color:#000">
+        <span class="sw-name">100</span>
+        <code>#FEE2E2</code>
+      </div><div class="sw" style="background:#FECACA;color:#000">
+        <span class="sw-name">200</span>
+        <code>#FECACA</code>
+      </div><div class="sw" style="background:#EF4444;color:#fff">
+        <span class="sw-name">500</span>
+        <code>#EF4444</code>
+      </div><div class="sw" style="background:#DC2626;color:#fff">
+        <span class="sw-name">600</span>
+        <code>#DC2626</code>
+      </div><div class="sw" style="background:#B91C1C;color:#fff">
+        <span class="sw-name">700</span>
+        <code>#B91C1C</code>
+      </div><div class="sw" style="background:#991B1B;color:#fff">
+        <span class="sw-name">800</span>
+        <code>#991B1B</code>
+      </div></div>
+  </section><section class="block">
+    <h3>orange</h3>
+    <div class="scale"><div class="sw" style="background:#FFF7ED;color:#000">
+        <span class="sw-name">50</span>
+        <code>#FFF7ED</code>
+      </div><div class="sw" style="background:#FFEDD5;color:#000">
+        <span class="sw-name">100</span>
+        <code>#FFEDD5</code>
+      </div><div class="sw" style="background:#FED7AA;color:#000">
+        <span class="sw-name">200</span>
+        <code>#FED7AA</code>
+      </div><div class="sw" style="background:#F97316;color:#000">
+        <span class="sw-name">500</span>
+        <code>#F97316</code>
+      </div><div class="sw" style="background:#EA580C;color:#fff">
+        <span class="sw-name">600</span>
+        <code>#EA580C</code>
+      </div><div class="sw" style="background:#C2410C;color:#fff">
+        <span class="sw-name">700</span>
+        <code>#C2410C</code>
+      </div><div class="sw" style="background:#9A3412;color:#fff">
+        <span class="sw-name">800</span>
+        <code>#9A3412</code>
+      </div></div>
+  </section><section class="block">
+    <h3>yellow</h3>
+    <div class="scale"><div class="sw" style="background:#FEFCE8;color:#000">
+        <span class="sw-name">50</span>
+        <code>#FEFCE8</code>
+      </div><div class="sw" style="background:#FEF9C3;color:#000">
+        <span class="sw-name">100</span>
+        <code>#FEF9C3</code>
+      </div><div class="sw" style="background:#FEF08A;color:#000">
+        <span class="sw-name">200</span>
+        <code>#FEF08A</code>
+      </div><div class="sw" style="background:#EAB308;color:#000">
+        <span class="sw-name">500</span>
+        <code>#EAB308</code>
+      </div><div class="sw" style="background:#CA8A04;color:#000">
+        <span class="sw-name">600</span>
+        <code>#CA8A04</code>
+      </div><div class="sw" style="background:#A16207;color:#fff">
+        <span class="sw-name">700</span>
+        <code>#A16207</code>
+      </div></div>
+  </section><section class="block">
+    <h3>blackAlpha</h3>
+    <div class="scale"><div class="sw" style="background:rgba(0,0,0,0.04);color:#000">
+        <span class="sw-name">50</span>
+        <code>rgba(0,0,0,0.04)</code>
+      </div><div class="sw" style="background:rgba(0,0,0,0.06);color:#000">
+        <span class="sw-name">100</span>
+        <code>rgba(0,0,0,0.06)</code>
+      </div><div class="sw" style="background:rgba(0,0,0,0.08);color:#000">
+        <span class="sw-name">200</span>
+        <code>rgba(0,0,0,0.08)</code>
+      </div><div class="sw" style="background:rgba(0,0,0,0.16);color:#000">
+        <span class="sw-name">300</span>
+        <code>rgba(0,0,0,0.16)</code>
+      </div><div class="sw" style="background:rgba(0,0,0,0.24);color:#000">
+        <span class="sw-name">400</span>
+        <code>rgba(0,0,0,0.24)</code>
+      </div><div class="sw" style="background:rgba(0,0,0,0.36);color:#000">
+        <span class="sw-name">500</span>
+        <code>rgba(0,0,0,0.36)</code>
+      </div><div class="sw" style="background:rgba(0,0,0,0.48);color:#000">
+        <span class="sw-name">600</span>
+        <code>rgba(0,0,0,0.48)</code>
+      </div><div class="sw" style="background:rgba(0,0,0,0.64);color:#000">
+        <span class="sw-name">700</span>
+        <code>rgba(0,0,0,0.64)</code>
+      </div><div class="sw" style="background:rgba(0,0,0,0.80);color:#000">
+        <span class="sw-name">800</span>
+        <code>rgba(0,0,0,0.80)</code>
+      </div></div>
+  </section><section class="block">
+    <h3>whiteAlpha</h3>
+    <div class="scale"><div class="sw" style="background:rgba(255,255,255,0.04);color:#000">
+        <span class="sw-name">50</span>
+        <code>rgba(255,255,255,0.04)</code>
+      </div><div class="sw" style="background:rgba(255,255,255,0.06);color:#000">
+        <span class="sw-name">100</span>
+        <code>rgba(255,255,255,0.06)</code>
+      </div><div class="sw" style="background:rgba(255,255,255,0.08);color:#000">
+        <span class="sw-name">200</span>
+        <code>rgba(255,255,255,0.08)</code>
+      </div><div class="sw" style="background:rgba(255,255,255,0.16);color:#000">
+        <span class="sw-name">300</span>
+        <code>rgba(255,255,255,0.16)</code>
+      </div><div class="sw" style="background:rgba(255,255,255,0.24);color:#000">
+        <span class="sw-name">400</span>
+        <code>rgba(255,255,255,0.24)</code>
+      </div><div class="sw" style="background:rgba(255,255,255,0.36);color:#000">
+        <span class="sw-name">500</span>
+        <code>rgba(255,255,255,0.36)</code>
+      </div><div class="sw" style="background:rgba(255,255,255,0.48);color:#000">
+        <span class="sw-name">600</span>
+        <code>rgba(255,255,255,0.48)</code>
+      </div><div class="sw" style="background:rgba(255,255,255,0.64);color:#000">
+        <span class="sw-name">700</span>
+        <code>rgba(255,255,255,0.64)</code>
+      </div><div class="sw" style="background:rgba(255,255,255,0.80);color:#000">
+        <span class="sw-name">800</span>
+        <code>rgba(255,255,255,0.80)</code>
+      </div></div>
+  </section>
+
+  <h2 id="sizing" class="section">间距 · 圆角 · 边框</h2>
+  <section class="block"><h3>space</h3><table class="num-table"><tr><td><code class="token-name">space.0</code></td><td class="hex">0</td></tr><tr><td><code class="token-name">space.1</code></td><td class="hex">4px</td></tr><tr><td><code class="token-name">space.2</code></td><td class="hex">8px</td></tr><tr><td><code class="token-name">space.3</code></td><td class="hex">12px</td></tr><tr><td><code class="token-name">space.4</code></td><td class="hex">16px</td></tr><tr><td><code class="token-name">space.5</code></td><td class="hex">20px</td></tr><tr><td><code class="token-name">space.6</code></td><td class="hex">24px</td></tr><tr><td><code class="token-name">space.7</code></td><td class="hex">28px</td></tr><tr><td><code class="token-name">space.8</code></td><td class="hex">32px</td></tr><tr><td><code class="token-name">space.9</code></td><td class="hex">36px</td></tr><tr><td><code class="token-name">space.10</code></td><td class="hex">40px</td></tr><tr><td><code class="token-name">space.12</code></td><td class="hex">48px</td></tr><tr><td><code class="token-name">space.14</code></td><td class="hex">56px</td></tr><tr><td><code class="token-name">space.16</code></td><td class="hex">64px</td></tr><tr><td><code class="token-name">space.20</code></td><td class="hex">80px</td></tr><tr><td><code class="token-name">space.24</code></td><td class="hex">96px</td></tr><tr><td><code class="token-name">space.28</code></td><td class="hex">112px</td></tr><tr><td><code class="token-name">space.32</code></td><td class="hex">128px</td></tr><tr><td><code class="token-name">space.40</code></td><td class="hex">160px</td></tr><tr><td><code class="token-name">space.48</code></td><td class="hex">192px</td></tr><tr><td><code class="token-name">space.56</code></td><td class="hex">224px</td></tr><tr><td><code class="token-name">space.64</code></td><td class="hex">256px</td></tr><tr><td><code class="token-name">space.80</code></td><td class="hex">320px</td></tr><tr><td><code class="token-name">space.96</code></td><td class="hex">384px</td></tr><tr><td><code class="token-name">space.0.5</code></td><td class="hex">2px</td></tr><tr><td><code class="token-name">space.1.5</code></td><td class="hex">6px</td></tr><tr><td><code class="token-name">space.2.5</code></td><td class="hex">10px</td></tr><tr><td><code class="token-name">space.3.5</code></td><td class="hex">14px</td></tr></table></section>
+  <section class="block"><h3>radii</h3><div class="radii-row"><div class="radius-card" style="border-radius:0">
+      <span>none</span><code>0</code>
+    </div><div class="radius-card" style="border-radius:2px">
+      <span>xs</span><code>2px</code>
+    </div><div class="radius-card" style="border-radius:4px">
+      <span>sm</span><code>4px</code>
+    </div><div class="radius-card" style="border-radius:6px">
+      <span>md</span><code>6px</code>
+    </div><div class="radius-card" style="border-radius:8px">
+      <span>lg</span><code>8px</code>
+    </div><div class="radius-card" style="border-radius:12px">
+      <span>xl</span><code>12px</code>
+    </div><div class="radius-card" style="border-radius:16px">
+      <span>2xl</span><code>16px</code>
+    </div><div class="radius-card" style="border-radius:24px">
+      <span>3xl</span><code>24px</code>
+    </div><div class="radius-card" style="border-radius:9999px">
+      <span>full</span><code>9999px</code>
+    </div></div></section>
+  <section class="block"><h3>borderWidths</h3><table class="num-table"><tr><td><code class="token-name">borderWidths.0</code></td><td class="hex">0</td></tr><tr><td><code class="token-name">borderWidths.hairline</code></td><td class="hex">0.5px</td></tr><tr><td><code class="token-name">borderWidths.sm</code></td><td class="hex">1px</td></tr><tr><td><code class="token-name">borderWidths.md</code></td><td class="hex">2px</td></tr><tr><td><code class="token-name">borderWidths.lg</code></td><td class="hex">4px</td></tr></table></section>
+  <section class="block"><h3>shadows</h3><table class="num-table"><tr><td><code class="token-name">shadows.xs</code></td><td class="hex">0 1px 2px rgba(28,25,23,0.04)</td></tr><tr><td><code class="token-name">shadows.sm</code></td><td class="hex">0 1px 3px rgba(28,25,23,0.06), 0 1px 2px rgba(28,25,23,0.04)</td></tr><tr><td><code class="token-name">shadows.md</code></td><td class="hex">0 4px 8px -2px rgba(28,25,23,0.08), 0 2px 4px -2px rgba(28,25,23,0.04)</td></tr><tr><td><code class="token-name">shadows.lg</code></td><td class="hex">0 12px 24px -6px rgba(28,25,23,0.10), 0 4px 8px -4px rgba(28,25,23,0.04)</td></tr><tr><td><code class="token-name">shadows.xl</code></td><td class="hex">0 24px 48px -12px rgba(28,25,23,0.14)</td></tr><tr><td><code class="token-name">shadows.focus</code></td><td class="hex">0 0 0 3px rgba(61,102,245,0.20)</td></tr><tr><td><code class="token-name">shadows.focusDanger</code></td><td class="hex">0 0 0 3px rgba(220,38,38,0.20)</td></tr></table></section>
+
+  <footer style="margin-top:80px;padding-top:24px;border-top:1px solid #E7E5E4;font-family:'JetBrains Mono';font-size:11px;color:#78716C">
+    生成自 <code>apps/web/src/styles/tokens/*.ts</code> · 修改后跑 <code>pnpm tokens:build</code> 重新生成
   </footer>
 </div>
 </body>
