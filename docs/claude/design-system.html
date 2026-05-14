@@ -44,7 +44,7 @@ code.v { font-family: 'JetBrains Mono'; font-size: 11px; color: #57534E; }
   <p>修改流程：改 <code>token.json</code>（或由设计师在 Figma Tokens Studio 改 → push 分支）→ 跑 <code>pnpm tokens:sync</code> → CSS + TS + 本文档自动更新。</p>
 </div>
 
-<h2 class="section">semantic · light</h2>
+<h2 class="section">theme · light（default） · 其他 theme: dark</h2>
 <section class="block"><h3>bg</h3><table><tr>
         <td><code class="t">bg.canvas</code></td>
         <td><span class="chip" style="background:#FAFAF9"></span></td>
@@ -367,17 +367,17 @@ code.v { font-family: 'JetBrains Mono'; font-size: 11px; color: #57534E; }
         <td class="d">light · status.neutral.solid</td>
       </tr></table></section>
 
-<h2 class="section">effects · light</h2>
+<h2 class="section">effect · light</h2>
 <table><tr>
-        <td><code class="t">effects.light.focusRing</code></td>
+        <td><code class="t">effect.focusRing</code></td>
         <td></td>
         <td><code class="v">0 0 0 3px rgba(61,102,245,0.2)</code></td>
-        <td class="d">light · focus 状态下输入框/按钮的 3px 环色，跟随 border.focus 自动重映射</td>
+        <td class="d">light · focus 状态的 3px 环 (输入框、按钮)</td>
       </tr><tr>
-        <td><code class="t">effects.light.focusRingDanger</code></td>
+        <td><code class="t">effect.focusRingDanger</code></td>
         <td></td>
         <td><code class="v">0 0 0 3px rgba(220,38,38,0.2)</code></td>
-        <td class="d">light · 危险态 focus 环（删除按钮、错误输入框）</td>
+        <td class="d">light · 危险态 focus 环 (删除按钮、错误输入框)</td>
       </tr></table>
 
 <h2 class="section">textStyle</h2>

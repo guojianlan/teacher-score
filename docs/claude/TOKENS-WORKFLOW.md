@@ -13,7 +13,6 @@
 ```
 docs/claude/
   token.json                          ← 源头（DTCG）
-  token.slidepilot-reference.json     ← 旧 Slidepilot 参考（仅历史）
   design-system.html                  ← 生成的视觉文档
 
 apps/web/src/styles/
@@ -23,6 +22,23 @@ apps/web/src/styles/
     index.ts                          ← 公共 API（手写、re-export）
     sync.ts                           ← JSON → TS/CSS/HTML 构建器
 ```
+
+## token.json 顶层结构
+
+```jsonc
+{
+  "$schema": "...",
+  "core":      { /* 原料：color.{gray,blue,...}, fontSize, space, radius, ... */ },
+  "light":     { /* 一个 theme 的全部 semantic 值：bg, fg, border, interactive, status, effect */ },
+  "dark":      { /* 另一个 theme */ },
+  "motion":    { /* theme-agnostic */ },
+  "textStyle": { /* theme-agnostic */ },
+  "$themes":   [/* Tokens Studio 配置 */],
+  "$metadata": {/* tokenSetOrder, version, ... */}
+}
+```
+
+加新 theme = 加一个顶层 set + 在 `$themes` 里登记。`sync.ts` 自动识别。
 
 ## 设计师工作流
 

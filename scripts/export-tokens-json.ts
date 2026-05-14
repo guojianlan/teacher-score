@@ -2,64 +2,52 @@
 /**
  * scripts/export-tokens-json.ts
  *
- * 把当前的 TS token 源文件（base.ts / semantic.ts / text-styles.ts）
- * 一次性导出为 DTCG 兼容的 docs/claude/token.json。
+ * 一次性工具：把 __generated.ts 当前的值导出为 DTCG 格式的 token.json。
  *
- * 设计目标：
- *   - 输出格式严格遵循 W3C DTCG（含 $type / $value / $description）
- *   - semantic 层用 `{core.color.gray.50}` 引用语法，让 Tokens Studio 能
- *     在 Figma 里展示"语义引用关系"，而不是看到一堆 hex
- *   - 顶层结构同时是 Tokens Studio 的"token sets"：core / semantic / textStyle / motion / effects
- *   - 加上 $themes 数组与 $metadata，Figma 插件直接能 load
+ * 用途：迁移 / 紧急修复 / 验证 round-trip 完整性。
+ * 正常工作流的源头是 token.json，不是 TS。
  *
- * 跑一次：
- *   pnpm exec tsx scripts/export-tokens-json.ts
- *
- * 此脚本是一次性迁移工具。**JSON 一旦生成，JSON 就是源**；后续修改请改 JSON，
- * 然后跑 `pnpm tokens:sync` 重新生成 TS。
+ *   pnpm tokens:export-json
  */
 import { promises as fs } from 'node:fs';
 import path from 'node:path';
 import {
   colors, fonts, fontSizes, fontWeights, lineHeights, letterSpacings,
   space, radii, borderWidths, shadows, durations, easings, motion,
-  light, dark, textStyles,
+  light, dark, effects, textStyles,
 } from '../apps/web/src/styles/tokens';
 
 const ROOT = path.resolve(__dirname, '..');
 const OUT = path.join(ROOT, 'docs/claude/token.json');
-const BACKUP = path.join(ROOT, 'docs/claude/token.slidepilot-reference.json');
 
-// ─── helpers ─────────────────────────────────────────────────────────
 type Dtcg = { $type: string; $value: unknown; $description?: string };
 
 const dtcg = (type: string, value: unknown, description?: string): Dtcg =>
   description ? { $type: type, $value: value, $description: description } : { $type: type, $value: value };
 
-// 把一个色阶对象 ({50: '#xx', 100: '#yy'}) 转成 DTCG 色阶
+const SCALE_HINTS: Record<string, string> = {
+  '50': 'app 底色 / 卡片底',
+  '100': 'UI 元素背景',
+  '200': '弱边线',
+  '300': '边线 emphasized',
+  '400': 'disabled fg / placeholder',
+  '500': '低对比文本',
+  '600': '主操作 solid (按钮底)',
+  '700': '主操作 hover',
+  '800': '主操作 active',
+  '900': '高对比文本',
+  '950': '反色背景 / 最深',
+};
+
 function colorScale(scale: Record<string, string>, family: string): Record<string, Dtcg> {
   const out: Record<string, Dtcg> = {};
-  const semanticHints: Record<string, string> = {
-    '50': 'app 底色 / 卡片底',
-    '100': 'UI 元素背景',
-    '200': '弱边线',
-    '300': '边线 emphasized',
-    '400': 'disabled fg / placeholder',
-    '500': '低对比文本',
-    '600': '主操作 solid（按钮底）',
-    '700': '主操作 hover',
-    '800': '主操作 active',
-    '900': '高对比文本',
-    '950': '反色背景 / 最深',
-  };
   for (const [k, v] of Object.entries(scale)) {
-    const hint = semanticHints[k];
+    const hint = SCALE_HINTS[k];
     out[k] = dtcg('color', v, hint ? `${family}.${k} · ${hint}` : `${family}.${k}`);
   }
   return out;
 }
 
-// 把"任意嵌套对象"转成 DTCG 树，叶子节点（string）自动 wrap
 function leavesTo(type: string, obj: Record<string, unknown>, descPrefix = ''): Record<string, unknown> {
   const out: Record<string, unknown> = {};
   for (const [k, v] of Object.entries(obj)) {
@@ -73,10 +61,8 @@ function leavesTo(type: string, obj: Record<string, unknown>, descPrefix = ''): 
   return out;
 }
 
-// hex/字符串值 → 反查 core 引用路径；找不到则原样
 function buildColorLookup(): Map<string, string> {
   const map = new Map<string, string>();
-  // 注意：第一个写入获胜（避免别名互相覆盖）
   const families = ['gray', 'blue', 'green', 'red', 'orange', 'yellow', 'blackAlpha', 'whiteAlpha'] as const;
   for (const f of families) {
     const scale = (colors as Record<string, unknown>)[f];
@@ -86,7 +72,6 @@ function buildColorLookup(): Map<string, string> {
       }
     }
   }
-  // 单值
   map.set(colors.white, '{core.color.white}');
   map.set(colors.black, '{core.color.black}');
   map.set(colors.transparent, '{core.color.transparent}');
@@ -95,17 +80,17 @@ function buildColorLookup(): Map<string, string> {
 const colorRefMap = buildColorLookup();
 const refOf = (v: string) => colorRefMap.get(v) ?? v;
 
-// 把 semantic 调色板转成 DTCG（值替换为 {core.color.xx} 引用）
-function semanticToDtcg(palette: typeof light, themeName: string) {
+function themeColorsToDtcg(
+  palette: Record<string, unknown>,
+  themeName: string,
+): Record<string, unknown> {
   const out: Record<string, unknown> = {};
   for (const [group, items] of Object.entries(palette)) {
-    if (group === 'effects') continue; // effects 单独处理（shadow 字符串）
     const groupOut: Record<string, unknown> = {};
     for (const [k, v] of Object.entries(items as Record<string, unknown>)) {
       if (typeof v === 'string') {
         groupOut[k] = dtcg('color', refOf(v), `${themeName} · ${group}.${k}`);
       } else if (v && typeof v === 'object') {
-        // 子组（如 interactive.primary.bg）
         const sub: Record<string, unknown> = {};
         for (const [sk, sv] of Object.entries(v as Record<string, string>)) {
           sub[sk] = dtcg('color', refOf(sv), `${themeName} · ${group}.${k}.${sk}`);
@@ -118,37 +103,35 @@ function semanticToDtcg(palette: typeof light, themeName: string) {
   return out;
 }
 
-// effects 用 shadow type；focusRing 在现代 CSS 下是字符串
-function effectsToDtcg(palette: typeof light, themeName: string) {
-  return {
-    focusRing: dtcg(
-      'shadow',
-      palette.effects.focusRing,
-      `${themeName} · focus 状态下输入框/按钮的 3px 环色，跟随 border.focus 自动重映射`,
-    ),
-    focusRingDanger: dtcg(
-      'shadow',
-      palette.effects.focusRingDanger,
-      `${themeName} · 危险态 focus 环（删除按钮、错误输入框）`,
-    ),
+function effectsToDtcg(themeEffects: Record<string, string>, themeName: string) {
+  const out: Record<string, Dtcg> = {};
+  const descs: Record<string, string> = {
+    focusRing: 'focus 状态的 3px 环 (输入框、按钮)',
+    focusRingDanger: '危险态 focus 环 (删除按钮、错误输入框)',
   };
+  for (const [k, v] of Object.entries(themeEffects)) {
+    out[k] = dtcg('shadow', v, `${themeName} · ${descs[k] ?? `effect.${k}`}`);
+  }
+  return out;
 }
 
-// textStyles 用 typography composite type（DTCG 标准）
 function textStylesToDtcg() {
-  // 只导出 alias 之外的 10 核心（aliases 在运行时再展开）
   const core = [
     'display', 'pageTitle', 'sectionTitle', 'cardTitle',
     'bodyLg', 'body', 'bodySm', 'label', 'mono', 'overline',
   ];
   const out: Record<string, Dtcg> = {};
   for (const name of core) {
-    const s = textStyles[name];
+    const s = (textStyles as Record<string, unknown>)[name] as
+      | { fontFamily: string; fontSize: string; fontWeight: number; lineHeight: number; letterSpacing?: string; textTransform?: string }
+      | undefined;
     if (!s) continue;
     out[name] = dtcg(
       'typography',
       {
-        fontFamily: s.fontFamily.startsWith('var(') ? s.fontFamily : `{core.fontFamily.${guessFamilyKey(s.fontFamily)}}`,
+        fontFamily: s.fontFamily.startsWith('var(')
+          ? `{core.fontFamily.${guessFamilyKey(s.fontFamily)}}`
+          : s.fontFamily,
         fontSize: s.fontSize,
         fontWeight: s.fontWeight,
         lineHeight: s.lineHeight,
@@ -168,22 +151,7 @@ function guessFamilyKey(stack: string): string {
   return 'sans';
 }
 
-// ─── build ───────────────────────────────────────────────────────────
 async function main() {
-  // 备份旧 token.json
-  try {
-    await fs.access(OUT);
-    const oldContent = await fs.readFile(OUT, 'utf8');
-    const oldJson = JSON.parse(oldContent);
-    // 只在看起来是 Slidepilot 版（含 'Slidepilot V1' 顶层 key）时备份
-    if ('Slidepilot V1' in oldJson || 'Slidepilot V0' in oldJson) {
-      await fs.writeFile(BACKUP, oldContent);
-      console.log(`✓ 备份旧 Slidepilot JSON → ${path.relative(ROOT, BACKUP)}`);
-    }
-  } catch {
-    // 旧文件不存在
-  }
-
   const core = {
     color: {
       gray: colorScale(colors.gray, 'gray'),
@@ -216,22 +184,30 @@ async function main() {
     easing: leavesTo('cubicBezier', easings as unknown as Record<string, unknown>),
   };
 
+  // 每个 theme 是顶层 set，含 bg/fg/border/interactive/status/effect
+  const lightTheme = {
+    ...themeColorsToDtcg(light as unknown as Record<string, unknown>, 'light'),
+    effect: effectsToDtcg(effects.light as Record<string, string>, 'light'),
+  };
+  const darkTheme = {
+    ...themeColorsToDtcg(dark as unknown as Record<string, unknown>, 'dark'),
+    effect: effectsToDtcg(effects.dark as Record<string, string>, 'dark'),
+  };
+
   const motionDtcg: Record<string, Dtcg> = {};
   for (const [name, preset] of Object.entries(motion)) {
     motionDtcg[name] = dtcg(
       'transition',
-      { duration: preset.duration, timingFunction: preset.easing },
+      { duration: preset.duration, timingFunction: preset.timingFunction },
       `motion.${name} · ${motionDescription(name)}`,
     );
   }
 
-  const json = {
+  const json: Record<string, unknown> = {
     $schema: 'https://design-tokens.github.io/community-group/format/',
     core,
-    'semantic/light': semanticToDtcg(light, 'light'),
-    'semantic/dark': semanticToDtcg(dark, 'dark'),
-    'effects/light': effectsToDtcg(light, 'light'),
-    'effects/dark': effectsToDtcg(dark, 'dark'),
+    light: lightTheme,
+    dark: darkTheme,
     motion: motionDtcg,
     textStyle: textStylesToDtcg(),
 
@@ -239,34 +215,16 @@ async function main() {
       {
         id: 'light',
         name: 'Light',
-        selectedTokenSets: {
-          core: 'source',
-          'semantic/light': 'enabled',
-          'effects/light': 'enabled',
-          motion: 'source',
-          textStyle: 'source',
-        },
+        selectedTokenSets: { core: 'source', light: 'enabled', motion: 'source', textStyle: 'source' },
       },
       {
         id: 'dark',
         name: 'Dark',
-        selectedTokenSets: {
-          core: 'source',
-          'semantic/dark': 'enabled',
-          'effects/dark': 'enabled',
-          motion: 'source',
-          textStyle: 'source',
-        },
+        selectedTokenSets: { core: 'source', dark: 'enabled', motion: 'source', textStyle: 'source' },
       },
     ],
     $metadata: {
-      tokenSetOrder: [
-        'core',
-        'semantic/light', 'semantic/dark',
-        'effects/light', 'effects/dark',
-        'motion',
-        'textStyle',
-      ],
+      tokenSetOrder: ['core', 'light', 'dark', 'motion', 'textStyle'],
       version: '1.0.0',
       generator: 'scripts/export-tokens-json.ts',
       generatedAt: new Date().toISOString(),
@@ -274,13 +232,12 @@ async function main() {
   };
 
   await fs.writeFile(OUT, JSON.stringify(json, null, 2));
-  console.log(`✓ 生成 DTCG JSON → ${path.relative(ROOT, OUT)}`);
-  console.log(`  - core: ${Object.keys(core.color).length} color families + 9 其他类型`);
-  console.log(`  - semantic: light + dark`);
-  console.log(`  - effects: light + dark`);
-  console.log(`  - motion: ${Object.keys(motion).length} intents`);
-  console.log(`  - textStyle: 10 核心`);
-  console.log(`  - $themes: Light + Dark （可直接喂给 Tokens Studio）`);
+  console.log(`✓ ${path.relative(ROOT, OUT)}`);
+  console.log(`  core (原料):  ${Object.keys(core.color).length} 色族 + 11 其他类型`);
+  console.log(`  light / dark: theme sets (含 bg/fg/border/interactive/status/effect)`);
+  console.log(`  motion:       ${Object.keys(motion).length} intents`);
+  console.log(`  textStyle:    10 命名样式`);
+  console.log(`  $themes:      ${(json.$themes as unknown[]).length} 个`);
 }
 
 function motionDescription(name: string): string {

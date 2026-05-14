@@ -125,12 +125,33 @@ async function main() {
   const resolved = resolveRefs(raw);
 
   const core = (resolved.core ?? {}) as Doc;
-  const semanticLight = (resolved['semantic/light'] ?? {}) as Doc;
-  const semanticDark = (resolved['semantic/dark'] ?? {}) as Doc;
-  const effectsLight = (resolved['effects/light'] ?? {}) as Doc;
-  const effectsDark = (resolved['effects/dark'] ?? {}) as Doc;
   const motionSet = (resolved.motion ?? {}) as Doc;
   const textStyleSet = (resolved.textStyle ?? {}) as Doc;
+
+  // theme sets：从 $themes 拿名字，第一个为 default
+  const themesMeta = ((resolved.$themes as Array<{ id?: string; name: string }>) ?? []) ?? [];
+  const themeNames: string[] = themesMeta.length > 0
+    ? themesMeta.map((t) => t.id ?? t.name.toLowerCase())
+    // 兜底：扫顶层非保留 key
+    : Object.keys(resolved).filter((k) =>
+        !['core', 'motion', 'textStyle'].includes(k) && !k.startsWith('$'),
+      );
+  if (themeNames.length === 0) themeNames.push('light');
+
+  const defaultTheme = themeNames[0]!;
+  const themePalettes: Record<string, Doc> = {};
+  for (const name of themeNames) {
+    themePalettes[name] = (resolved[name] ?? {}) as Doc;
+  }
+
+  // 拆出 effect 子树（每个 theme 下的 effect.* 单独走 --effect-* CSS 变量）
+  const colorsByTheme: Record<string, Doc> = {};
+  const effectsByTheme: Record<string, Doc> = {};
+  for (const [name, pal] of Object.entries(themePalettes)) {
+    const { effect, ...rest } = pal as Doc & { effect?: Doc };
+    colorsByTheme[name] = rest;
+    effectsByTheme[name] = (effect ?? {}) as Doc;
+  }
 
   // ─── 1. tokens.css ──────────────────────────────────────────────
   const lines: string[] = [
@@ -143,38 +164,46 @@ async function main() {
   for (const { path: p, token } of leaves(core)) {
     lines.push(`  ${cssVar(['core', ...p])}: ${cssValue(token)};`);
   }
-  // semantic light (default)
-  lines.push('  /* semantic · light (default) */');
-  for (const { path: p, token } of leaves(semanticLight)) {
+  // default theme (first in $themes)
+  lines.push(`  /* theme · ${defaultTheme} (default) */`);
+  for (const { path: p, token } of leaves(colorsByTheme[defaultTheme]!)) {
     lines.push(`  ${cssVar(p)}: ${cssValue(token)};`);
   }
-  for (const { path: p, token } of leaves(effectsLight)) {
+  for (const { path: p, token } of leaves(effectsByTheme[defaultTheme]!)) {
     lines.push(`  ${cssVar(['effect', ...p])}: ${cssValue(token)};`);
   }
   for (const { path: p, token } of leaves(motionSet)) {
     lines.push(`  ${cssVar(['motion', ...p])}: ${cssValue(token)};`);
   }
   lines.push('}');
-  // semantic dark
-  lines.push('');
-  lines.push("[data-theme='dark'] {");
-  for (const { path: p, token } of leaves(semanticDark)) {
-    lines.push(`  ${cssVar(p)}: ${cssValue(token)};`);
+
+  // 其他 theme：data-theme=xxx 选择器
+  for (const name of themeNames.slice(1)) {
+    lines.push('');
+    lines.push(`[data-theme='${name}'] {`);
+    for (const { path: p, token } of leaves(colorsByTheme[name]!)) {
+      lines.push(`  ${cssVar(p)}: ${cssValue(token)};`);
+    }
+    for (const { path: p, token } of leaves(effectsByTheme[name]!)) {
+      lines.push(`  ${cssVar(['effect', ...p])}: ${cssValue(token)};`);
+    }
+    lines.push('}');
   }
-  for (const { path: p, token } of leaves(effectsDark)) {
-    lines.push(`  ${cssVar(['effect', ...p])}: ${cssValue(token)};`);
+
+  // prefers-color-scheme: dark 默认走 dark theme（如果存在）
+  if (themeNames.includes('dark')) {
+    lines.push('');
+    lines.push("@media (prefers-color-scheme: dark) {");
+    lines.push("  :root:not([data-theme]) {");
+    for (const { path: p, token } of leaves(colorsByTheme.dark!)) {
+      lines.push(`    ${cssVar(p)}: ${cssValue(token)};`);
+    }
+    for (const { path: p, token } of leaves(effectsByTheme.dark!)) {
+      lines.push(`    ${cssVar(['effect', ...p])}: ${cssValue(token)};`);
+    }
+    lines.push("  }");
+    lines.push("}");
   }
-  lines.push('}');
-  lines.push("@media (prefers-color-scheme: dark) {");
-  lines.push("  :root:not([data-theme='light']) {");
-  for (const { path: p, token } of leaves(semanticDark)) {
-    lines.push(`    ${cssVar(p)}: ${cssValue(token)};`);
-  }
-  for (const { path: p, token } of leaves(effectsDark)) {
-    lines.push(`    ${cssVar(['effect', ...p])}: ${cssValue(token)};`);
-  }
-  lines.push("  }");
-  lines.push("}");
 
   await fs.writeFile(CSS_OUT, lines.join('\n') + '\n');
   console.log(`✓ wrote ${path.relative(REPO, CSS_OUT)}`);
@@ -219,16 +248,21 @@ async function main() {
   tsLines.push('export const durations = core.duration;');
   tsLines.push('export const easings = core.easing;');
   tsLines.push('');
-  tsLines.push(`export const semantic = {`);
-  tsLines.push(`  light: ${emitObject(semanticLight, 4)},`);
-  tsLines.push(`  dark: ${emitObject(semanticDark, 4)},`);
+  // 各 theme 的 colors（不含 effect）
+  tsLines.push(`export const themes = {`);
+  for (const name of themeNames) {
+    tsLines.push(`  ${name}: ${emitObject(colorsByTheme[name]!, 4)},`);
+  }
   tsLines.push(`} as const;`);
-  tsLines.push(`export const light = semantic.light;`);
-  tsLines.push(`export const dark = semantic.dark;`);
+  // 便捷别名（业务代码读这两个就够）
+  for (const name of themeNames) {
+    tsLines.push(`export const ${name} = themes.${name};`);
+  }
   tsLines.push('');
   tsLines.push(`export const effects = {`);
-  tsLines.push(`  light: ${emitObject(effectsLight, 4)},`);
-  tsLines.push(`  dark: ${emitObject(effectsDark, 4)},`);
+  for (const name of themeNames) {
+    tsLines.push(`  ${name}: ${emitObject(effectsByTheme[name]!, 4)},`);
+  }
   tsLines.push(`} as const;`);
   tsLines.push('');
   tsLines.push(`export const motion = ${emitObject(motionSet)} as const;`);
@@ -250,12 +284,29 @@ async function main() {
   console.log(`✓ wrote ${path.relative(REPO, TS_OUT)}`);
 
   // ─── 3. design-system.html ──────────────────────────────────────
-  await fs.writeFile(HTML_OUT, buildHtml(core, semanticLight, semanticDark, effectsLight, motionSet, textStyleSet));
+  await fs.writeFile(
+    HTML_OUT,
+    buildHtml(
+      core,
+      colorsByTheme[defaultTheme]!,
+      effectsByTheme[defaultTheme]!,
+      motionSet,
+      textStyleSet,
+      themeNames,
+      defaultTheme,
+    ),
+  );
   console.log(`✓ wrote ${path.relative(REPO, HTML_OUT)}`);
 }
 
 function buildHtml(
-  core: Doc, light: Doc, dark: Doc, effects: Doc, motionD: Doc, textStyleD: Doc,
+  core: Doc,
+  themeColors: Doc,
+  themeEffects: Doc,
+  motionD: Doc,
+  textStyleD: Doc,
+  themeNames: string[],
+  defaultTheme: string,
 ): string {
   const isDarkColor = (hex: string): boolean => {
     const m = hex.match(/^#([0-9a-f]{6})/i);
@@ -347,13 +398,13 @@ code.v { font-family: 'JetBrains Mono'; font-size: 11px; color: #57534E; }
   <p>修改流程：改 <code>token.json</code>（或由设计师在 Figma Tokens Studio 改 → push 分支）→ 跑 <code>pnpm tokens:sync</code> → CSS + TS + 本文档自动更新。</p>
 </div>
 
-<h2 class="section">semantic · light</h2>
-${Object.entries(light as Doc).map(([g, v]) =>
+<h2 class="section">theme · ${defaultTheme}（default）${themeNames.length > 1 ? ` · 其他 theme: ${themeNames.slice(1).join(', ')}` : ''}</h2>
+${Object.entries(themeColors as Doc).map(([g, v]) =>
   `<section class="block"><h3>${g}</h3><table>${rowsFor(v as Doc, g)}</table></section>`,
 ).join('')}
 
-<h2 class="section">effects · light</h2>
-<table>${rowsFor(effects as Doc, 'effects.light')}</table>
+<h2 class="section">effect · ${defaultTheme}</h2>
+<table>${rowsFor(themeEffects as Doc, 'effect')}</table>
 
 <h2 class="section">textStyle</h2>
 <table>${rowsFor(textStyleD, 'textStyle')}</table>
