@@ -6,7 +6,6 @@ import {
   Box,
   Button,
   Flex,
-  Heading,
   Input,
   Select,
   Spinner,
@@ -14,6 +13,7 @@ import {
   Table,
   Tbody,
   Td,
+  Text,
   Th,
   Thead,
   Tr,
@@ -21,15 +21,12 @@ import {
   useToast,
 } from '@chakra-ui/react';
 import { apiClient } from '@/lib/api-client';
+import { PageHeader } from '@/components/page-header';
 import { SUBJECTS } from '@teacher-score/types';
 import { StudentFormDrawer, type Student } from './_form';
 
 const SUBJECT_LABELS: Record<string, string> = {
-  math: '数学',
-  english: '英语',
-  chinese: '语文',
-  physics: '物理',
-  chemistry: '化学',
+  math: '数学', english: '英语', chinese: '语文', physics: '物理', chemistry: '化学',
 };
 
 export default function StudentsPage() {
@@ -54,106 +51,81 @@ export default function StudentsPage() {
     setLoading(false);
   };
 
-  useEffect(() => {
-    refresh();
-  }, [search, grade, subject]);
+  useEffect(() => { refresh(); /* eslint-disable-next-line react-hooks/exhaustive-deps */ }, [search, grade, subject]);
 
   const onDelete = async (id: string) => {
     if (!confirm('确认删除该学生？删除后历史批改记录保留。')) return;
     const res = await apiClient.delete(`/api/students/${id}`);
-    if (res.ok) {
-      toast({ status: 'success', title: '已删除' });
-      refresh();
-    } else toast({ status: 'error', title: '删除失败' });
+    if (res.ok) { toast({ status: 'success', title: '已删除' }); refresh(); }
+    else toast({ status: 'error', title: '删除失败' });
   };
 
   return (
-    <Stack spacing={4}>
-      <Flex align="center">
-        <Heading size="lg">学生</Heading>
-        <Box flex="1" />
-        <Button
-          colorScheme="brand"
-          onClick={() => {
-            setEditing(null);
-            drawer.onOpen();
-          }}
-        >
-          + 新建学生
-        </Button>
-      </Flex>
+    <Stack spacing={8}>
+      <PageHeader
+        eyebrow={`花名册 · ${students.length} 人`}
+        title="学生"
+        description="一对一辅导的学生档案。学科和年级用于批改时筛选。"
+        actions={
+          <Button onClick={() => { setEditing(null); drawer.onOpen(); }} size="md">
+            + 新建学生
+          </Button>
+        }
+      />
 
-      <Flex gap={3} bg="white" p={4} rounded="md" borderWidth="1px">
-        <Input placeholder="搜索姓名" value={search} onChange={(e) => setSearch(e.target.value)} maxW="240px" />
-        <Input placeholder="年级" value={grade} onChange={(e) => setGrade(e.target.value)} maxW="160px" />
-        <Select value={subject} onChange={(e) => setSubject(e.target.value)} maxW="160px">
+      <Flex gap={3} wrap="wrap">
+        <Input placeholder="搜索姓名" value={search} onChange={(e) => setSearch(e.target.value)} maxW="240px" size="md" />
+        <Input placeholder="年级，如 初二" value={grade} onChange={(e) => setGrade(e.target.value)} maxW="180px" size="md" />
+        <Select value={subject} onChange={(e) => setSubject(e.target.value)} maxW="160px" size="md">
           <option value="">全部学科</option>
-          {SUBJECTS.map((s) => (
-            <option key={s} value={s}>
-              {SUBJECT_LABELS[s]}
-            </option>
-          ))}
+          {SUBJECTS.map((s) => <option key={s} value={s}>{SUBJECT_LABELS[s]}</option>)}
         </Select>
       </Flex>
 
-      <Box bg="white" rounded="md" borderWidth="1px" overflow="hidden">
+      <Box>
         {loading ? (
-          <Flex p={8} justify="center">
-            <Spinner />
-          </Flex>
+          <Flex p={12} justify="center"><Spinner color="ink.300" /></Flex>
+        ) : students.length === 0 ? (
+          <Box py={16} textAlign="center" borderTop="1px solid" borderBottom="1px solid" borderColor="ink.100">
+            <Text fontFamily="mono" color="ink.500" fontSize="sm" mb={2}>EMPTY</Text>
+            <Text color="ink.500">还没有学生。点右上角「新建学生」开始。</Text>
+          </Box>
         ) : (
-          <Table>
-            <Thead bg="gray.50">
+          <Table size="md">
+            <Thead>
               <Tr>
                 <Th>姓名</Th>
                 <Th>年级</Th>
                 <Th>学科</Th>
                 <Th>备注</Th>
-                <Th>操作</Th>
+                <Th isNumeric width="120px"></Th>
               </Tr>
             </Thead>
             <Tbody>
-              {students.length === 0 ? (
-                <Tr>
-                  <Td colSpan={5}>
-                    <Box py={6} textAlign="center" color="gray.500">
-                      暂无学生
-                    </Box>
+              {students.map((s) => (
+                <Tr key={s.id} _hover={{ bg: 'paper.100' }} transition="background 100ms ease">
+                  <Td fontWeight={500} fontSize="md">{s.name}</Td>
+                  <Td color="ink.500">{s.grade ?? '—'}</Td>
+                  <Td>
+                    <Flex gap={1.5} wrap="wrap">
+                      {(s.subjects ?? []).map((sub) => (
+                        <Badge key={sub} bg="paper.200" color="ink.700">{SUBJECT_LABELS[sub] ?? sub}</Badge>
+                      ))}
+                    </Flex>
+                  </Td>
+                  <Td maxW="280px" overflow="hidden" textOverflow="ellipsis" whiteSpace="nowrap" color="ink.500" fontSize="sm">
+                    {s.notes ?? '—'}
+                  </Td>
+                  <Td isNumeric>
+                    <Button size="xs" variant="ghost" mr={1} onClick={() => { setEditing(s); drawer.onOpen(); }}>
+                      编辑
+                    </Button>
+                    <Button size="xs" variant="ghost" color="danger.500" onClick={() => onDelete(s.id)}>
+                      删除
+                    </Button>
                   </Td>
                 </Tr>
-              ) : (
-                students.map((s) => (
-                  <Tr key={s.id}>
-                    <Td fontWeight="semibold">{s.name}</Td>
-                    <Td>{s.grade ?? '-'}</Td>
-                    <Td>
-                      {(s.subjects ?? []).map((sub) => (
-                        <Badge key={sub} mr={1} colorScheme="brand">
-                          {SUBJECT_LABELS[sub] ?? sub}
-                        </Badge>
-                      ))}
-                    </Td>
-                    <Td maxW="240px" overflow="hidden" textOverflow="ellipsis" whiteSpace="nowrap">
-                      {s.notes ?? '-'}
-                    </Td>
-                    <Td>
-                      <Button
-                        size="xs"
-                        mr={2}
-                        onClick={() => {
-                          setEditing(s);
-                          drawer.onOpen();
-                        }}
-                      >
-                        编辑
-                      </Button>
-                      <Button size="xs" colorScheme="red" variant="ghost" onClick={() => onDelete(s.id)}>
-                        删除
-                      </Button>
-                    </Td>
-                  </Tr>
-                ))
-              )}
+              ))}
             </Tbody>
           </Table>
         )}
@@ -161,16 +133,9 @@ export default function StudentsPage() {
 
       <StudentFormDrawer
         isOpen={drawer.isOpen}
-        onClose={() => {
-          drawer.onClose();
-          setEditing(null);
-        }}
+        onClose={() => { drawer.onClose(); setEditing(null); }}
         editing={editing}
-        onSaved={() => {
-          drawer.onClose();
-          setEditing(null);
-          refresh();
-        }}
+        onSaved={() => { drawer.onClose(); setEditing(null); refresh(); }}
       />
     </Stack>
   );

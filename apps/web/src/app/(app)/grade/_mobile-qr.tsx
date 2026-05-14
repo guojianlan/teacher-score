@@ -1,23 +1,10 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import {
-  Box,
-  Button,
-  HStack,
-  Image,
-  Stack,
-  Text,
-  useToast,
-} from '@chakra-ui/react';
+import { Box, Button, HStack, Image, Stack, Text, useToast } from '@chakra-ui/react';
 import { apiClient } from '@/lib/api-client';
 
-interface StartResp {
-  sessionId: string;
-  token: string;
-  url: string;
-  expiresAt: string;
-}
+interface StartResp { sessionId: string; token: string; url: string; expiresAt: string; }
 
 export function MobileQrCapture({ onCaptured }: { onCaptured: (key: string) => void }) {
   const toast = useToast();
@@ -25,11 +12,7 @@ export function MobileQrCapture({ onCaptured }: { onCaptured: (key: string) => v
   const pollRef = useRef<number | null>(null);
   const seen = useRef<Set<string>>(new Set());
 
-  useEffect(() => {
-    return () => {
-      if (pollRef.current) window.clearInterval(pollRef.current);
-    };
-  }, []);
+  useEffect(() => () => { if (pollRef.current) window.clearInterval(pollRef.current); }, []);
 
   const start = async () => {
     const res = await apiClient.post<StartResp>('/api/mobile-capture/start');
@@ -45,17 +28,8 @@ export function MobileQrCapture({ onCaptured }: { onCaptured: (key: string) => v
     seen.current = new Set();
     if (pollRef.current) window.clearInterval(pollRef.current);
     pollRef.current = window.setInterval(async () => {
-      const p = await apiClient.get<{ keys: string[] }>(
-        `/api/mobile-capture/poll?s=${encodeURIComponent(res.data.sessionId)}`,
-      );
-      if (p.ok) {
-        for (const k of p.data.keys) {
-          if (!seen.current.has(k)) {
-            seen.current.add(k);
-            onCaptured(k);
-          }
-        }
-      }
+      const p = await apiClient.get<{ keys: string[] }>(`/api/mobile-capture/poll?s=${encodeURIComponent(res.data.sessionId)}`);
+      if (p.ok) for (const k of p.data.keys) if (!seen.current.has(k)) { seen.current.add(k); onCaptured(k); }
     }, 3000);
   };
 
@@ -69,31 +43,22 @@ export function MobileQrCapture({ onCaptured }: { onCaptured: (key: string) => v
 
   if (!session) {
     return (
-      <Button size="sm" variant="outline" onClick={start}>
-        手机扫码拍照
-      </Button>
+      <Box flex="1" borderWidth="1px" borderColor="ink.100" borderRadius="6px" p={4}>
+        <Button onClick={start} variant="outline" size="sm" w="100%">
+          📱 手机扫码拍照
+        </Button>
+      </Box>
     );
   }
 
-  const qrSrc = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(
-    session.url,
-  )}`;
+  const qrSrc = `https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${encodeURIComponent(session.url)}`;
 
   return (
-    <Box borderWidth="1px" rounded="md" p={4}>
+    <Box flex="1" borderWidth="1px" borderColor="ink.100" borderRadius="6px" p={4}>
       <Stack spacing={3} align="center">
-        <Text fontSize="sm" color="gray.600">
-          用手机扫码打开拍照页（15 分钟内有效）
-        </Text>
-        <Image src={qrSrc} alt="QR" width="200px" height="200px" />
-        <Text fontSize="xs" color="gray.500" wordBreak="break-all" maxW="280px">
-          {session.url}
-        </Text>
-        <HStack>
-          <Button size="sm" onClick={finish}>
-            结束会话
-          </Button>
-        </HStack>
+        <Text fontSize="xs" color="ink.500" fontFamily="mono">15 分钟内有效</Text>
+        <Image src={qrSrc} alt="QR" width="160px" height="160px" />
+        <HStack><Button size="xs" variant="ghost" onClick={finish}>结束会话</Button></HStack>
       </Stack>
     </Box>
   );

@@ -19,35 +19,24 @@ export function Uploader({ onUploaded }: { onUploaded: (key: string) => void }) 
       form.append('type', 'student-answer');
       const res = await apiClient.postForm<{ key: string }>('/api/upload', form);
       if (res.ok) onUploaded(res.data.key);
-      else
-        toast({
-          status: 'error',
-          title: `上传失败：${file.name}`,
-          description: res.error.message,
-        });
+      else toast({ status: 'error', title: `上传失败：${file.name}`, description: res.error.message });
     }
     setBusy(false);
   };
 
   return (
     <Box
-      borderWidth="2px"
+      borderWidth="1px"
       borderStyle="dashed"
-      borderColor={dragOver ? 'brand.400' : 'gray.300'}
-      bg={dragOver ? 'brand.50' : 'gray.50'}
-      rounded="md"
-      p={6}
+      borderColor={dragOver ? 'accent.500' : 'ink.100'}
+      bg={dragOver ? 'accent.50' : 'paper.50'}
+      borderRadius="6px"
+      p={10}
       textAlign="center"
-      onDragOver={(e) => {
-        e.preventDefault();
-        setDragOver(true);
-      }}
+      onDragOver={(e) => { e.preventDefault(); setDragOver(true); }}
       onDragLeave={() => setDragOver(false)}
-      onDrop={(e) => {
-        e.preventDefault();
-        setDragOver(false);
-        submit(e.dataTransfer.files);
-      }}
+      onDrop={(e) => { e.preventDefault(); setDragOver(false); submit(e.dataTransfer.files); }}
+      transition="all 120ms ease"
     >
       <input
         ref={inputRef}
@@ -58,14 +47,16 @@ export function Uploader({ onUploaded }: { onUploaded: (key: string) => void }) 
         onChange={(e) => submit(e.target.files)}
       />
       {busy ? (
-        <Spinner />
+        <Spinner color="ink.300" />
       ) : (
         <>
-          <Text mb={2}>拖拽图片到此处，或</Text>
-          <Button onClick={() => inputRef.current?.click()}>选择文件</Button>
-          <Text fontSize="xs" color="gray.500" mt={2}>
-            支持 JPG / PNG / WEBP / HEIC，单文件 ≤ 10MB
+          <Text fontSize="md" mb={1} color="ink.700">把图片拖到这里</Text>
+          <Text fontSize="sm" color="ink.500" mb={4} fontFamily="mono" letterSpacing="0.04em">
+            JPG · PNG · WEBP · HEIC · ≤ 10MB
           </Text>
+          <Button onClick={() => inputRef.current?.click()} variant="outline" size="sm">
+            或选择文件
+          </Button>
         </>
       )}
     </Box>

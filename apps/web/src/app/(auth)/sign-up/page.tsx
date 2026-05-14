@@ -1,10 +1,11 @@
 'use client';
 
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import {
+  Box,
   Button,
-  Container,
   FormControl,
   FormLabel,
   Heading,
@@ -17,6 +18,7 @@ import { signUp } from '@teacher-score/auth/client';
 import { captureClient, initClientAnalytics } from '@teacher-score/analytics/client';
 
 export default function SignUpPage() {
+  const router = useRouter();
   const toast = useToast();
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -34,7 +36,7 @@ export default function SignUpPage() {
       const res = await signUp.email({ email, password, name });
       if (res.error) throw new Error(res.error.message ?? '注册失败');
       initClientAnalytics().then(() => captureClient('user_signed_up'));
-      window.location.assign('/dashboard');
+      router.replace('/dashboard');
     } catch (err) {
       toast({ status: 'error', title: '注册失败', description: (err as Error).message });
     } finally {
@@ -43,45 +45,45 @@ export default function SignUpPage() {
   };
 
   return (
-    <Container maxW="sm" py={16}>
-      <Stack spacing={6}>
-        <Heading size="lg">注册</Heading>
-        <form onSubmit={onSubmit}>
-          <Stack spacing={4}>
-            <FormControl isRequired>
-              <FormLabel>姓名</FormLabel>
-              <Input value={name} onChange={(e) => setName(e.target.value)} autoComplete="name" />
-            </FormControl>
-            <FormControl isRequired>
-              <FormLabel>邮箱</FormLabel>
-              <Input
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                autoComplete="email"
-              />
-            </FormControl>
-            <FormControl isRequired>
-              <FormLabel>密码</FormLabel>
-              <Input
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                autoComplete="new-password"
-              />
-            </FormControl>
-            <Button type="submit" colorScheme="brand" isLoading={loading}>
-              注册并进入工作区
-            </Button>
-          </Stack>
-        </form>
-        <Text fontSize="sm">
-          已有账号？{' '}
-          <Link href="/sign-in" style={{ color: '#2563eb' }}>
-            登录
-          </Link>
+    <Stack spacing={8}>
+      <Box>
+        <Text fontFamily="mono" fontSize="xs" color="ink.500" letterSpacing="0.12em" textTransform="uppercase" mb={2}>
+          New account
         </Text>
-      </Stack>
-    </Container>
+        <Heading as="h1" size="xl" fontStyle="italic" fontWeight={400}>
+          注册
+        </Heading>
+        <Text mt={2} color="ink.500" fontSize="sm">
+          注册即自动开通个人工作区，免费层每月 50 次批改。
+        </Text>
+      </Box>
+
+      <form onSubmit={onSubmit}>
+        <Stack spacing={5}>
+          <FormControl isRequired>
+            <FormLabel fontSize="sm" color="ink.700" mb={1.5}>姓名</FormLabel>
+            <Input value={name} onChange={(e) => setName(e.target.value)} autoComplete="name" />
+          </FormControl>
+          <FormControl isRequired>
+            <FormLabel fontSize="sm" color="ink.700" mb={1.5}>邮箱</FormLabel>
+            <Input type="email" value={email} onChange={(e) => setEmail(e.target.value)} autoComplete="email" />
+          </FormControl>
+          <FormControl isRequired>
+            <FormLabel fontSize="sm" color="ink.700" mb={1.5}>密码 <Text as="span" color="ink.500" fontFamily="mono" fontSize="xs">/ ≥8</Text></FormLabel>
+            <Input type="password" value={password} onChange={(e) => setPassword(e.target.value)} autoComplete="new-password" />
+          </FormControl>
+          <Button type="submit" isLoading={loading} size="lg" mt={2}>
+            注册并进入工作区 →
+          </Button>
+        </Stack>
+      </form>
+
+      <Text fontSize="sm" color="ink.500" pt={4} borderTop="1px solid" borderColor="ink.100">
+        已有账号？{' '}
+        <Link href="/sign-in" style={{ color: '#0969DA', textDecoration: 'underline', textUnderlineOffset: '3px' }}>
+          登录
+        </Link>
+      </Text>
+    </Stack>
   );
 }

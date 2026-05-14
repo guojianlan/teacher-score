@@ -2,16 +2,7 @@
 
 import { Suspense, useState } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
-import {
-  Button,
-  Container,
-  FormControl,
-  FormLabel,
-  Heading,
-  Input,
-  Stack,
-  useToast,
-} from '@chakra-ui/react';
+import { Box, Button, FormControl, FormLabel, Heading, Input, Stack, Text, useToast } from '@chakra-ui/react';
 import { authClient } from '@teacher-score/auth/client';
 
 function ResetPasswordInner() {
@@ -24,52 +15,39 @@ function ResetPasswordInner() {
 
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (password.length < 8) {
-      toast({ status: 'warning', title: '密码至少 8 位' });
-      return;
-    }
+    if (password.length < 8) return toast({ status: 'warning', title: '密码至少 8 位' });
     setLoading(true);
     try {
       const res = await authClient.resetPassword({ newPassword: password, token });
       if (res.error) throw new Error(res.error.message ?? '重置失败');
-      toast({ status: 'success', title: '密码已重置，请重新登录' });
+      toast({ status: 'success', title: '密码已重置' });
       router.replace('/sign-in');
     } catch (err) {
       toast({ status: 'error', title: '重置失败', description: (err as Error).message });
-    } finally {
-      setLoading(false);
-    }
+    } finally { setLoading(false); }
   };
 
   return (
-    <Container maxW="sm" py={16}>
-      <Stack spacing={6}>
-        <Heading size="lg">重置密码</Heading>
-        <form onSubmit={onSubmit}>
-          <Stack spacing={4}>
-            <FormControl isRequired>
-              <FormLabel>新密码</FormLabel>
-              <Input
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                autoComplete="new-password"
-              />
-            </FormControl>
-            <Button type="submit" colorScheme="brand" isLoading={loading} isDisabled={!token}>
-              确认重置
-            </Button>
-          </Stack>
-        </form>
-      </Stack>
-    </Container>
+    <Stack spacing={8}>
+      <Box>
+        <Text fontFamily="mono" fontSize="xs" color="ink.500" letterSpacing="0.12em" textTransform="uppercase" mb={2}>
+          Reset
+        </Text>
+        <Heading as="h1" size="xl" fontStyle="italic" fontWeight={400}>重置密码</Heading>
+      </Box>
+      <form onSubmit={onSubmit}>
+        <Stack spacing={5}>
+          <FormControl isRequired>
+            <FormLabel fontSize="sm" color="ink.700" mb={1.5}>新密码 <Text as="span" color="ink.500" fontFamily="mono" fontSize="xs">/ ≥8</Text></FormLabel>
+            <Input type="password" value={password} onChange={(e) => setPassword(e.target.value)} autoComplete="new-password" />
+          </FormControl>
+          <Button type="submit" isLoading={loading} isDisabled={!token} size="lg">确认重置 →</Button>
+        </Stack>
+      </form>
+    </Stack>
   );
 }
 
 export default function ResetPasswordPage() {
-  return (
-    <Suspense fallback={null}>
-      <ResetPasswordInner />
-    </Suspense>
-  );
+  return <Suspense fallback={null}><ResetPasswordInner /></Suspense>;
 }
