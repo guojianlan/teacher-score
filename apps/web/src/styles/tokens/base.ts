@@ -37,40 +37,58 @@ export const colors = {
   },
 
   // 状态色
+  // 状态色 —— 11 档完整色阶，避免 semantic 层硬编码深色
   green: {
     50: '#F0FDF4',
     100: '#DCFCE7',
     200: '#BBF7D0',
+    300: '#86EFAC',
+    400: '#4ADE80',
     500: '#22C55E',
     600: '#16A34A',
     700: '#15803D',
     800: '#166534',
+    900: '#14532D',
+    950: '#052E16',
   },
   red: {
     50: '#FEF2F2',
     100: '#FEE2E2',
     200: '#FECACA',
+    300: '#FCA5A5',
+    400: '#F87171',
     500: '#EF4444',
     600: '#DC2626',
     700: '#B91C1C',
     800: '#991B1B',
+    900: '#7F1D1D',
+    950: '#450A0A',
   },
   orange: {
     50: '#FFF7ED',
     100: '#FFEDD5',
     200: '#FED7AA',
+    300: '#FDBA74',
+    400: '#FB923C',
     500: '#F97316',
     600: '#EA580C',
     700: '#C2410C',
     800: '#9A3412',
+    900: '#7C2D12',
+    950: '#431407',
   },
   yellow: {
     50: '#FEFCE8',
     100: '#FEF9C3',
     200: '#FEF08A',
+    300: '#FDE68A',
+    400: '#FACC15',
     500: '#EAB308',
     600: '#CA8A04',
     700: '#A16207',
+    800: '#854D0E',
+    900: '#713F12',
+    950: '#422006',
   },
 
   // 通用
@@ -204,16 +222,33 @@ export const borderWidths = {
   lg: '4px',
 } as const;
 
-// 阴影 —— 谨慎使用（设计偏 flat，多数地方用 border 而不是 shadow）
+// 阴影 ——「中性高度」一类，纯亮度，无色感。
+// 色感阴影（focus ring 等）在 semantic 层组装，可被 theme 重映射。
 export const shadows = {
   xs: '0 1px 2px rgba(28,25,23,0.04)',
   sm: '0 1px 3px rgba(28,25,23,0.06), 0 1px 2px rgba(28,25,23,0.04)',
   md: '0 4px 8px -2px rgba(28,25,23,0.08), 0 2px 4px -2px rgba(28,25,23,0.04)',
   lg: '0 12px 24px -6px rgba(28,25,23,0.10), 0 4px 8px -4px rgba(28,25,23,0.04)',
   xl: '0 24px 48px -12px rgba(28,25,23,0.14)',
-  focus: '0 0 0 3px rgba(61,102,245,0.20)',
-  focusDanger: '0 0 0 3px rgba(220,38,38,0.20)',
 } as const;
+
+/**
+ * 把 hex 颜色 + alpha 组装成 focus-ring 风格的 box-shadow 字符串。
+ * semantic 层用它构造 effects.focusRing，从而让 ring 颜色跟随 brand 自动变。
+ *
+ *   focusRing(colors.blue[500])        // -> "0 0 0 3px rgba(61,102,245,0.20)"
+ *   focusRing(colors.red[600], 0.25)   // 自定义 alpha
+ *   focusRing(colors.blue[500], 0.3, 4)// 自定义 alpha + 环宽
+ */
+export function focusRing(hex: string, alpha = 0.2, ringWidth = 3): string {
+  const m = hex.match(/^#([0-9a-fA-F]{6})$/);
+  if (!m) return `0 0 0 ${ringWidth}px ${hex}`; // 已经是 rgba 等格式则原样
+  const c = m[1]!;
+  const r = parseInt(c.slice(0, 2), 16);
+  const g = parseInt(c.slice(2, 4), 16);
+  const b = parseInt(c.slice(4, 6), 16);
+  return `0 0 0 ${ringWidth}px rgba(${r},${g},${b},${alpha})`;
+}
 
 export const durations = {
   instant: '0ms',

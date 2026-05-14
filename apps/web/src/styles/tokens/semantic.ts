@@ -13,7 +13,7 @@
  *  - status.* 状态色（info/success/warning/danger）的成套色
  */
 
-import { colors } from './base';
+import { colors, focusRing } from './base';
 
 export interface SemanticPalette {
   bg: {
@@ -64,6 +64,12 @@ export interface SemanticPalette {
     warning: StatusColors;
     danger: StatusColors;
     neutral: StatusColors;
+  };
+
+  // 色感效果（focus ring 等）—— theme 切换时跟随 brand
+  effects: {
+    focusRing: string;
+    focusRingDanger: string;
   };
 }
 
@@ -178,6 +184,10 @@ export const light: SemanticPalette = {
       solid: colors.gray[600],
     },
   },
+  effects: {
+    focusRing: focusRing(colors.blue[500]),
+    focusRingDanger: focusRing(colors.red[600]),
+  },
 };
 
 // ── Dark theme（占位，已经按相同 schema 给好默认值，待后续打磨）─────────
@@ -246,10 +256,14 @@ export const dark: SemanticPalette = {
   },
   status: {
     info: { bg: colors.blue[950], fg: colors.blue[300], border: colors.blue[800], solid: colors.blue[500] },
-    success: { bg: '#052E16', fg: colors.green[200], border: colors.green[800], solid: colors.green[500] },
-    warning: { bg: '#431407', fg: colors.orange[200], border: colors.orange[800], solid: colors.orange[500] },
-    danger: { bg: '#450A0A', fg: colors.red[200], border: colors.red[800], solid: colors.red[500] },
+    success: { bg: colors.green[950], fg: colors.green[200], border: colors.green[800], solid: colors.green[500] },
+    warning: { bg: colors.orange[950], fg: colors.orange[200], border: colors.orange[800], solid: colors.orange[500] },
+    danger: { bg: colors.red[950], fg: colors.red[200], border: colors.red[800], solid: colors.red[500] },
     neutral: { bg: colors.gray[800], fg: colors.gray[300], border: colors.gray[700], solid: colors.gray[500] },
+  },
+  effects: {
+    focusRing: focusRing(colors.blue[400], 0.3),
+    focusRingDanger: focusRing(colors.red[500], 0.3),
   },
 };
 

@@ -9,17 +9,17 @@ import {
 } from '@/styles/tokens';
 
 // Chakra 的 semanticTokens 支持 _light / _dark 字段，原生支持主题切换。
-// 我们把 semantic/light.ts + semantic/dark.ts 灌进去。
+// 把 semantic/light + semantic/dark 灌进去：bg/fg/border/interactive/status 进 colors,
+// effects（focusRing 等）进 shadows。
 
 const config: ThemeConfig = { initialColorMode: 'light', useSystemColorMode: false };
 
-// 将嵌套的语义化对象铺平为 Chakra 的 dot-notation key
-function flattenSemantic(p: typeof light, prefix = ''): Record<string, string> {
+function flatten(p: Record<string, unknown>, prefix = ''): Record<string, string> {
   const out: Record<string, string> = {};
   for (const [k, v] of Object.entries(p)) {
     const key = prefix ? `${prefix}.${k}` : k;
     if (v && typeof v === 'object' && !Array.isArray(v)) {
-      Object.assign(out, flattenSemantic(v as unknown as typeof light, key));
+      Object.assign(out, flatten(v as Record<string, unknown>, key));
     } else {
       out[key] = String(v);
     }
@@ -27,11 +27,23 @@ function flattenSemantic(p: typeof light, prefix = ''): Record<string, string> {
   return out;
 }
 
-const lightFlat = flattenSemantic(light);
-const darkFlat = flattenSemantic(dark);
+// 颜色类 token：bg / fg / border / interactive / status
+const { effects: lightEffects, ...lightColorGroups } = light;
+const { effects: darkEffects, ...darkColorGroups } = dark;
+const lightColorsFlat = flatten(lightColorGroups);
+const darkColorsFlat = flatten(darkColorGroups);
 const semanticColors: Record<string, { default: string; _dark: string }> = {};
-for (const k of Object.keys(lightFlat)) {
-  semanticColors[k] = { default: lightFlat[k]!, _dark: darkFlat[k] ?? lightFlat[k]! };
+for (const k of Object.keys(lightColorsFlat)) {
+  semanticColors[k] = { default: lightColorsFlat[k]!, _dark: darkColorsFlat[k] ?? lightColorsFlat[k]! };
+}
+
+// 效果类 token（box-shadow 字符串）
+const semanticShadows: Record<string, { default: string; _dark: string }> = {};
+for (const k of Object.keys(lightEffects)) {
+  semanticShadows[k] = {
+    default: lightEffects[k as keyof typeof lightEffects],
+    _dark: darkEffects[k as keyof typeof darkEffects],
+  };
 }
 
 const theme = extendTheme({
@@ -57,7 +69,10 @@ const theme = extendTheme({
   // Base token 色阶 —— 给 semantic 引用，业务代码请优先使用 semantic
   colors,
   // 语义化 —— 业务代码请用这些（bg.canvas / fg.default / interactive.primary.bg / ...）
-  semanticTokens: { colors: semanticColors },
+  semanticTokens: {
+    colors: semanticColors,
+    shadows: semanticShadows,
+  },
   // 命名组合样式 —— 业务代码用 `<Text textStyle="body.md" />`
   textStyles,
 
@@ -127,7 +142,7 @@ const theme = extendTheme({
           field: {
             border: '1px solid', borderColor: 'border.default', bg: 'bg.surface',
             _hover: { borderColor: 'border.strong' },
-            _focusVisible: { borderColor: 'border.focus', boxShadow: shadows.focus },
+            _focusVisible: { borderColor: 'border.focus', boxShadow: 'focusRing' },
           },
         },
       },
@@ -138,7 +153,7 @@ const theme = extendTheme({
         outline: {
           border: '1px solid', borderColor: 'border.default', bg: 'bg.surface', borderRadius: 'lg',
           _hover: { borderColor: 'border.strong' },
-          _focusVisible: { borderColor: 'border.focus', boxShadow: shadows.focus },
+          _focusVisible: { borderColor: 'border.focus', boxShadow: 'focusRing' },
         },
       },
     },
@@ -148,7 +163,7 @@ const theme = extendTheme({
           field: {
             border: '1px solid', borderColor: 'border.default', bg: 'bg.surface', borderRadius: 'lg',
             _hover: { borderColor: 'border.strong' },
-            _focusVisible: { borderColor: 'border.focus', boxShadow: shadows.focus },
+            _focusVisible: { borderColor: 'border.focus', boxShadow: 'focusRing' },
           },
         },
       },
