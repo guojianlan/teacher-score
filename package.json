@@ -25,6 +25,7 @@
     "fixtures:synth": "tsx scripts/generate-synthetic-fixtures.ts",
     "tokens:sync": "tsx apps/web/src/styles/tokens/sync.ts",
     "tokens:export-json": "tsx scripts/export-tokens-json.ts",
+    "tokens:palette": "tsx scripts/add-palette.ts",
     "accuracy": "dotenv -e .env -- tsx scripts/accuracy-test.ts",
     "e2e": "pnpm --filter @teacher-score/e2e test",
     "format": "prettier --write \"**/*.{ts,tsx,js,json,md}\""
