@@ -16,10 +16,29 @@ if (!secret && process.env.NODE_ENV === 'production') {
   throw new Error('BETTER_AUTH_SECRET is required in production');
 }
 
+// Origins allowed to call /api/auth/*. Browser hits same-origin localhost:3000;
+// after Next rewrite the backend sees Host=localhost:3001 (or whatever BACKEND_PORT).
+// In dev, accept localhost on common ports; in production, only the explicit APP_URL.
+const trustedOrigins = (() => {
+  const list = new Set<string>([baseUrl]);
+  if (process.env.APP_URL) list.add(process.env.APP_URL);
+  if (process.env.TRUSTED_ORIGINS) {
+    for (const o of process.env.TRUSTED_ORIGINS.split(',')) list.add(o.trim());
+  }
+  if (process.env.NODE_ENV !== 'production') {
+    list.add('http://localhost:3000');
+    list.add('http://localhost:3001');
+    list.add('http://localhost:3011');
+    list.add('http://127.0.0.1:3000');
+  }
+  return [...list];
+})();
+
 export const auth = betterAuth({
   secret: secret ?? 'dev-only-not-secret-please-replace',
   baseURL: baseUrl,
   basePath: '/api/auth',
+  trustedOrigins,
   database: drizzleAdapter(db, {
     provider: 'pg',
     schema: {

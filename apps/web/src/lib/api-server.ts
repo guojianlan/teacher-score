@@ -7,11 +7,20 @@ import { cookies, headers } from 'next/headers';
 
 const BACKEND = process.env.BACKEND_INTERNAL_URL ?? 'http://localhost:3001';
 
+// Headers.set() requires ByteString (each char ≤ 0xFF). Cookies may carry
+// non-ASCII characters (e.g. Chinese org names). Percent-encode the offending
+// bytes — Better-Auth's own session cookies are already ASCII, so this is a
+// no-op for them; it only re-encodes other cookies that happen to carry UTF-8.
+function safeCookiePart(value: string): string {
+  // Encode bytes > 0x7F; leave =, ;, /, etc. alone so cookie value structure stays intact.
+  return value.replace(/[^\x20-\x7E]/g, (ch) => encodeURIComponent(ch));
+}
+
 async function buildHeaders(extra?: HeadersInit): Promise<Headers> {
   const cookieStore = await cookies();
   const cookieHeader = cookieStore
     .getAll()
-    .map((c) => `${c.name}=${c.value}`)
+    .map((c) => `${c.name}=${safeCookiePart(c.value)}`)
     .join('; ');
 
   const headersList = await headers();

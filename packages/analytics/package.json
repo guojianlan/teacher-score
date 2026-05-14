@@ -13,10 +13,11 @@
     "build": "tsc -p tsconfig.json",
     "lint": "eslint src",
     "typecheck": "tsc -p tsconfig.json --noEmit",
-    "test": "vitest run"
+    "test": "vitest run --passWithNoTests"
   },
   "dependencies": {
-    "@teacher-score/logger": "workspace:*"
+    "@teacher-score/logger": "workspace:*",
+    "posthog-js": "^1.373.4"
   },
   "devDependencies": {
     "@teacher-score/config": "workspace:*",

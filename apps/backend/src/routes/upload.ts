@@ -64,7 +64,7 @@ uploadRoute.post('/', async (c) => {
       return c.json({ error: 'unsupported_media_type', message: 'unrecognized image' }, 415);
     }
     // Normalize HEIC to JPEG for downstream compatibility; keep others.
-    if (meta.format === 'heif' || meta.format === 'heic') {
+    if (meta.format === 'heif') {
       cleaned = await sharp(inputBuf).jpeg({ quality: 90 }).withMetadata({}).toBuffer();
       outExt = 'jpg';
       outMime = 'image/jpeg';
@@ -110,7 +110,9 @@ uploadRoute.get('/:key{.+}', async (c) => {
 
   const file = await storage.get(key);
   if (!file) return c.json({ error: 'not_found' }, 404);
-  return new Response(file.body, {
+  const body = new Uint8Array(file.body);
+  const responseBody = body.buffer.slice(body.byteOffset, body.byteOffset + body.byteLength);
+  return new Response(responseBody, {
     status: 200,
     headers: { 'content-type': file.contentType },
   });

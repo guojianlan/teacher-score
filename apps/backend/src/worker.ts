@@ -1,4 +1,10 @@
-import { getBoss, JOB_GRADE_EXAM, JOB_GENERATE_PDF, type GradeExamPayload } from './boss';
+import {
+  getBoss,
+  JOB_GRADE_EXAM,
+  JOB_GENERATE_PDF,
+  type GeneratePdfPayload,
+  type GradeExamPayload,
+} from './boss';
 import { gradeExamJobHandler, generatePdfJobHandler } from '@teacher-score/jobs';
 import { createLogger, initSentry, captureError } from '@teacher-score/logger';
 
@@ -25,7 +31,7 @@ async function main() {
 
   await boss.work<GradeExamPayload>(
     JOB_GRADE_EXAM,
-    { teamSize, teamConcurrency: 1 },
+    { batchSize: teamSize },
     async (jobs) => {
       const jobArr = Array.isArray(jobs) ? jobs : [jobs];
       for (const job of jobArr) {
@@ -39,7 +45,7 @@ async function main() {
     },
   );
 
-  await boss.work(JOB_GENERATE_PDF, { teamSize: 1 }, async (jobs) => {
+  await boss.work<GeneratePdfPayload>(JOB_GENERATE_PDF, { batchSize: 1 }, async (jobs) => {
     const jobArr = Array.isArray(jobs) ? jobs : [jobs];
     for (const job of jobArr) {
       try {

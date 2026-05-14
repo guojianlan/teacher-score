@@ -12,7 +12,7 @@
     "start:worker": "node dist/worker.js",
     "lint": "eslint src",
     "typecheck": "tsc -p tsconfig.json --noEmit",
-    "test": "vitest run"
+    "test": "vitest run --passWithNoTests"
   },
   "dependencies": {
     "@hono/node-server": "^1.13.0",

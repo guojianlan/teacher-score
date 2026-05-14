@@ -1,7 +1,6 @@
 'use client';
 
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import {
   Box,
@@ -18,7 +17,6 @@ import {
 import { signIn } from '@teacher-score/auth/client';
 
 export default function SignInPage() {
-  const router = useRouter();
   const toast = useToast();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -30,7 +28,7 @@ export default function SignInPage() {
     try {
       const res = await signIn.email({ email, password });
       if (res.error) throw new Error(res.error.message ?? '登录失败');
-      router.replace('/dashboard');
+      window.location.assign('/dashboard');
     } catch (err) {
       toast({ status: 'error', title: '登录失败', description: (err as Error).message });
     } finally {

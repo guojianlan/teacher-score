@@ -1,7 +1,6 @@
 'use client';
 
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import {
   Button,
@@ -18,7 +17,6 @@ import { signUp } from '@teacher-score/auth/client';
 import { captureClient, initClientAnalytics } from '@teacher-score/analytics/client';
 
 export default function SignUpPage() {
-  const router = useRouter();
   const toast = useToast();
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -36,7 +34,7 @@ export default function SignUpPage() {
       const res = await signUp.email({ email, password, name });
       if (res.error) throw new Error(res.error.message ?? '注册失败');
       initClientAnalytics().then(() => captureClient('user_signed_up'));
-      router.replace('/dashboard');
+      window.location.assign('/dashboard');
     } catch (err) {
       toast({ status: 'error', title: '注册失败', description: (err as Error).message });
     } finally {

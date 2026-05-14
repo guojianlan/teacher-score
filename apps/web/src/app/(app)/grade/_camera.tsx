@@ -29,7 +29,7 @@ export function CameraCapture({ onCaptured }: { onCaptured: (key: string) => voi
         await videoRef.current.play();
         setActive(true);
       }
-    } catch (err) {
+    } catch {
       toast({
         status: 'warning',
         title: '摄像头不可用',

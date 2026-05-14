@@ -17,7 +17,7 @@
     "dev:worker": "dotenv -e .env -- pnpm --filter @teacher-score/backend dev:worker",
     "lint": "pnpm -r lint",
     "typecheck": "pnpm -r typecheck",
-    "test": "pnpm -r test",
+    "test": "pnpm -r --filter=./packages/* --filter=./apps/* test",
     "db:generate": "dotenv -e .env -- pnpm --filter @teacher-score/db generate",
     "db:migrate": "dotenv -e .env -- pnpm --filter @teacher-score/db migrate",
     "db:push": "dotenv -e .env -- pnpm --filter @teacher-score/db push",

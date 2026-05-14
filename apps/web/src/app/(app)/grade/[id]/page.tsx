@@ -139,7 +139,7 @@ export default function GradeStatusPage({ params }: { params: Promise<{ id: stri
 
 function ResultView({ record, reload }: { record: GradingRecord; reload: () => void }) {
   const toast = useToast();
-  const [results, setResults] = useState<QuestionResult[]>(record.results ?? []);
+  const [results] = useState<QuestionResult[]>(record.results ?? []);
   const total = results.reduce((acc, q) => acc + (Number(q.score) || 0), 0);
   const max = results.reduce((acc, q) => acc + (Number(q.maxScore) || 0), 0);
   const wrong = results.filter((q) => !q.isCorrect).length;
@@ -240,7 +240,7 @@ function ResultView({ record, reload }: { record: GradingRecord; reload: () => v
       </Box>
 
       <Stack spacing={3}>
-        {results.map((q, idx) => (
+        {results.map((q) => (
           <Box key={q.no} bg="white" p={4} rounded="md" borderWidth="1px">
             <Flex align="center" mb={2}>
               <Heading size="sm">第 {q.no} 题</Heading>

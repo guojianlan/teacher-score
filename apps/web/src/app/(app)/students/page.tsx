@@ -56,7 +56,6 @@ export default function StudentsPage() {
 
   useEffect(() => {
     refresh();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [search, grade, subject]);
 
   const onDelete = async (id: string) => {
