@@ -45,7 +45,7 @@ function CaptureInner() {
     return (
       <Container maxW="sm" py={10}>
         <Heading size="md">无效链接</Heading>
-        <Text mt={2} color="gray.600">
+        <Text mt={2} color="fg.muted">
           请回到桌面端重新生成二维码。
         </Text>
       </Container>
@@ -56,7 +56,7 @@ function CaptureInner() {
     <Container maxW="sm" py={6}>
       <Stack spacing={4}>
         <Heading size="md">拍照上传学生答卷</Heading>
-        <Text fontSize="sm" color="gray.600">
+        <Text fontSize="sm" color="fg.muted">
           会话有效期 15 分钟。多张可连续拍照。
         </Text>
         <Box bg="white" p={4} rounded="md" borderWidth="1px" textAlign="center">
