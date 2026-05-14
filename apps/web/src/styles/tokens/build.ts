@@ -180,7 +180,6 @@ function textStyleSpec(): string {
     })
     .join('');
   return `<section class="block">
-    <h3>textStyles</h3>
     <div class="ts-list">${rows}</div>
   </section>`;
 }
@@ -203,8 +202,6 @@ function radiiCards(): string {
 
 function components(): string {
   return `<section class="block">
-    <h3>components</h3>
-
     <h4>Buttons</h4>
     <div class="row">
       <button class="btn btn-primary">主操作</button>

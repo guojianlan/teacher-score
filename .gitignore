@@ -20,3 +20,5 @@ tmp/
 
 # TypeScript build cache
 *.tsbuildinfo
+/tmp/design-system-screens
+tmp/
