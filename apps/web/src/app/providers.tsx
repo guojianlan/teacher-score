@@ -100,7 +100,15 @@ const theme = extendTheme({
       },
     },
     Button: {
-      baseStyle: { fontFamily: 'body', fontWeight: 'medium', borderRadius: 'lg' },
+      baseStyle: {
+        fontFamily: 'body',
+        fontWeight: 'medium',
+        borderRadius: 'lg',
+        cursor: 'pointer',                                    // 明确光标
+        transition: 'background-color 120ms ease, border-color 120ms ease, color 120ms ease, box-shadow 120ms ease',
+        _focusVisible: { boxShadow: 'focusRing', outline: 'none' },  // 键盘 focus 环（hover 不出现）
+        _disabled: { cursor: 'not-allowed', opacity: 0.55 },
+      },
       sizes: {
         sm: { h: '32px', px: 3, fontSize: 'sm' },
         md: { h: '40px', px: 4, fontSize: 'md' },
@@ -110,14 +118,14 @@ const theme = extendTheme({
         solid: {
           bg: 'interactive.primary.bg', color: 'interactive.primary.fg',
           _hover: { bg: 'interactive.primary.bgHover', _disabled: { bg: 'interactive.primary.bg' } },
-          _active: { bg: 'interactive.primary.bgActive' },
+          _active: { bg: 'interactive.primary.bgActive', transform: 'translateY(0.5px)' },  // 微按下感
         },
         outline: {
           bg: 'interactive.secondary.bg',
           color: 'interactive.secondary.fg',
           border: '1px solid',
           borderColor: 'interactive.secondary.border',
-          _hover: { bg: 'interactive.secondary.bgHover' },
+          _hover: { bg: 'interactive.secondary.bgHover', borderColor: 'border.strong' },
           _active: { bg: 'interactive.secondary.bgActive' },
         },
         ghost: {
