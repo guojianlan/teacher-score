@@ -13,7 +13,7 @@ import {
   Stack,
   Text,
   useToast,
-} from '@chakra-ui/react';
+} from '@/components/ui';
 import { signIn } from '@teacher-score/auth/client';
 
 export default function SignInPage() {
@@ -38,7 +38,7 @@ export default function SignInPage() {
   };
 
   return (
-    <Stack spacing={8}>
+    <Stack gap={8}>
       <Box>
         <Text fontFamily="mono" fontSize="xs" color="fg.subtle" letterSpacing="0.12em" textTransform="uppercase" mb={2}>
           Welcome back
@@ -49,16 +49,16 @@ export default function SignInPage() {
       </Box>
 
       <form onSubmit={onSubmit}>
-        <Stack spacing={5}>
-          <FormControl isRequired>
+        <Stack gap={5}>
+          <FormControl required>
             <FormLabel fontSize="sm" color="fg.muted" mb={1.5}>邮箱</FormLabel>
             <Input type="email" value={email} onChange={(e) => setEmail(e.target.value)} autoComplete="email" />
           </FormControl>
-          <FormControl isRequired>
+          <FormControl required>
             <FormLabel fontSize="sm" color="fg.muted" mb={1.5}>密码</FormLabel>
             <Input type="password" value={password} onChange={(e) => setPassword(e.target.value)} autoComplete="current-password" />
           </FormControl>
-          <Button type="submit" isLoading={loading} size="lg" mt={2}>
+          <Button type="submit" loading={loading} size="lg" mt={2}>
             登录 →
           </Button>
           <Button

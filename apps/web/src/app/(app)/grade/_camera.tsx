@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import { Box, Button, HStack, Spinner, Text, useToast } from '@chakra-ui/react';
+import { Box, Button, HStack, Spinner, Text, useToast } from '@/components/ui';
 import { apiClient } from '@/lib/api-client';
 
 export function CameraCapture({ onCaptured }: { onCaptured: (key: string) => void }) {
@@ -69,7 +69,7 @@ export function CameraCapture({ onCaptured }: { onCaptured: (key: string) => voi
         <video ref={videoRef} style={{ width: '100%', maxHeight: 320, background: '#000', borderRadius: 4 }} playsInline muted />
         <canvas ref={canvasRef} style={{ display: 'none' }} />
         <HStack mt={3}>
-          <Button size="sm" onClick={capture} isDisabled={busy} flex="1">
+          <Button size="sm" onClick={capture} disabled={busy} flex="1">
             {busy ? <Spinner size="sm" /> : '拍照'}
           </Button>
           <Button size="sm" variant="ghost" onClick={stop}>关闭</Button>

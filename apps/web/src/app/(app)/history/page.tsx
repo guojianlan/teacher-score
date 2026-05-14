@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { Box, Stack, Table, Tbody, Td, Text, Th, Thead, Tr } from '@chakra-ui/react';
+import { Box, Stack, Table, Tbody, Td, Text, Th, Thead, Tr } from '@/components/ui';
 import { apiServer } from '@/lib/api-server';
 import { PageHeader } from '@/components/page-header';
 
@@ -14,7 +14,7 @@ export default async function HistoryPage() {
   const data = await apiServer<{ rows: HistoryRow[] }>('/api/grade/history');
   const rows = data?.rows ?? [];
   return (
-    <Stack spacing={8}>
+    <Stack gap={8}>
       <PageHeader
         eyebrow={`最近 ${rows.length} 次`}
         title="历史"
@@ -33,7 +33,7 @@ export default async function HistoryPage() {
               <Th>时间</Th>
               <Th>学科</Th>
               <Th>状态</Th>
-              <Th isNumeric>分数</Th>
+              <Th>分数</Th>
               <Th></Th>
             </Tr>
           </Thead>
@@ -43,7 +43,7 @@ export default async function HistoryPage() {
                 <Td color="fg.subtle" fontSize="sm" fontFamily="mono">{new Date(r.createdAt).toLocaleString('zh-CN')}</Td>
                 <Td>{SUBJECT_LABELS[r.subject] ?? r.subject}</Td>
                 <Td color="fg.subtle" fontSize="sm">{r.status}</Td>
-                <Td isNumeric fontFamily="mono">{r.totalScore ?? '—'} / {r.maxScore ?? '—'}</Td>
+                <Td fontFamily="mono">{r.totalScore ?? '—'} / {r.maxScore ?? '—'}</Td>
                 <Td><Link href={`/grade/${r.id}`} style={{ color: '#0969DA', fontSize: 13 }}>查看 →</Link></Td>
               </Tr>
             ))}

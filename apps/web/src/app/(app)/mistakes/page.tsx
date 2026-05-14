@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import {
   Badge, Box, Button, Flex, Input, Select, Stack, Table, Tbody, Td, Text, Th, Thead, Tr, useToast,
-} from '@chakra-ui/react';
+} from '@/components/ui';
 import { apiClient } from '@/lib/api-client';
 import { PageHeader } from '@/components/page-header';
 import { SUBJECTS } from '@teacher-score/types';
@@ -54,7 +54,7 @@ export default function MistakesPage() {
   };
 
   return (
-    <Stack spacing={8}>
+    <Stack gap={8}>
       <PageHeader
         eyebrow={`共 ${rows.length} 题 · 未掌握 ${rows.filter((r) => !r.mastered).length}`}
         title="错题本"
@@ -90,7 +90,7 @@ export default function MistakesPage() {
               <Th>题目</Th>
               <Th>学科</Th>
               <Th>知识点</Th>
-              <Th isNumeric>次数</Th>
+              <Th>次数</Th>
               <Th>最近</Th>
               <Th></Th>
             </Tr>
@@ -105,7 +105,7 @@ export default function MistakesPage() {
                     {(r.knowledgeTags ?? []).map((t) => <Badge key={t} bg="bg.muted" color="fg.muted">{t}</Badge>)}
                   </Flex>
                 </Td>
-                <Td isNumeric fontFamily="mono" fontWeight={500}>{r.occurrences}</Td>
+                <Td fontFamily="mono" fontWeight={500}>{r.occurrences}</Td>
                 <Td color="fg.subtle" fontSize="sm" fontFamily="mono">{new Date(r.lastSeenAt).toLocaleDateString('zh-CN')}</Td>
                 <Td>
                   {r.mastered

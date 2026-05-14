@@ -19,7 +19,7 @@ import {
   Tr,
   useDisclosure,
   useToast,
-} from '@chakra-ui/react';
+} from '@/components/ui';
 import { apiClient } from '@/lib/api-client';
 import { PageHeader } from '@/components/page-header';
 import { SUBJECTS } from '@teacher-score/types';
@@ -61,7 +61,7 @@ export default function StudentsPage() {
   };
 
   return (
-    <Stack spacing={8}>
+    <Stack gap={8}>
       <PageHeader
         eyebrow={`花名册 · ${students.length} 人`}
         title="学生"
@@ -98,7 +98,7 @@ export default function StudentsPage() {
                 <Th>年级</Th>
                 <Th>学科</Th>
                 <Th>备注</Th>
-                <Th isNumeric width="120px"></Th>
+                <Th width="120px"></Th>
               </Tr>
             </Thead>
             <Tbody>
@@ -116,7 +116,7 @@ export default function StudentsPage() {
                   <Td maxW="280px" overflow="hidden" textOverflow="ellipsis" whiteSpace="nowrap" color="fg.subtle" fontSize="sm">
                     {s.notes ?? '—'}
                   </Td>
-                  <Td isNumeric>
+                  <Td>
                     <Button size="xs" variant="ghost" mr={1} onClick={() => { setEditing(s); drawer.onOpen(); }}>
                       编辑
                     </Button>
@@ -132,7 +132,7 @@ export default function StudentsPage() {
       </Box>
 
       <StudentFormDrawer
-        isOpen={drawer.isOpen}
+        open={drawer.open}
         onClose={() => { drawer.onClose(); setEditing(null); }}
         editing={editing}
         onSaved={() => { drawer.onClose(); setEditing(null); refresh(); }}

@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import {
   Box, Button, FormControl, FormLabel, Image, Select, Stack, Text, useToast,
-} from '@chakra-ui/react';
+} from '@/components/ui';
 import { apiClient } from '@/lib/api-client';
 import { PageHeader } from '@/components/page-header';
 import { SUBJECTS } from '@teacher-score/types';
@@ -60,17 +60,17 @@ export default function GradePage() {
   };
 
   return (
-    <Stack spacing={10}>
+    <Stack gap={10}>
       <PageHeader
         eyebrow="新批改"
         title="开始批改"
         description="选学生 → 选学科 → 上传答卷照片 → 提交。整个过程通常不到 30 秒。"
       />
 
-      <Stack spacing={8}>
+      <Stack gap={8}>
         <Section number="01" title="学生 / 学科">
-          <Stack spacing={4} direction={['column', 'row']}>
-            <FormControl isRequired flex="1">
+          <Stack gap={4} direction={['column', 'row']}>
+            <FormControl required flex="1">
               <FormLabel fontSize="sm" color="fg.muted" mb={1.5}>学生</FormLabel>
               <Select value={studentId} onChange={(e) => setStudentId(e.target.value)} size="md">
                 <option value="">请选择</option>
@@ -79,7 +79,7 @@ export default function GradePage() {
                 ))}
               </Select>
             </FormControl>
-            <FormControl isRequired flex="1">
+            <FormControl required flex="1">
               <FormLabel fontSize="sm" color="fg.muted" mb={1.5}>学科</FormLabel>
               <Select value={subject} onChange={(e) => setSubject(e.target.value)} size="md">
                 {SUBJECTS.map((s) => <option key={s} value={s}>{SUBJECT_LABELS[s]}</option>)}
@@ -101,9 +101,9 @@ export default function GradePage() {
         </Section>
 
         <Section number="02" title="上传答卷">
-          <Stack spacing={4}>
+          <Stack gap={4}>
             <Uploader onUploaded={(key) => setImageKeys((prev) => [...prev, key])} />
-            <Stack direction={['column', 'row']} spacing={3}>
+            <Stack direction={['column', 'row']} gap={3}>
               <CameraCapture onCaptured={(key) => setImageKeys((prev) => [...prev, key])} />
               <MobileQrCapture onCaptured={(key) => setImageKeys((prev) => [...prev, key])} />
             </Stack>
@@ -113,7 +113,7 @@ export default function GradePage() {
                 <Text fontFamily="mono" fontSize="xs" color="fg.subtle" letterSpacing="0.06em" mb={3}>
                   已上传 {imageKeys.length} 张
                 </Text>
-                <Stack direction="row" spacing={3} wrap="wrap">
+                <Stack direction="row" gap={3} wrap="wrap">
                   {imageKeys.map((k) => (
                     <Box key={k} borderWidth="1px" borderColor="border.default" borderRadius="6px" overflow="hidden" maxW="100px">
                       <Image src={`/api/upload/${encodeURIComponent(k)}`} alt="preview" />
@@ -126,7 +126,7 @@ export default function GradePage() {
         </Section>
 
         <Box pt={4} borderTop="1px solid" borderColor="border.default">
-          <Button onClick={onSubmit} isLoading={submitting} size="lg">
+          <Button onClick={onSubmit} loading={submitting} size="lg">
             开始批改 →
           </Button>
           <Text mt={3} fontSize="xs" color="fg.subtle" fontFamily="mono">

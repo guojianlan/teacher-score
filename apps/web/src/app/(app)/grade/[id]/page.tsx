@@ -3,7 +3,7 @@
 import { use, useEffect, useState } from 'react';
 import {
   Alert, AlertIcon, Badge, Box, Button, Flex, Heading, Input, Progress, Stack, Text, Textarea, useToast,
-} from '@chakra-ui/react';
+} from '@/components/ui';
 import { apiClient } from '@/lib/api-client';
 import { PageHeader } from '@/components/page-header';
 
@@ -66,7 +66,7 @@ export default function GradeStatusPage({ params }: { params: Promise<{ id: stri
 
   if (!record) {
     return (
-      <Stack spacing={8}>
+      <Stack gap={8}>
         <PageHeader eyebrow="处理中" title="正在批改" />
         <Progress isIndeterminate colorScheme="blue" size="xs" />
       </Stack>
@@ -75,9 +75,9 @@ export default function GradeStatusPage({ params }: { params: Promise<{ id: stri
 
   if (record.status === 'failed') {
     return (
-      <Stack spacing={8}>
+      <Stack gap={8}>
         <PageHeader eyebrow="错误" title="批改失败" />
-        <Alert status="error" variant="left-accent" borderRadius="6px">
+        <Alert status="error" borderRadius="6px">
           <AlertIcon />
           {record.errorMessage ?? record.errorCode ?? '未知错误'}
         </Alert>
@@ -100,7 +100,7 @@ export default function GradeStatusPage({ params }: { params: Promise<{ id: stri
 
   if (record.status !== 'completed') {
     return (
-      <Stack spacing={8}>
+      <Stack gap={8}>
         <PageHeader
           eyebrow={STATUS_TEXT[record.status] ?? record.status}
           title="正在批改"
@@ -108,7 +108,7 @@ export default function GradeStatusPage({ params }: { params: Promise<{ id: stri
         />
         <Progress isIndeterminate colorScheme="blue" size="xs" />
         {overdue && (
-          <Alert status="info" variant="left-accent" borderRadius="6px">
+          <Alert status="info" borderRadius="6px">
             <AlertIcon />
             仍在处理中，可稍后刷新页面。
           </Alert>
@@ -135,7 +135,7 @@ function ResultView({ record, reload }: { record: GradingRecord; reload: () => v
   };
 
   return (
-    <Stack spacing={10}>
+    <Stack gap={10}>
       <PageHeader
         eyebrow="批改完成 · 可一键改分"
         title="批改结果"
@@ -209,7 +209,7 @@ function ResultView({ record, reload }: { record: GradingRecord; reload: () => v
       </Box>
 
       {/* Question by question */}
-      <Stack spacing={0} borderTop="1px solid" borderColor="border.default">
+      <Stack gap={0} borderTop="1px solid" borderColor="border.default">
         {results.map((q) => (
           <Box key={q.no} py={6} borderBottom="1px solid" borderColor="border.default">
             <Flex align="baseline" gap={3} mb={3} wrap="wrap">
@@ -228,7 +228,7 @@ function ResultView({ record, reload }: { record: GradingRecord; reload: () => v
 
             <Text fontSize="md" color="fg.muted" mb={2} lineHeight={1.6}>{q.stem}</Text>
 
-            <Stack spacing={1.5} fontSize="sm" color="fg.subtle" mb={4}>
+            <Stack gap={1.5} fontSize="sm" color="fg.subtle" mb={4}>
               <Flex gap={3}>
                 <Text fontFamily="mono" w="60px" flexShrink={0} color="fg.subtle">学生</Text>
                 <Text color="fg.muted">{q.studentAnswer || '（空）'}</Text>

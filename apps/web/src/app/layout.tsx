@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { Open_Sans, Source_Serif_4, Poppins, Figtree } from 'next/font/google';
 import { Providers } from './providers';
 import { themeInitScript } from '@/components/theme-switcher';
+import { Toaster } from '@/components/ui';
 import '../styles/tokens.css';
 
 // 字体栈来自 docs/claude/token.json
@@ -47,7 +48,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
       </head>
       <body>
-        <Providers>{children}</Providers>
+        <Providers>
+          {children}
+          <Toaster />
+        </Providers>
       </body>
     </html>
   );

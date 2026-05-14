@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import {
   Box, Button, FormControl, FormLabel, Input, Stack, Text, useToast,
-} from '@chakra-ui/react';
+} from '@/components/ui';
 import { authClient, signOut } from '@teacher-score/auth/client';
 import { apiClient } from '@/lib/api-client';
 import { PageHeader } from '@/components/page-header';
@@ -44,7 +44,7 @@ export default function SettingsPage() {
   };
 
   return (
-    <Stack spacing={10}>
+    <Stack gap={10}>
       <PageHeader eyebrow="账户" title="设置" />
 
       <Section label="外观主题">
@@ -58,16 +58,16 @@ export default function SettingsPage() {
 
       <Section label="修改密码">
         <form onSubmit={changePassword}>
-          <Stack spacing={4} maxW="sm">
-            <FormControl isRequired>
+          <Stack gap={4} maxW="sm">
+            <FormControl required>
               <FormLabel fontSize="sm" color="fg.muted" mb={1.5}>当前密码</FormLabel>
               <Input type="password" value={oldPassword} onChange={(e) => setOldPassword(e.target.value)} autoComplete="current-password" />
             </FormControl>
-            <FormControl isRequired>
+            <FormControl required>
               <FormLabel fontSize="sm" color="fg.muted" mb={1.5}>新密码</FormLabel>
               <Input type="password" value={newPassword} onChange={(e) => setNewPassword(e.target.value)} autoComplete="new-password" />
             </FormControl>
-            <Box><Button type="submit" isLoading={pwLoading}>修改密码</Button></Box>
+            <Box><Button type="submit" loading={pwLoading}>修改密码</Button></Box>
           </Stack>
         </form>
       </Section>
@@ -76,8 +76,8 @@ export default function SettingsPage() {
         <Text color="fg.subtle" fontSize="sm" mb={4} lineHeight={1.6}>
           导出当前组织下所有学生、批改记录、错题本、模板的 JSON 文件。
         </Text>
-        <Button as="a" href="/api/me/export" download="teacher-score-export.json" variant="outline">
-          下载我的数据
+        <Button asChild variant="outline">
+          <a href="/api/me/export" download="teacher-score-export.json">下载我的数据</a>
         </Button>
       </Section>
 
@@ -87,7 +87,7 @@ export default function SettingsPage() {
         </Text>
         <Button variant="outline" color="status.danger.fg" borderColor="status.danger.fg"
           _hover={{ bg: 'status.danger.bg', borderColor: 'status.danger.fg' }}
-          onClick={deleteAccount} isLoading={delLoading}>
+          onClick={deleteAccount} loading={delLoading}>
           注销账户
         </Button>
       </Section>

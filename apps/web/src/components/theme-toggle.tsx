@@ -4,7 +4,7 @@
  * ThemeToggle —— sidebar 用的紧凑切换器，点击循环切换：
  *   auto → light → dark → sepia → auto
  */
-import { Box, Tooltip } from '@chakra-ui/react';
+import { Box, Tooltip } from '@/components/ui';
 import { useTheme, type ThemeChoice } from './theme-switcher';
 
 const ORDER: ThemeChoice[] = ['auto', 'light', 'dark', 'sepia'];

@@ -2,7 +2,7 @@
 
 import { Suspense, useState } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
-import { Box, Button, FormControl, FormLabel, Heading, Input, Stack, Text, useToast } from '@chakra-ui/react';
+import { Box, Button, FormControl, FormLabel, Heading, Input, Stack, Text, useToast } from '@/components/ui';
 import { authClient } from '@teacher-score/auth/client';
 
 function ResetPasswordInner() {
@@ -28,7 +28,7 @@ function ResetPasswordInner() {
   };
 
   return (
-    <Stack spacing={8}>
+    <Stack gap={8}>
       <Box>
         <Text fontFamily="mono" fontSize="xs" color="fg.subtle" letterSpacing="0.12em" textTransform="uppercase" mb={2}>
           Reset
@@ -36,12 +36,12 @@ function ResetPasswordInner() {
         <Heading as="h1" size="xl" fontStyle="italic" fontWeight={400}>重置密码</Heading>
       </Box>
       <form onSubmit={onSubmit}>
-        <Stack spacing={5}>
-          <FormControl isRequired>
+        <Stack gap={5}>
+          <FormControl required>
             <FormLabel fontSize="sm" color="fg.muted" mb={1.5}>新密码 <Text as="span" color="fg.subtle" fontFamily="mono" fontSize="xs">/ ≥8</Text></FormLabel>
             <Input type="password" value={password} onChange={(e) => setPassword(e.target.value)} autoComplete="new-password" />
           </FormControl>
-          <Button type="submit" isLoading={loading} isDisabled={!token} size="lg">确认重置 →</Button>
+          <Button type="submit" loading={loading} disabled={!token} size="lg">确认重置 →</Button>
         </Stack>
       </form>
     </Stack>

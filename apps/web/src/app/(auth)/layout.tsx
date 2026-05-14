@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { Box, Flex, Text } from '@chakra-ui/react';
+import { Box, Flex, Text } from '@/components/ui';
 
 export default function AuthLayout({ children }: { children: React.ReactNode }) {
   return (

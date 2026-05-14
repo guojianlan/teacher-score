@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { Badge, Box, Button, Stack, Table, Tbody, Td, Text, Th, Thead, Tr, useToast } from '@chakra-ui/react';
+import { Badge, Box, Button, Stack, Table, Tbody, Td, Text, Th, Thead, Tr, useToast } from '@/components/ui';
 import { apiClient } from '@/lib/api-client';
 import { PageHeader } from '@/components/page-header';
 
@@ -30,7 +30,7 @@ export default function TemplatesPage() {
   };
 
   return (
-    <Stack spacing={8}>
+    <Stack gap={8}>
       <PageHeader
         eyebrow={`${templates.length} 个模板`}
         title="试卷模板"
@@ -49,8 +49,8 @@ export default function TemplatesPage() {
               <Th>名称</Th>
               <Th>学科</Th>
               <Th>年级</Th>
-              <Th isNumeric>总分</Th>
-              <Th isNumeric>题数</Th>
+              <Th>总分</Th>
+              <Th>题数</Th>
               <Th>创建</Th>
               <Th></Th>
             </Tr>
@@ -61,8 +61,8 @@ export default function TemplatesPage() {
                 <Td fontWeight={500}>{t.name}</Td>
                 <Td><Badge bg="bg.muted" color="fg.muted">{SUBJECT_LABELS[t.subject] ?? t.subject}</Badge></Td>
                 <Td color="fg.subtle">{t.grade ?? '—'}</Td>
-                <Td isNumeric fontFamily="mono">{t.totalScore}</Td>
-                <Td isNumeric fontFamily="mono">{Array.isArray(t.questions) ? t.questions.length : 0}</Td>
+                <Td fontFamily="mono">{t.totalScore}</Td>
+                <Td fontFamily="mono">{Array.isArray(t.questions) ? t.questions.length : 0}</Td>
                 <Td color="fg.subtle" fontSize="sm" fontFamily="mono">{new Date(t.createdAt).toLocaleDateString('zh-CN')}</Td>
                 <Td><Button size="xs" variant="ghost" color="status.danger.fg" onClick={() => onDelete(t.id)}>删除</Button></Td>
               </Tr>

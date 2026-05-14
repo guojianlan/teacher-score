@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
-import { Box, Flex, Text } from '@chakra-ui/react';
+import { Box, Flex, Text } from '@/components/ui';
 import { signOut } from '@teacher-score/auth/client';
 import { ThemeToggle } from '@/components/theme-toggle';
 
@@ -140,10 +140,10 @@ export function AppShell({ me, children }: { me: Me; children: React.ReactNode }
         <Box px={6} py={4} borderTop="1px solid" borderColor="border.subtle">
           <Flex align="center" justify="space-between" gap={2}>
             <Box overflow="hidden" flex="1">
-              <Text fontSize="sm" color="fg.default" fontWeight={600} noOfLines={1}>
+              <Text fontSize="sm" color="fg.default" fontWeight={600} lineClamp={1}>
                 {me.user.email.split('@')[0]}
               </Text>
-              <Text fontSize="xs" color="fg.subtle" noOfLines={1}>
+              <Text fontSize="xs" color="fg.subtle" lineClamp={1}>
                 {me.user.email}
               </Text>
             </Box>

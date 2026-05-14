@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { Box, Button, Container, Flex, Heading, Stack, Text } from '@chakra-ui/react';
+import { Box, Button, Container, Flex, Heading, Stack, Text } from '@/components/ui';
 
 export default function HomePage() {
   return (
@@ -18,8 +18,8 @@ export default function HomePage() {
               <Text fontFamily="heading" fontWeight={600} fontSize="md">教师批改</Text>
             </Flex>
             <Flex gap={3}>
-              <Button as={Link} href="/sign-in" variant="ghost" size="sm">登录</Button>
-              <Button as={Link} href="/sign-up" size="sm">免费注册</Button>
+              <Button asChild  variant="ghost" size="sm"><Link href="/sign-in">登录</Link></Button>
+              <Button asChild  size="sm"><Link href="/sign-up">免费注册</Link></Button>
             </Flex>
           </Flex>
         </Container>
@@ -27,7 +27,7 @@ export default function HomePage() {
 
       {/* Hero */}
       <Container maxW="3xl" py={[16, 24]} px={[6, 10]}>
-        <Stack spacing={8}>
+        <Stack gap={8}>
           <Text fontFamily="mono" fontSize="xs" color="interactive.primary.bg" letterSpacing="0.1em" textTransform="uppercase" fontWeight={600}>
             for 1-on-1 tutors · v0.1
           </Text>
@@ -49,8 +49,8 @@ export default function HomePage() {
             形成可查可教的学情资产。
           </Text>
           <Flex gap={3} pt={2}>
-            <Button as={Link} href="/sign-up" size="lg">开始批改 →</Button>
-            <Button as={Link} href="/sign-in" variant="outline" size="lg">已有账号</Button>
+            <Button asChild  size="lg"><Link href="/sign-up">开始批改 →</Link></Button>
+            <Button asChild  variant="outline" size="lg"><Link href="/sign-in">已有账号</Link></Button>
           </Flex>
         </Stack>
 
@@ -59,7 +59,7 @@ export default function HomePage() {
           <Text fontFamily="mono" fontSize="xs" color="fg.subtle" letterSpacing="0.1em" mb={8} fontWeight={600}>
             FEATURES
           </Text>
-          <Stack spacing={0}>
+          <Stack gap={0}>
             {[
               ['01', '拍照即批改', '电脑摄像头、文件上传、手机扫码三选一。EXIF 清洗、跨设备同步。'],
               ['02', '错题自动归集', '错过的题按 questionHash 去重，按知识点排序，按重复次数排序。'],

@@ -19,7 +19,7 @@ import {
   Stack,
   Textarea,
   useToast,
-} from '@chakra-ui/react';
+} from '@/components/ui';
 import { apiClient } from '@/lib/api-client';
 import { SUBJECTS, type Subject } from '@teacher-score/types';
 
@@ -41,12 +41,12 @@ const SUBJECT_LABELS: Record<string, string> = {
 };
 
 export function StudentFormDrawer({
-  isOpen,
+  open,
   onClose,
   editing,
   onSaved,
 }: {
-  isOpen: boolean;
+  open: boolean;
   onClose: () => void;
   editing: Student | null;
   onSaved: () => void;
@@ -70,7 +70,7 @@ export function StudentFormDrawer({
       setSubjects([]);
       setNotes('');
     }
-  }, [editing, isOpen]);
+  }, [editing, open]);
 
   const submit = async () => {
     if (!name.trim()) {
@@ -97,14 +97,14 @@ export function StudentFormDrawer({
   };
 
   return (
-    <Drawer isOpen={isOpen} onClose={onClose} size="md">
+    <Drawer open={open} onClose={onClose} size="md">
       <DrawerOverlay />
       <DrawerContent>
         <DrawerCloseButton />
         <DrawerHeader>{editing ? '编辑学生' : '新建学生'}</DrawerHeader>
         <DrawerBody>
-          <Stack spacing={4}>
-            <FormControl isRequired>
+          <Stack gap={4}>
+            <FormControl required>
               <FormLabel>姓名</FormLabel>
               <Input value={name} onChange={(e) => setName(e.target.value)} />
             </FormControl>
@@ -114,8 +114,8 @@ export function StudentFormDrawer({
             </FormControl>
             <FormControl>
               <FormLabel>学科</FormLabel>
-              <CheckboxGroup value={subjects} onChange={(v) => setSubjects(v as string[])}>
-                <HStack spacing={3} wrap="wrap">
+              <CheckboxGroup value={subjects} onValueChange={(v: string[]) => setSubjects(v)}>
+                <HStack gap={3} wrap="wrap">
                   {SUBJECTS.map((s) => (
                     <Checkbox key={s} value={s}>
                       {SUBJECT_LABELS[s]}
@@ -139,7 +139,7 @@ export function StudentFormDrawer({
           <Button variant="ghost" mr={3} onClick={onClose}>
             取消
           </Button>
-          <Button colorScheme="brand" onClick={submit} isLoading={saving}>
+          <Button colorScheme="brand" onClick={submit} loading={saving}>
             保存
           </Button>
         </DrawerFooter>

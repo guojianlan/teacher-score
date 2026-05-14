@@ -1,17 +1,17 @@
 import Link from 'next/link';
-import { Box, Flex, Stack, Text } from '@chakra-ui/react';
+import { Box, Flex, Stack, Text } from '@/components/ui';
 import { PageHeader } from '@/components/page-header';
 
 export default function DashboardPage() {
   return (
-    <Stack spacing={10}>
+    <Stack gap={10}>
       <PageHeader
         eyebrow="今天 · 工作台"
         title="欢迎回来"
         description="先添加学生，然后上传或拍照学生答卷开始批改。每次批改都会自动归集错题。"
       />
 
-      <Stack spacing={0} borderTop="1px solid" borderColor="border.default">
+      <Stack gap={0} borderTop="1px solid" borderColor="border.default">
         {[
           { href: '/students', no: '01', title: '添加学生', desc: '建立学生档案。学科 / 年级 / 备注。', tag: '准备工作' },
           { href: '/grade', no: '02', title: '开始一次批改', desc: '拍照、上传、扫码任选其一。三秒内入队。', tag: '核心动作' },
@@ -64,7 +64,7 @@ export default function DashboardPage() {
         <Text fontFamily="mono" fontSize="xs" color="fg.subtle" letterSpacing="0.08em" textTransform="uppercase" mb={4}>
           提示
         </Text>
-        <Stack spacing={2} fontSize="sm" color="fg.subtle" lineHeight={1.7}>
+        <Stack gap={2} fontSize="sm" color="fg.subtle" lineHeight={1.7}>
           <Text>· 字迹不清的题会被标记 confidence=low，可手动改分。</Text>
           <Text>· 同卷第二次可"保存为模板"，下次自动套用、跳过识别。</Text>
           <Text>· 免费层 50 次/月。即将耗尽时左下角配额条会变红。</Text>

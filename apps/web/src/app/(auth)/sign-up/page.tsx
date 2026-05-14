@@ -13,7 +13,7 @@ import {
   Stack,
   Text,
   useToast,
-} from '@chakra-ui/react';
+} from '@/components/ui';
 import { signUp } from '@teacher-score/auth/client';
 import { captureClient, initClientAnalytics } from '@teacher-score/analytics/client';
 
@@ -45,7 +45,7 @@ export default function SignUpPage() {
   };
 
   return (
-    <Stack spacing={8}>
+    <Stack gap={8}>
       <Box>
         <Text fontFamily="mono" fontSize="xs" color="fg.subtle" letterSpacing="0.12em" textTransform="uppercase" mb={2}>
           New account
@@ -59,20 +59,20 @@ export default function SignUpPage() {
       </Box>
 
       <form onSubmit={onSubmit}>
-        <Stack spacing={5}>
-          <FormControl isRequired>
+        <Stack gap={5}>
+          <FormControl required>
             <FormLabel fontSize="sm" color="fg.muted" mb={1.5}>姓名</FormLabel>
             <Input value={name} onChange={(e) => setName(e.target.value)} autoComplete="name" />
           </FormControl>
-          <FormControl isRequired>
+          <FormControl required>
             <FormLabel fontSize="sm" color="fg.muted" mb={1.5}>邮箱</FormLabel>
             <Input type="email" value={email} onChange={(e) => setEmail(e.target.value)} autoComplete="email" />
           </FormControl>
-          <FormControl isRequired>
+          <FormControl required>
             <FormLabel fontSize="sm" color="fg.muted" mb={1.5}>密码 <Text as="span" color="fg.subtle" fontFamily="mono" fontSize="xs">/ ≥8</Text></FormLabel>
             <Input type="password" value={password} onChange={(e) => setPassword(e.target.value)} autoComplete="new-password" />
           </FormControl>
-          <Button type="submit" isLoading={loading} size="lg" mt={2}>
+          <Button type="submit" loading={loading} size="lg" mt={2}>
             注册并进入工作区 →
           </Button>
         </Stack>

@@ -11,7 +11,7 @@ import {
   Stack,
   Text,
   useToast,
-} from '@chakra-ui/react';
+} from '@/components/ui';
 
 function CaptureInner() {
   const params = useSearchParams();
@@ -54,7 +54,7 @@ function CaptureInner() {
 
   return (
     <Container maxW="sm" py={6}>
-      <Stack spacing={4}>
+      <Stack gap={4}>
         <Heading size="md">拍照上传学生答卷</Heading>
         <Text fontSize="sm" color="fg.muted">
           会话有效期 15 分钟。多张可连续拍照。

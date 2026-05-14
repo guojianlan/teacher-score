@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import { Box, Button, HStack, Image, Stack, Text, useToast } from '@chakra-ui/react';
+import { Box, Button, HStack, Image, Stack, Text, useToast } from '@/components/ui';
 import { apiClient } from '@/lib/api-client';
 
 interface StartResp { sessionId: string; token: string; url: string; expiresAt: string; }
@@ -55,7 +55,7 @@ export function MobileQrCapture({ onCaptured }: { onCaptured: (key: string) => v
 
   return (
     <Box flex="1" borderWidth="1px" borderColor="border.default" borderRadius="6px" p={4}>
-      <Stack spacing={3} align="center">
+      <Stack gap={3} align="center">
         <Text fontSize="xs" color="fg.subtle" fontFamily="mono">15 分钟内有效</Text>
         <Image src={qrSrc} alt="QR" width="160px" height="160px" />
         <HStack><Button size="xs" variant="ghost" onClick={finish}>结束会话</Button></HStack>

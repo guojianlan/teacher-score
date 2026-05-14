@@ -9,7 +9,7 @@
  */
 
 import { useEffect, useState } from 'react';
-import { Select } from '@chakra-ui/react';
+import { Select } from '@/components/ui';
 
 export type ThemeChoice = 'auto' | 'light' | 'dark' | 'sepia';
 

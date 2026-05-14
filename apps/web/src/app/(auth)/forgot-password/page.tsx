@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { Box, Button, FormControl, FormLabel, Heading, Input, Stack, Text, useToast } from '@chakra-ui/react';
+import { Box, Button, FormControl, FormLabel, Heading, Input, Stack, Text, useToast } from '@/components/ui';
 import { authClient } from '@teacher-score/auth/client';
 
 export default function ForgotPasswordPage() {
@@ -23,7 +23,7 @@ export default function ForgotPasswordPage() {
   };
 
   return (
-    <Stack spacing={8}>
+    <Stack gap={8}>
       <Box>
         <Text fontFamily="mono" fontSize="xs" color="fg.subtle" letterSpacing="0.12em" textTransform="uppercase" mb={2}>
           Recover
@@ -36,12 +36,12 @@ export default function ForgotPasswordPage() {
         </Text>
       ) : (
         <form onSubmit={onSubmit}>
-          <Stack spacing={5}>
-            <FormControl isRequired>
+          <Stack gap={5}>
+            <FormControl required>
               <FormLabel fontSize="sm" color="fg.muted" mb={1.5}>邮箱</FormLabel>
               <Input type="email" value={email} onChange={(e) => setEmail(e.target.value)} autoComplete="email" />
             </FormControl>
-            <Button type="submit" isLoading={loading} size="lg">发送重置链接 →</Button>
+            <Button type="submit" loading={loading} size="lg">发送重置链接 →</Button>
           </Stack>
         </form>
       )}

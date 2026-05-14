@@ -1,7 +1,7 @@
 'use client';
 
 import { useRef, useState } from 'react';
-import { Box, Button, Spinner, Text, useToast } from '@chakra-ui/react';
+import { Box, Button, Spinner, Text, useToast } from '@/components/ui';
 import { apiClient } from '@/lib/api-client';
 
 export function Uploader({ onUploaded }: { onUploaded: (key: string) => void }) {

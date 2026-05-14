@@ -1,4 +1,4 @@
-import { Box, Flex, Stack, Tag, Text } from '@chakra-ui/react';
+import { Box, Flex, Stack, Tag, Text } from '@/components/ui';
 import { apiServer } from '@/lib/api-server';
 import { PageHeader } from '@/components/page-header';
 
@@ -22,7 +22,7 @@ export default async function StudentDetailPage({ params }: { params: Promise<{ 
   const maxTag = tags[0]?.count ?? 1;
 
   return (
-    <Stack spacing={10}>
+    <Stack gap={10}>
       <PageHeader eyebrow="学情" title="学生详情" />
 
       <Section label="学科汇总">
@@ -67,7 +67,7 @@ export default async function StudentDetailPage({ params }: { params: Promise<{ 
         {points.length === 0 ? (
           <Text color="fg.subtle" fontSize="sm">暂无批改记录</Text>
         ) : (
-          <Stack spacing={2}>
+          <Stack gap={2}>
             {points.map((p) => (
               <Flex key={p.gradingId} align="center" gap={4}>
                 <Text fontFamily="mono" fontSize="xs" w="80px" color="fg.subtle" flexShrink={0}>

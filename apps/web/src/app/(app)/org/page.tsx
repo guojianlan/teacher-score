@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import {
   Badge, Box, Button, FormControl, FormLabel, Input, Select, Stack, Table, Tbody, Td, Text, Th, Thead, Tr, useToast,
-} from '@chakra-ui/react';
+} from '@/components/ui';
 import { apiClient } from '@/lib/api-client';
 import { PageHeader } from '@/components/page-header';
 
@@ -41,7 +41,7 @@ export default function OrgPage() {
   };
 
   return (
-    <Stack spacing={10}>
+    <Stack gap={10}>
       <PageHeader eyebrow="多租户" title="组织" />
 
       <Section label="我的组织">
@@ -87,7 +87,7 @@ export default function OrgPage() {
       </Section>
 
       <Section label="邀请老师">
-        <Stack direction={['column', 'row']} spacing={3} align="flex-end">
+        <Stack direction={['column', 'row']} gap={3} align="flex-end">
           <FormControl flex="1">
             <FormLabel fontSize="sm" color="fg.muted" mb={1.5}>邮箱</FormLabel>
             <Input value={inviteEmail} onChange={(e) => setInviteEmail(e.target.value)} placeholder="teacher@example.com" />
