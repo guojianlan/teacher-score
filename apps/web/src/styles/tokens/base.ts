@@ -233,16 +233,23 @@ export const shadows = {
 } as const;
 
 /**
- * 把 hex 颜色 + alpha 组装成 focus-ring 风格的 box-shadow 字符串。
- * semantic 层用它构造 effects.focusRing，从而让 ring 颜色跟随 brand 自动变。
+ * 把任意颜色组装成 focus-ring box-shadow。
  *
- *   focusRing(colors.blue[500])        // -> "0 0 0 3px rgba(61,102,245,0.20)"
- *   focusRing(colors.red[600], 0.25)   // 自定义 alpha
- *   focusRing(colors.blue[500], 0.3, 4)// 自定义 alpha + 环宽
+ * 优先用现代 CSS `rgb(from ... r g b / alpha)` 语法（Chrome 111+ / Safari 16.4+
+ * / Firefox 113+，2024 baseline），让 ring 颜色完全跟随 token 自动变；
+ * 传 hex 时回退到预计算 rgba。
+ *
+ *   focusRing('var(--interactive-primary-bg)')  // 现代：ring 跟着 brand 走
+ *   focusRing(colors.blue[500])                  // 静态 hex 也行
  */
-export function focusRing(hex: string, alpha = 0.2, ringWidth = 3): string {
-  const m = hex.match(/^#([0-9a-fA-F]{6})$/);
-  if (!m) return `0 0 0 ${ringWidth}px ${hex}`; // 已经是 rgba 等格式则原样
+export function focusRing(color: string, alpha = 0.2, ringWidth = 3): string {
+  // var(--...) 或任何非 hex 表达式 → 现代 CSS 语法
+  if (!color.startsWith('#')) {
+    return `0 0 0 ${ringWidth}px rgb(from ${color} r g b / ${alpha})`;
+  }
+  // hex 兜底（适配旧浏览器、token 文档化等场景）
+  const m = color.match(/^#([0-9a-fA-F]{6})$/);
+  if (!m) return `0 0 0 ${ringWidth}px ${color}`;
   const c = m[1]!;
   const r = parseInt(c.slice(0, 2), 16);
   const g = parseInt(c.slice(2, 4), 16);
@@ -258,9 +265,46 @@ export const durations = {
 } as const;
 
 export const easings = {
-  out: 'cubic-bezier(0.16, 1, 0.3, 1)', // expo-out — modern, snappy
-  inOut: 'cubic-bezier(0.4, 0, 0.2, 1)',
+  out: 'cubic-bezier(0.16, 1, 0.3, 1)',          // expo-out — modern, snappy
+  inOut: 'cubic-bezier(0.4, 0, 0.2, 1)',         // material standard
+  in: 'cubic-bezier(0.4, 0, 1, 1)',              // accelerate
+  spring: 'cubic-bezier(0.34, 1.56, 0.64, 1)',   // overshoot bounce
 } as const;
+
+/**
+ * Motion intents —— 给业务代码"语义化"的动效预设。
+ * 业务代码不应该自己组装 `transition: all 200ms ease`；
+ * 应该说"这是 hover 微交互"（motion.subtle）或"这是模态出现"（motion.enter）。
+ *
+ * 同一类 intent 全站用同一组节奏 → 整体感更稳。
+ */
+export const motion = {
+  /** hover / active / focus 微交互 —— 最常用，120ms */
+  subtle: { duration: durations.fast, easing: easings.out },
+  /** 元素进入视图：弹窗、toast、卡片展开 */
+  enter: { duration: durations.base, easing: easings.out },
+  /** 元素离开 —— 比 enter 快一点（视觉本能） */
+  exit: { duration: '140ms', easing: easings.in },
+  /** 强调态：需要吸引注意的反馈，有一点 overshoot */
+  emphasize: { duration: '320ms', easing: easings.spring },
+  /** 页面级转场 */
+  page: { duration: '240ms', easing: easings.out },
+} as const;
+
+/**
+ * 构造 CSS transition 字符串。
+ *   transition('subtle')                   → "all 120ms cubic-bezier(...)"
+ *   transition('subtle', 'background')     → "background 120ms cubic-bezier(...)"
+ *   transition('enter', ['opacity', 'transform'])
+ */
+export function transition(
+  intent: keyof typeof motion,
+  properties: string | string[] = 'all',
+): string {
+  const { duration, easing } = motion[intent];
+  const props = Array.isArray(properties) ? properties.join(', ') : properties;
+  return `${props} ${duration} ${easing}`;
+}
 
 export const zIndex = {
   base: 0,
