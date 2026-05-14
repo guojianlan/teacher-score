@@ -8,9 +8,9 @@ import {
   light, dark, effects, textStyles,
 } from '@/styles/tokens';
 
-// Chakra 的 semanticTokens 支持 _light / _dark 字段，原生支持主题切换。
-// 把 semantic/light + semantic/dark 灌进去：bg/fg/border/interactive/status 进 colors,
-// effects（focusRing 等）进 shadows。
+// 多 theme 支持：所有 semantic token 都 reference CSS 变量（var(--xxx)），
+// CSS 变量在 tokens.css 里随 :root / [data-theme='dark'] / [data-theme='sepia'] 切换。
+// 这样支持**任意多 theme**，不被 Chakra 的 light/dark 二元限制。
 
 const config: ThemeConfig = { initialColorMode: 'light', useSystemColorMode: false };
 
@@ -27,23 +27,22 @@ function flatten(p: Record<string, unknown>, prefix = ''): Record<string, string
   return out;
 }
 
-// 颜色类 token：bg / fg / border / interactive / status
-const lightColorsFlat = flatten(light as unknown as Record<string, unknown>);
-const darkColorsFlat = flatten(dark as unknown as Record<string, unknown>);
-const semanticColors: Record<string, { default: string; _dark: string }> = {};
-for (const k of Object.keys(lightColorsFlat)) {
-  semanticColors[k] = { default: lightColorsFlat[k]!, _dark: darkColorsFlat[k] ?? lightColorsFlat[k]! };
+// 把 'bg.canvas' → 'var(--bg-canvas)'，所有 theme 共用一个 CSS 变量名
+function toCssVar(dotted: string): string {
+  return `var(--${dotted.replace(/\./g, '-').toLowerCase()})`;
 }
 
-// 效果类 token（box-shadow 字符串）—— effects.light / effects.dark
-const lightEffects = effects.light;
-const darkEffects = effects.dark;
-const semanticShadows: Record<string, { default: string; _dark: string }> = {};
-for (const k of Object.keys(lightEffects)) {
-  semanticShadows[k] = {
-    default: lightEffects[k as keyof typeof lightEffects],
-    _dark: (darkEffects as Record<string, string>)[k] ?? lightEffects[k as keyof typeof lightEffects],
-  };
+// 用 light 作为 schema 模板（每个 theme 字段同形），拍平 → 转为 var(--xxx)
+const lightFlat = flatten(light as unknown as Record<string, unknown>);
+const semanticColors: Record<string, string> = {};
+for (const k of Object.keys(lightFlat)) {
+  semanticColors[k] = toCssVar(k);
+}
+
+// effects → var(--effect-xxx)
+const semanticShadows: Record<string, string> = {};
+for (const k of Object.keys(effects.light)) {
+  semanticShadows[k] = `var(--effect-${k.toLowerCase()})`;
 }
 
 const theme = extendTheme({

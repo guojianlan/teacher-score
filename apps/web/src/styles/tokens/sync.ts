@@ -294,6 +294,7 @@ async function main() {
       textStyleSet,
       themeNames,
       defaultTheme,
+      { colorsByTheme, effectsByTheme },
     ),
   );
   console.log(`✓ wrote ${path.relative(REPO, HTML_OUT)}`);
@@ -307,6 +308,7 @@ function buildHtml(
   textStyleD: Doc,
   themeNames: string[],
   defaultTheme: string,
+  allThemes: { colorsByTheme: Record<string, Doc>; effectsByTheme: Record<string, Doc> },
 ): string {
   const isDarkColor = (hex: string): boolean => {
     const m = hex.match(/^#([0-9a-f]{6})/i);
@@ -352,43 +354,76 @@ function buildHtml(
       return `<section class="block"><h3>${family}</h3><div class="scale">${swatches}</div></section>`;
     }).join('');
 
+  // 把所有 theme 的 CSS 变量一起 inline 进 design-system.html，
+  // 让独立打开（file://）也能切换。
+  const inlineThemeVars: string[] = [':root {'];
+  // default (first theme) at :root
+  for (const { path: p, token } of leaves(themeColors)) {
+    inlineThemeVars.push(`  --${p.join('-').toLowerCase()}: ${typeof token.$value === 'string' ? token.$value : ''};`);
+  }
+  for (const { path: p, token } of leaves(themeEffects)) {
+    inlineThemeVars.push(`  --effect-${p.join('-').toLowerCase()}: ${typeof token.$value === 'string' ? token.$value : ''};`);
+  }
+  inlineThemeVars.push('}');
+  for (const name of themeNames.slice(1)) {
+    const otherColors = (allThemes?.colorsByTheme?.[name] ?? {}) as Doc;
+    const otherEffects = (allThemes?.effectsByTheme?.[name] ?? {}) as Doc;
+    inlineThemeVars.push(`[data-theme='${name}'] {`);
+    for (const { path: p, token } of leaves(otherColors)) {
+      inlineThemeVars.push(`  --${p.join('-').toLowerCase()}: ${typeof token.$value === 'string' ? token.$value : ''};`);
+    }
+    for (const { path: p, token } of leaves(otherEffects)) {
+      inlineThemeVars.push(`  --effect-${p.join('-').toLowerCase()}: ${typeof token.$value === 'string' ? token.$value : ''};`);
+    }
+    inlineThemeVars.push('}');
+  }
+
   return `<!doctype html>
 <html lang="zh-CN"><head><meta charset="utf-8"><title>Design System</title>
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600&family=Poppins:wght@600&family=JetBrains+Mono:wght@400;500&family=Source+Serif+4:wght@600&display=swap" rel="stylesheet">
 <style>
+${inlineThemeVars.join('\n')}
+</style>
+<style>
 * { box-sizing: border-box; }
-body { margin: 0; background: #FAFAF9; color: #1C1917; font-family: 'Open Sans', system-ui, sans-serif; font-size: 14px; line-height: 1.5; -webkit-font-smoothing: antialiased; }
+body { margin: 0; background: var(--bg-canvas); color: var(--fg-default); font-family: 'Open Sans', system-ui, sans-serif; font-size: 14px; line-height: 1.5; -webkit-font-smoothing: antialiased; }
 .app { max-width: 1080px; margin: 0 auto; padding: 56px 32px 80px; }
-.brand { display: flex; align-items: baseline; gap: 16px; margin-bottom: 24px; padding-bottom: 16px; border-bottom: 1px solid #E7E5E4; }
+.brand { display: flex; align-items: baseline; gap: 16px; margin-bottom: 24px; padding-bottom: 16px; border-bottom: 1px solid var(--border-default); }
 .brand h1 { font-family: 'Poppins'; font-weight: 600; font-size: 30px; margin: 0; letter-spacing: -0.02em; }
-.brand .sub { color: #78716C; font-family: 'JetBrains Mono'; font-size: 12px; }
-.intro { background: #FFF; border: 1px solid #E7E5E4; border-radius: 10px; padding: 20px 24px; margin: 32px 0 56px; font-size: 14px; line-height: 1.65; color: #57534E; }
-.intro b { color: #1C1917; }
-.intro code { font-family: 'JetBrains Mono'; font-size: 12px; background: #F5F5F4; padding: 1px 6px; border-radius: 3px; }
-h2.section { font-family: 'Source Serif 4'; font-weight: 600; font-size: 26px; margin: 56px 0 20px; padding-bottom: 10px; border-bottom: 1px solid #E7E5E4; letter-spacing: -0.01em; }
+.brand .sub { color: var(--fg-subtle); font-family: 'JetBrains Mono'; font-size: 12px; }
+.intro { background: var(--bg-surface); border: 1px solid var(--border-default); border-radius: 10px; padding: 20px 24px; margin: 32px 0 56px; font-size: 14px; line-height: 1.65; color: var(--fg-muted); }
+.intro b { color: var(--fg-default); }
+.intro code { font-family: 'JetBrains Mono'; font-size: 12px; background: var(--bg-muted); padding: 1px 6px; border-radius: 3px; }
+h2.section { font-family: 'Source Serif 4'; font-weight: 600; font-size: 26px; margin: 56px 0 20px; padding-bottom: 10px; border-bottom: 1px solid var(--border-default); letter-spacing: -0.01em; }
 .block { margin-bottom: 36px; }
-.block h3 { font-family: 'Open Sans'; font-weight: 600; font-size: 16px; margin: 0 0 12px; color: #57534E; }
-.scale { display: grid; grid-template-columns: repeat(auto-fill, minmax(80px, 1fr)); gap: 1px; border: 1px solid #E7E5E4; background: #E7E5E4; border-radius: 6px; overflow: hidden; }
+.block h3 { font-family: 'Open Sans'; font-weight: 600; font-size: 16px; margin: 0 0 12px; color: var(--fg-muted); }
+.scale { display: grid; grid-template-columns: repeat(auto-fill, minmax(80px, 1fr)); gap: 1px; border: 1px solid var(--border-default); background: var(--border-default); border-radius: 6px; overflow: hidden; }
 .sw { padding: 12px 8px 8px; display: flex; flex-direction: column; gap: 2px; }
 .sw-step { font-family: 'Open Sans'; font-weight: 600; font-size: 12px; }
 .sw code { font-family: 'JetBrains Mono'; font-size: 10px; opacity: 0.75; }
 table { width: 100%; border-collapse: collapse; font-size: 13px; }
-table td { padding: 7px 10px; border-bottom: 1px solid #F5F5F4; vertical-align: middle; }
+table td { padding: 7px 10px; border-bottom: 1px solid var(--border-subtle); vertical-align: middle; }
 table td:first-child { width: 38%; }
 table td:nth-child(2) { width: 56px; }
 table td:nth-child(3) { width: 22%; }
-table td:nth-child(4) { color: #78716C; font-size: 12px; }
-code.t { font-family: 'JetBrains Mono'; font-size: 12px; color: #1C1917; font-weight: 500; }
-code.v { font-family: 'JetBrains Mono'; font-size: 11px; color: #57534E; }
-.chip { display: inline-block; width: 28px; height: 16px; border-radius: 3px; border: 1px solid #E7E5E4; vertical-align: middle; }
-.d { color: #78716C; }
+table td:nth-child(4) { color: var(--fg-subtle); font-size: 12px; }
+code.t { font-family: 'JetBrains Mono'; font-size: 12px; color: var(--fg-default); font-weight: 500; }
+code.v { font-family: 'JetBrains Mono'; font-size: 11px; color: var(--fg-muted); }
+.chip { display: inline-block; width: 28px; height: 16px; border-radius: 3px; border: 1px solid var(--border-default); vertical-align: middle; }
+.d { color: var(--fg-subtle); }
 </style></head><body>
 <div class="app">
 <header class="brand">
   <h1>Design System</h1>
   <span class="sub">generated from docs/claude/token.json · DTCG</span>
+  <span style="margin-left:auto;display:inline-flex;gap:8px;align-items:center;font-family:'JetBrains Mono';font-size:12px">
+    <label for="theme-pick">theme</label>
+    <select id="theme-pick" onchange="(function(v){if(v==='light')document.documentElement.removeAttribute('data-theme');else document.documentElement.setAttribute('data-theme',v)})(this.value)" style="font-family:'JetBrains Mono';padding:4px 8px;border-radius:6px;border:1px solid var(--border-default);background:var(--bg-surface);color:var(--fg-default)">
+      ${themeNames.map((n) => `<option value="${n}">${n}</option>`).join('')}
+    </select>
+  </span>
 </header>
 
 <div class="intro">

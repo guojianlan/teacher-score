@@ -8,6 +8,7 @@ import {
 import { authClient, signOut } from '@teacher-score/auth/client';
 import { apiClient } from '@/lib/api-client';
 import { PageHeader } from '@/components/page-header';
+import { ThemeSwitcher } from '@/components/theme-switcher';
 
 export default function SettingsPage() {
   const toast = useToast();
@@ -45,6 +46,15 @@ export default function SettingsPage() {
   return (
     <Stack spacing={10}>
       <PageHeader eyebrow="账户" title="设置" />
+
+      <Section label="外观主题">
+        <Text color="fg.subtle" fontSize="sm" mb={4} lineHeight={1.6}>
+          切换 light / dark / sepia。设置会保存到本地，下次打开自动恢复。"跟随系统" 模式会按 OS 偏好显示 light 或 dark。
+        </Text>
+        <Box maxW="240px">
+          <ThemeSwitcher size="md" />
+        </Box>
+      </Section>
 
       <Section label="修改密码">
         <form onSubmit={changePassword}>

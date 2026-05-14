@@ -1,9 +1,10 @@
 import type { Metadata } from 'next';
 import { Open_Sans, Source_Serif_4, Poppins, Figtree } from 'next/font/google';
 import { Providers } from './providers';
+import { themeInitScript } from '@/components/theme-switcher';
 import '../styles/tokens.css';
 
-// Slidepilot V1 字体栈（来自 docs/claude/token.json）
+// 字体栈来自 docs/claude/token.json
 const openSans = Open_Sans({
   subsets: ['latin'],
   variable: '--font-body-loaded',
@@ -39,7 +40,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html
       lang="zh-CN"
       className={`${openSans.variable} ${serif.variable} ${poppins.variable} ${figtree.variable}`}
+      suppressHydrationWarning
     >
+      <head>
+        {/* 在 React hydrate 之前同步设 data-theme，避免 flash-of-wrong-theme */}
+        <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
+      </head>
       <body>
         <Providers>{children}</Providers>
       </body>

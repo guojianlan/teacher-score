@@ -4,37 +4,249 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600&family=Poppins:wght@600&family=JetBrains+Mono:wght@400;500&family=Source+Serif+4:wght@600&display=swap" rel="stylesheet">
 <style>
+:root {
+  --bg-canvas: #FAFAF9;
+  --bg-surface: #FFFFFF;
+  --bg-surfacesubtle: #FAFAF9;
+  --bg-surfacehover: #F5F5F4;
+  --bg-muted: #F5F5F4;
+  --bg-inverse: #1C1917;
+  --bg-overlay: rgba(0,0,0,0.36);
+  --bg-brand: #2849E8;
+  --bg-brandsubtle: #EFF4FF;
+  --bg-brandmuted: #DBE7FE;
+  --fg-default: #1C1917;
+  --fg-muted: #44403C;
+  --fg-subtle: #78716C;
+  --fg-disabled: #A8A29E;
+  --fg-inverse: #FFFFFF;
+  --fg-onbrand: #FFFFFF;
+  --fg-brand: #2138D4;
+  --fg-link: #2849E8;
+  --fg-linkhover: #2138D4;
+  --border-default: #E7E5E4;
+  --border-subtle: #EFEEEC;
+  --border-strong: #D6D3D1;
+  --border-focus: #3D66F5;
+  --border-brand: #2849E8;
+  --interactive-primary-bg: #2849E8;
+  --interactive-primary-bghover: #2138D4;
+  --interactive-primary-bgactive: #2030AB;
+  --interactive-primary-fg: #FFFFFF;
+  --interactive-primary-border: #2849E8;
+  --interactive-secondary-bg: #FFFFFF;
+  --interactive-secondary-bghover: #FAFAF9;
+  --interactive-secondary-bgactive: #F5F5F4;
+  --interactive-secondary-fg: #1C1917;
+  --interactive-secondary-border: #D6D3D1;
+  --interactive-ghost-bg: transparent;
+  --interactive-ghost-bghover: #F5F5F4;
+  --interactive-ghost-bgactive: #E7E5E4;
+  --interactive-ghost-fg: #44403C;
+  --interactive-ghost-border: transparent;
+  --interactive-danger-bg: #DC2626;
+  --interactive-danger-bghover: #B91C1C;
+  --interactive-danger-bgactive: #991B1B;
+  --interactive-danger-fg: #FFFFFF;
+  --interactive-danger-border: #DC2626;
+  --status-info-bg: #EFF4FF;
+  --status-info-fg: #2138D4;
+  --status-info-border: #BFD3FE;
+  --status-info-solid: #2849E8;
+  --status-success-bg: #F0FDF4;
+  --status-success-fg: #15803D;
+  --status-success-border: #BBF7D0;
+  --status-success-solid: #16A34A;
+  --status-warning-bg: #FFF7ED;
+  --status-warning-fg: #C2410C;
+  --status-warning-border: #FED7AA;
+  --status-warning-solid: #EA580C;
+  --status-danger-bg: #FEF2F2;
+  --status-danger-fg: #B91C1C;
+  --status-danger-border: #FECACA;
+  --status-danger-solid: #DC2626;
+  --status-neutral-bg: #F5F5F4;
+  --status-neutral-fg: #44403C;
+  --status-neutral-border: #E7E5E4;
+  --status-neutral-solid: #57534E;
+  --effect-focusring: 0 0 0 3px rgba(61,102,245,0.2);
+  --effect-focusringdanger: 0 0 0 3px rgba(220,38,38,0.2);
+}
+[data-theme='dark'] {
+  --bg-canvas: #0C0A09;
+  --bg-surface: #1C1917;
+  --bg-surfacesubtle: #292524;
+  --bg-surfacehover: #292524;
+  --bg-muted: #292524;
+  --bg-inverse: #FAFAF9;
+  --bg-overlay: rgba(0,0,0,0.64);
+  --bg-brand: #3D66F5;
+  --bg-brandsubtle: #171E50;
+  --bg-brandmuted: #1F2D87;
+  --fg-default: #FAFAF9;
+  --fg-muted: #D6D3D1;
+  --fg-subtle: #A8A29E;
+  --fg-disabled: #57534E;
+  --fg-inverse: #1C1917;
+  --fg-onbrand: #FFFFFF;
+  --fg-brand: #93B4FD;
+  --fg-link: #608AFA;
+  --fg-linkhover: #93B4FD;
+  --border-default: #292524;
+  --border-subtle: #292524;
+  --border-strong: #44403C;
+  --border-focus: #608AFA;
+  --border-brand: #3D66F5;
+  --interactive-primary-bg: #3D66F5;
+  --interactive-primary-bghover: #608AFA;
+  --interactive-primary-bgactive: #93B4FD;
+  --interactive-primary-fg: #FFFFFF;
+  --interactive-primary-border: #3D66F5;
+  --interactive-secondary-bg: #1C1917;
+  --interactive-secondary-bghover: #292524;
+  --interactive-secondary-bgactive: #44403C;
+  --interactive-secondary-fg: #FAFAF9;
+  --interactive-secondary-border: #44403C;
+  --interactive-ghost-bg: transparent;
+  --interactive-ghost-bghover: #292524;
+  --interactive-ghost-bgactive: #44403C;
+  --interactive-ghost-fg: #D6D3D1;
+  --interactive-ghost-border: transparent;
+  --interactive-danger-bg: #EF4444;
+  --interactive-danger-bghover: #DC2626;
+  --interactive-danger-bgactive: #B91C1C;
+  --interactive-danger-fg: #FFFFFF;
+  --interactive-danger-border: #EF4444;
+  --status-info-bg: #171E50;
+  --status-info-fg: #93B4FD;
+  --status-info-border: #2030AB;
+  --status-info-solid: #3D66F5;
+  --status-success-bg: #052E16;
+  --status-success-fg: #BBF7D0;
+  --status-success-border: #166534;
+  --status-success-solid: #22C55E;
+  --status-warning-bg: #431407;
+  --status-warning-fg: #FED7AA;
+  --status-warning-border: #9A3412;
+  --status-warning-solid: #F97316;
+  --status-danger-bg: #450A0A;
+  --status-danger-fg: #FECACA;
+  --status-danger-border: #991B1B;
+  --status-danger-solid: #EF4444;
+  --status-neutral-bg: #292524;
+  --status-neutral-fg: #D6D3D1;
+  --status-neutral-border: #44403C;
+  --status-neutral-solid: #78716C;
+  --effect-focusring: 0 0 0 3px rgba(96,138,250,0.3);
+  --effect-focusringdanger: 0 0 0 3px rgba(239,68,68,0.3);
+}
+[data-theme='sepia'] {
+  --bg-canvas: #FAF7F0;
+  --bg-surface: #FFFFFF;
+  --bg-surfacesubtle: #FAF7F0;
+  --bg-surfacehover: #F5EBE0;
+  --bg-muted: #F5EBE0;
+  --bg-inverse: #2F2418;
+  --bg-overlay: rgba(26,20,12,0.45);
+  --bg-brand: #5C4530;
+  --bg-brandsubtle: #F5EBE0;
+  --bg-brandmuted: #E8D5C4;
+  --fg-default: #2F2418;
+  --fg-muted: #5C4530;
+  --fg-subtle: #A07758;
+  --fg-disabled: #C39477;
+  --fg-inverse: #FAF7F0;
+  --fg-onbrand: #FAF7F0;
+  --fg-brand: #5C4530;
+  --fg-link: #5C4530;
+  --fg-linkhover: #443322;
+  --border-default: #E8D5C4;
+  --border-subtle: #F5EBE0;
+  --border-strong: #D9B79C;
+  --border-focus: #A07758;
+  --border-brand: #5C4530;
+  --interactive-primary-bg: #5C4530;
+  --interactive-primary-bghover: #443322;
+  --interactive-primary-bgactive: #2F2418;
+  --interactive-primary-fg: #FAF7F0;
+  --interactive-primary-border: #5C4530;
+  --interactive-secondary-bg: #FFFFFF;
+  --interactive-secondary-bghover: #FAF7F0;
+  --interactive-secondary-bgactive: #F5EBE0;
+  --interactive-secondary-fg: #2F2418;
+  --interactive-secondary-border: #D9B79C;
+  --interactive-ghost-bg: transparent;
+  --interactive-ghost-bghover: #F5EBE0;
+  --interactive-ghost-bgactive: #E8D5C4;
+  --interactive-ghost-fg: #5C4530;
+  --interactive-ghost-border: transparent;
+  --interactive-danger-bg: #DC2626;
+  --interactive-danger-bghover: #B91C1C;
+  --interactive-danger-bgactive: #991B1B;
+  --interactive-danger-fg: #FFFFFF;
+  --interactive-danger-border: #DC2626;
+  --status-info-bg: #EFF4FF;
+  --status-info-fg: #2138D4;
+  --status-info-border: #BFD3FE;
+  --status-info-solid: #2849E8;
+  --status-success-bg: #F0FDF4;
+  --status-success-fg: #15803D;
+  --status-success-border: #BBF7D0;
+  --status-success-solid: #16A34A;
+  --status-warning-bg: #FFF7ED;
+  --status-warning-fg: #C2410C;
+  --status-warning-border: #FED7AA;
+  --status-warning-solid: #EA580C;
+  --status-danger-bg: #FEF2F2;
+  --status-danger-fg: #B91C1C;
+  --status-danger-border: #FECACA;
+  --status-danger-solid: #DC2626;
+  --status-neutral-bg: #F5EBE0;
+  --status-neutral-fg: #5C4530;
+  --status-neutral-border: #E8D5C4;
+  --status-neutral-solid: #7A5A40;
+  --effect-focusring: 0 0 0 3px rgba(160,119,88,0.30);
+  --effect-focusringdanger: 0 0 0 3px rgba(220,38,38,0.20);
+}
+</style>
+<style>
 * { box-sizing: border-box; }
-body { margin: 0; background: #FAFAF9; color: #1C1917; font-family: 'Open Sans', system-ui, sans-serif; font-size: 14px; line-height: 1.5; -webkit-font-smoothing: antialiased; }
+body { margin: 0; background: var(--bg-canvas); color: var(--fg-default); font-family: 'Open Sans', system-ui, sans-serif; font-size: 14px; line-height: 1.5; -webkit-font-smoothing: antialiased; }
 .app { max-width: 1080px; margin: 0 auto; padding: 56px 32px 80px; }
-.brand { display: flex; align-items: baseline; gap: 16px; margin-bottom: 24px; padding-bottom: 16px; border-bottom: 1px solid #E7E5E4; }
+.brand { display: flex; align-items: baseline; gap: 16px; margin-bottom: 24px; padding-bottom: 16px; border-bottom: 1px solid var(--border-default); }
 .brand h1 { font-family: 'Poppins'; font-weight: 600; font-size: 30px; margin: 0; letter-spacing: -0.02em; }
-.brand .sub { color: #78716C; font-family: 'JetBrains Mono'; font-size: 12px; }
-.intro { background: #FFF; border: 1px solid #E7E5E4; border-radius: 10px; padding: 20px 24px; margin: 32px 0 56px; font-size: 14px; line-height: 1.65; color: #57534E; }
-.intro b { color: #1C1917; }
-.intro code { font-family: 'JetBrains Mono'; font-size: 12px; background: #F5F5F4; padding: 1px 6px; border-radius: 3px; }
-h2.section { font-family: 'Source Serif 4'; font-weight: 600; font-size: 26px; margin: 56px 0 20px; padding-bottom: 10px; border-bottom: 1px solid #E7E5E4; letter-spacing: -0.01em; }
+.brand .sub { color: var(--fg-subtle); font-family: 'JetBrains Mono'; font-size: 12px; }
+.intro { background: var(--bg-surface); border: 1px solid var(--border-default); border-radius: 10px; padding: 20px 24px; margin: 32px 0 56px; font-size: 14px; line-height: 1.65; color: var(--fg-muted); }
+.intro b { color: var(--fg-default); }
+.intro code { font-family: 'JetBrains Mono'; font-size: 12px; background: var(--bg-muted); padding: 1px 6px; border-radius: 3px; }
+h2.section { font-family: 'Source Serif 4'; font-weight: 600; font-size: 26px; margin: 56px 0 20px; padding-bottom: 10px; border-bottom: 1px solid var(--border-default); letter-spacing: -0.01em; }
 .block { margin-bottom: 36px; }
-.block h3 { font-family: 'Open Sans'; font-weight: 600; font-size: 16px; margin: 0 0 12px; color: #57534E; }
-.scale { display: grid; grid-template-columns: repeat(auto-fill, minmax(80px, 1fr)); gap: 1px; border: 1px solid #E7E5E4; background: #E7E5E4; border-radius: 6px; overflow: hidden; }
+.block h3 { font-family: 'Open Sans'; font-weight: 600; font-size: 16px; margin: 0 0 12px; color: var(--fg-muted); }
+.scale { display: grid; grid-template-columns: repeat(auto-fill, minmax(80px, 1fr)); gap: 1px; border: 1px solid var(--border-default); background: var(--border-default); border-radius: 6px; overflow: hidden; }
 .sw { padding: 12px 8px 8px; display: flex; flex-direction: column; gap: 2px; }
 .sw-step { font-family: 'Open Sans'; font-weight: 600; font-size: 12px; }
 .sw code { font-family: 'JetBrains Mono'; font-size: 10px; opacity: 0.75; }
 table { width: 100%; border-collapse: collapse; font-size: 13px; }
-table td { padding: 7px 10px; border-bottom: 1px solid #F5F5F4; vertical-align: middle; }
+table td { padding: 7px 10px; border-bottom: 1px solid var(--border-subtle); vertical-align: middle; }
 table td:first-child { width: 38%; }
 table td:nth-child(2) { width: 56px; }
 table td:nth-child(3) { width: 22%; }
-table td:nth-child(4) { color: #78716C; font-size: 12px; }
-code.t { font-family: 'JetBrains Mono'; font-size: 12px; color: #1C1917; font-weight: 500; }
-code.v { font-family: 'JetBrains Mono'; font-size: 11px; color: #57534E; }
-.chip { display: inline-block; width: 28px; height: 16px; border-radius: 3px; border: 1px solid #E7E5E4; vertical-align: middle; }
-.d { color: #78716C; }
+table td:nth-child(4) { color: var(--fg-subtle); font-size: 12px; }
+code.t { font-family: 'JetBrains Mono'; font-size: 12px; color: var(--fg-default); font-weight: 500; }
+code.v { font-family: 'JetBrains Mono'; font-size: 11px; color: var(--fg-muted); }
+.chip { display: inline-block; width: 28px; height: 16px; border-radius: 3px; border: 1px solid var(--border-default); vertical-align: middle; }
+.d { color: var(--fg-subtle); }
 </style></head><body>
 <div class="app">
 <header class="brand">
   <h1>Design System</h1>
   <span class="sub">generated from docs/claude/token.json · DTCG</span>
+  <span style="margin-left:auto;display:inline-flex;gap:8px;align-items:center;font-family:'JetBrains Mono';font-size:12px">
+    <label for="theme-pick">theme</label>
+    <select id="theme-pick" onchange="(function(v){if(v==='light')document.documentElement.removeAttribute('data-theme');else document.documentElement.setAttribute('data-theme',v)})(this.value)" style="font-family:'JetBrains Mono';padding:4px 8px;border-radius:6px;border:1px solid var(--border-default);background:var(--bg-surface);color:var(--fg-default)">
+      <option value="light">light</option><option value="dark">dark</option><option value="sepia">sepia</option>
+    </select>
+  </span>
 </header>
 
 <div class="intro">
@@ -44,7 +256,7 @@ code.v { font-family: 'JetBrains Mono'; font-size: 11px; color: #57534E; }
   <p>修改流程：改 <code>token.json</code>（或由设计师在 Figma Tokens Studio 改 → push 分支）→ 跑 <code>pnpm tokens:sync</code> → CSS + TS + 本文档自动更新。</p>
 </div>
 
-<h2 class="section">theme · light（default） · 其他 theme: dark</h2>
+<h2 class="section">theme · light（default） · 其他 theme: dark, sepia</h2>
 <section class="block"><h3>bg</h3><table><tr>
         <td><code class="t">bg.canvas</code></td>
         <td><span class="chip" style="background:#FAFAF9"></span></td>
@@ -632,6 +844,28 @@ code.v { font-family: 'JetBrains Mono'; font-size: 11px; color: #57534E; }
             <span class="sw-step">700</span><code>rgba(255,255,255,0.64)</code>
           </div><div class="sw" style="background:rgba(255,255,255,0.80);color:#000">
             <span class="sw-step">800</span><code>rgba(255,255,255,0.80)</code>
+          </div></div></section><section class="block"><h3>brown</h3><div class="scale"><div class="sw" style="background:#FAF7F0;color:#000">
+            <span class="sw-step">50</span><code>#FAF7F0</code>
+          </div><div class="sw" style="background:#F5EBE0;color:#000">
+            <span class="sw-step">100</span><code>#F5EBE0</code>
+          </div><div class="sw" style="background:#E8D5C4;color:#000">
+            <span class="sw-step">200</span><code>#E8D5C4</code>
+          </div><div class="sw" style="background:#D9B79C;color:#000">
+            <span class="sw-step">300</span><code>#D9B79C</code>
+          </div><div class="sw" style="background:#C39477;color:#000">
+            <span class="sw-step">400</span><code>#C39477</code>
+          </div><div class="sw" style="background:#A07758;color:#fff">
+            <span class="sw-step">500</span><code>#A07758</code>
+          </div><div class="sw" style="background:#7A5A40;color:#fff">
+            <span class="sw-step">600</span><code>#7A5A40</code>
+          </div><div class="sw" style="background:#5C4530;color:#fff">
+            <span class="sw-step">700</span><code>#5C4530</code>
+          </div><div class="sw" style="background:#443322;color:#fff">
+            <span class="sw-step">800</span><code>#443322</code>
+          </div><div class="sw" style="background:#2F2418;color:#fff">
+            <span class="sw-step">900</span><code>#2F2418</code>
+          </div><div class="sw" style="background:#1A140C;color:#fff">
+            <span class="sw-step">950</span><code>#1A140C</code>
           </div></div></section>
 
 <h2 class="section">core · 其他</h2>

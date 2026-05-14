@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { Box, Flex, Text } from '@chakra-ui/react';
 import { signOut } from '@teacher-score/auth/client';
+import { ThemeToggle } from '@/components/theme-toggle';
 
 interface Me {
   user: { id: string; email: string };
@@ -137,20 +138,21 @@ export function AppShell({ me, children }: { me: Me; children: React.ReactNode }
 
         {/* User */}
         <Box px={6} py={4} borderTop="1px solid" borderColor="border.subtle">
-          <Flex align="center" justify="space-between">
-            <Box overflow="hidden">
-              <Text fontSize="sm" color="text.fg" fontWeight={600} noOfLines={1}>
+          <Flex align="center" justify="space-between" gap={2}>
+            <Box overflow="hidden" flex="1">
+              <Text fontSize="sm" color="fg.default" fontWeight={600} noOfLines={1}>
                 {me.user.email.split('@')[0]}
               </Text>
               <Text fontSize="xs" color="fg.subtle" noOfLines={1}>
                 {me.user.email}
               </Text>
             </Box>
+            <ThemeToggle />
             <Box
               as="button"
               fontSize="xs"
               color="fg.subtle"
-              _hover={{ color: 'text.fg' }}
+              _hover={{ color: 'fg.default' }}
               onClick={onSignOut}
               px={2}
               py={1}
