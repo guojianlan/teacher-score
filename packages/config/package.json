@@ -1,0 +1,25 @@
+{
+  "name": "@teacher-score/config",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    "./tsconfig.base.json": "./tsconfig.base.json",
+    "./eslint": "./eslint.config.js",
+    "./vitest": "./vitest.config.ts"
+  },
+  "files": ["tsconfig.base.json", "eslint.config.js", "vitest.config.ts", "rules"],
+  "scripts": {
+    "lint": "echo 'config: no source'",
+    "typecheck": "echo 'config: no source'",
+    "test": "echo 'config: no source'",
+    "build": "echo 'config: no source'"
+  },
+  "dependencies": {
+    "@typescript-eslint/eslint-plugin": "^8.8.0",
+    "@typescript-eslint/parser": "^8.8.0",
+    "eslint": "^9.12.0",
+    "typescript-eslint": "^8.8.0",
+    "vitest": "^2.1.2"
+  }
+}
