@@ -22,3 +22,7 @@ tmp/
 *.tsbuildinfo
 /tmp/design-system-screens
 tmp/
+
+# generated token artifacts (run pnpm tokens:sync to regenerate)
+apps/web/src/styles/tokens/__generated.ts
+apps/web/src/styles/tokens.css

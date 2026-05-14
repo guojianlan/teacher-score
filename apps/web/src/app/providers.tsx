@@ -5,7 +5,7 @@ import { ChakraProvider, extendTheme, type ThemeConfig } from '@chakra-ui/react'
 import {
   colors, fonts, fontSizes, fontWeights, lineHeights, letterSpacings,
   space, radii, borderWidths, shadows, durations,
-  light, dark, textStyles,
+  light, dark, effects, textStyles,
 } from '@/styles/tokens';
 
 // Chakra 的 semanticTokens 支持 _light / _dark 字段，原生支持主题切换。
@@ -28,21 +28,21 @@ function flatten(p: Record<string, unknown>, prefix = ''): Record<string, string
 }
 
 // 颜色类 token：bg / fg / border / interactive / status
-const { effects: lightEffects, ...lightColorGroups } = light;
-const { effects: darkEffects, ...darkColorGroups } = dark;
-const lightColorsFlat = flatten(lightColorGroups);
-const darkColorsFlat = flatten(darkColorGroups);
+const lightColorsFlat = flatten(light as unknown as Record<string, unknown>);
+const darkColorsFlat = flatten(dark as unknown as Record<string, unknown>);
 const semanticColors: Record<string, { default: string; _dark: string }> = {};
 for (const k of Object.keys(lightColorsFlat)) {
   semanticColors[k] = { default: lightColorsFlat[k]!, _dark: darkColorsFlat[k] ?? lightColorsFlat[k]! };
 }
 
-// 效果类 token（box-shadow 字符串）
+// 效果类 token（box-shadow 字符串）—— effects.light / effects.dark
+const lightEffects = effects.light;
+const darkEffects = effects.dark;
 const semanticShadows: Record<string, { default: string; _dark: string }> = {};
 for (const k of Object.keys(lightEffects)) {
   semanticShadows[k] = {
     default: lightEffects[k as keyof typeof lightEffects],
-    _dark: darkEffects[k as keyof typeof darkEffects],
+    _dark: (darkEffects as Record<string, string>)[k] ?? lightEffects[k as keyof typeof lightEffects],
   };
 }
 
