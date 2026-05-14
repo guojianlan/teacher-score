@@ -17,3 +17,6 @@ uploads/
 tmp/
 .DS_Store
 *.log
+
+# TypeScript build cache
+*.tsbuildinfo
