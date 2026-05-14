@@ -38,9 +38,9 @@ export default function TemplatesPage() {
       />
 
       {templates.length === 0 ? (
-        <Box py={16} textAlign="center" borderTop="1px solid" borderBottom="1px solid" borderColor="ink.100">
-          <Text fontFamily="mono" color="ink.500" fontSize="sm" mb={2}>EMPTY</Text>
-          <Text color="ink.500">还没有模板。完成一次批改后可"保存为模板"。</Text>
+        <Box py={16} textAlign="center" borderTop="1px solid" borderBottom="1px solid" borderColor="border.base">
+          <Text fontFamily="mono" color="text.fgSubtle" fontSize="sm" mb={2}>EMPTY</Text>
+          <Text color="text.fgSubtle">还没有模板。完成一次批改后可"保存为模板"。</Text>
         </Box>
       ) : (
         <Table size="md">
@@ -57,14 +57,14 @@ export default function TemplatesPage() {
           </Thead>
           <Tbody>
             {templates.map((t) => (
-              <Tr key={t.id} _hover={{ bg: 'paper.100' }}>
+              <Tr key={t.id} _hover={{ bg: 'bg.subtle' }}>
                 <Td fontWeight={500}>{t.name}</Td>
-                <Td><Badge bg="paper.200" color="ink.700">{SUBJECT_LABELS[t.subject] ?? t.subject}</Badge></Td>
-                <Td color="ink.500">{t.grade ?? '—'}</Td>
+                <Td><Badge bg="bg.muted" color="text.fgMuted">{SUBJECT_LABELS[t.subject] ?? t.subject}</Badge></Td>
+                <Td color="text.fgSubtle">{t.grade ?? '—'}</Td>
                 <Td isNumeric fontFamily="mono">{t.totalScore}</Td>
                 <Td isNumeric fontFamily="mono">{Array.isArray(t.questions) ? t.questions.length : 0}</Td>
-                <Td color="ink.500" fontSize="sm" fontFamily="mono">{new Date(t.createdAt).toLocaleDateString('zh-CN')}</Td>
-                <Td><Button size="xs" variant="ghost" color="danger.500" onClick={() => onDelete(t.id)}>删除</Button></Td>
+                <Td color="text.fgSubtle" fontSize="sm" fontFamily="mono">{new Date(t.createdAt).toLocaleDateString('zh-CN')}</Td>
+                <Td><Button size="xs" variant="ghost" color="red.700" onClick={() => onDelete(t.id)}>删除</Button></Td>
               </Tr>
             ))}
           </Tbody>

@@ -22,9 +22,9 @@ export default async function HistoryPage() {
       />
 
       {rows.length === 0 ? (
-        <Box py={16} textAlign="center" borderTop="1px solid" borderBottom="1px solid" borderColor="ink.100">
-          <Text fontFamily="mono" color="ink.500" fontSize="sm" mb={2}>EMPTY</Text>
-          <Text color="ink.500">还没有批改记录。</Text>
+        <Box py={16} textAlign="center" borderTop="1px solid" borderBottom="1px solid" borderColor="border.base">
+          <Text fontFamily="mono" color="text.fgSubtle" fontSize="sm" mb={2}>EMPTY</Text>
+          <Text color="text.fgSubtle">还没有批改记录。</Text>
         </Box>
       ) : (
         <Table size="md">
@@ -39,10 +39,10 @@ export default async function HistoryPage() {
           </Thead>
           <Tbody>
             {rows.map((r) => (
-              <Tr key={r.id} _hover={{ bg: 'paper.100' }}>
-                <Td color="ink.500" fontSize="sm" fontFamily="mono">{new Date(r.createdAt).toLocaleString('zh-CN')}</Td>
+              <Tr key={r.id} _hover={{ bg: 'bg.subtle' }}>
+                <Td color="text.fgSubtle" fontSize="sm" fontFamily="mono">{new Date(r.createdAt).toLocaleString('zh-CN')}</Td>
                 <Td>{SUBJECT_LABELS[r.subject] ?? r.subject}</Td>
-                <Td color="ink.500" fontSize="sm">{r.status}</Td>
+                <Td color="text.fgSubtle" fontSize="sm">{r.status}</Td>
                 <Td isNumeric fontFamily="mono">{r.totalScore ?? '—'} / {r.maxScore ?? '—'}</Td>
                 <Td><Link href={`/grade/${r.id}`} style={{ color: '#0969DA', fontSize: 13 }}>查看 →</Link></Td>
               </Tr>

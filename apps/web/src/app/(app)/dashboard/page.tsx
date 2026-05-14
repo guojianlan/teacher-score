@@ -11,7 +11,7 @@ export default function DashboardPage() {
         description="先添加学生，然后上传或拍照学生答卷开始批改。每次批改都会自动归集错题。"
       />
 
-      <Stack spacing={0} borderTop="1px solid" borderColor="ink.100">
+      <Stack spacing={0} borderTop="1px solid" borderColor="border.base">
         {[
           { href: '/students', no: '01', title: '添加学生', desc: '建立学生档案。学科 / 年级 / 备注。', tag: '准备工作' },
           { href: '/grade', no: '02', title: '开始一次批改', desc: '拍照、上传、扫码任选其一。三秒内入队。', tag: '核心动作' },
@@ -23,34 +23,34 @@ export default function DashboardPage() {
               py={6}
               px={2}
               borderBottom="1px solid"
-              borderColor="ink.100"
+              borderColor="border.base"
               align="flex-start"
               gap={6}
               cursor="pointer"
               role="group"
               transition="all 120ms ease"
-              _hover={{ bg: 'paper.100', px: 4 }}
+              _hover={{ bg: 'bg.subtle', px: 4 }}
             >
-              <Text fontFamily="mono" color="ink.300" fontSize="sm" w="32px" flexShrink={0} pt={1}>
+              <Text fontFamily="mono" color="text.fgSubtext" fontSize="sm" w="32px" flexShrink={0} pt={1}>
                 {it.no}
               </Text>
               <Box flex="1">
                 <Flex align="baseline" gap={3} mb={1}>
-                  <Text fontSize="lg" fontWeight={500} color="ink.900">
+                  <Text fontSize="lg" fontWeight={500} color="text.fg">
                     {it.title}
                   </Text>
-                  <Text fontFamily="mono" fontSize="xs" color="ink.500" letterSpacing="0.06em">
+                  <Text fontFamily="mono" fontSize="xs" color="text.fgSubtle" letterSpacing="0.06em">
                     {it.tag}
                   </Text>
                 </Flex>
-                <Text fontSize="md" color="ink.500" lineHeight={1.6}>
+                <Text fontSize="md" color="text.fgSubtle" lineHeight={1.6}>
                   {it.desc}
                 </Text>
               </Box>
               <Box
                 pt={2}
-                color="ink.300"
-                _groupHover={{ color: 'accent.500', transform: 'translateX(4px)' }}
+                color="text.fgSubtext"
+                _groupHover={{ color: 'brand.500', transform: 'translateX(4px)' }}
                 transition="all 120ms ease"
               >
                 →
@@ -61,10 +61,10 @@ export default function DashboardPage() {
       </Stack>
 
       <Box pt={4}>
-        <Text fontFamily="mono" fontSize="xs" color="ink.500" letterSpacing="0.08em" textTransform="uppercase" mb={4}>
+        <Text fontFamily="mono" fontSize="xs" color="text.fgSubtle" letterSpacing="0.08em" textTransform="uppercase" mb={4}>
           提示
         </Text>
-        <Stack spacing={2} fontSize="sm" color="ink.500" lineHeight={1.7}>
+        <Stack spacing={2} fontSize="sm" color="text.fgSubtle" lineHeight={1.7}>
           <Text>· 字迹不清的题会被标记 confidence=low，可手动改分。</Text>
           <Text>· 同卷第二次可"保存为模板"，下次自动套用、跳过识别。</Text>
           <Text>· 免费层 50 次/月。即将耗尽时左下角配额条会变红。</Text>

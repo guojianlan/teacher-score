@@ -57,11 +57,11 @@ export default function OrgPage() {
           </Thead>
           <Tbody>
             {orgs.map((o) => (
-              <Tr key={o.id} _hover={{ bg: 'paper.100' }}>
+              <Tr key={o.id} _hover={{ bg: 'bg.subtle' }}>
                 <Td fontWeight={500}>{o.name}</Td>
-                <Td color="ink.500" fontSize="sm">{o.isPersonal ? '个人' : '机构'}</Td>
-                <Td><Badge bg="paper.200" color="ink.700">{o.subscriptionTier}</Badge> <Text as="span" fontFamily="mono" fontSize="sm" color="ink.500">{o.monthlyQuota}/月</Text></Td>
-                <Td color="ink.500" fontSize="sm">{o.role}</Td>
+                <Td color="text.fgSubtle" fontSize="sm">{o.isPersonal ? '个人' : '机构'}</Td>
+                <Td><Badge bg="bg.muted" color="text.fgMuted">{o.subscriptionTier}</Badge> <Text as="span" fontFamily="mono" fontSize="sm" color="text.fgSubtle">{o.monthlyQuota}/月</Text></Td>
+                <Td color="text.fgSubtle" fontSize="sm">{o.role}</Td>
                 <Td><Button size="xs" variant="ghost" onClick={() => onSwitch(o.id)}>切换 →</Button></Td>
               </Tr>
             ))}
@@ -76,10 +76,10 @@ export default function OrgPage() {
           </Thead>
           <Tbody>
             {members.map((m) => (
-              <Tr key={m.id} _hover={{ bg: 'paper.100' }}>
+              <Tr key={m.id} _hover={{ bg: 'bg.subtle' }}>
                 <Td>{m.userName}</Td>
-                <Td color="ink.500" fontSize="sm">{m.userEmail}</Td>
-                <Td><Badge bg={m.role === 'owner' ? 'accent.50' : 'paper.200'} color={m.role === 'owner' ? 'accent.700' : 'ink.700'}>{m.role}</Badge></Td>
+                <Td color="text.fgSubtle" fontSize="sm">{m.userEmail}</Td>
+                <Td><Badge bg={m.role === 'owner' ? 'brand.50' : 'bg.muted'} color={m.role === 'owner' ? 'brand.800' : 'text.fgMuted'}>{m.role}</Badge></Td>
               </Tr>
             ))}
           </Tbody>
@@ -89,11 +89,11 @@ export default function OrgPage() {
       <Section label="邀请老师">
         <Stack direction={['column', 'row']} spacing={3} align="flex-end">
           <FormControl flex="1">
-            <FormLabel fontSize="sm" color="ink.700" mb={1.5}>邮箱</FormLabel>
+            <FormLabel fontSize="sm" color="text.fgMuted" mb={1.5}>邮箱</FormLabel>
             <Input value={inviteEmail} onChange={(e) => setInviteEmail(e.target.value)} placeholder="teacher@example.com" />
           </FormControl>
           <FormControl maxW="180px">
-            <FormLabel fontSize="sm" color="ink.700" mb={1.5}>角色</FormLabel>
+            <FormLabel fontSize="sm" color="text.fgMuted" mb={1.5}>角色</FormLabel>
             <Select value={inviteRole} onChange={(e) => setInviteRole(e.target.value as 'admin' | 'member')}>
               <option value="member">member</option>
               <option value="admin">admin</option>
@@ -108,8 +108,8 @@ export default function OrgPage() {
 
 function Section({ label, children }: { label: string; children: React.ReactNode }) {
   return (
-    <Box pb={8} borderBottom="1px solid" borderColor="ink.100">
-      <Text fontFamily="mono" fontSize="xs" color="ink.500" letterSpacing="0.08em" textTransform="uppercase" mb={4}>
+    <Box pb={8} borderBottom="1px solid" borderColor="border.base">
+      <Text fontFamily="mono" fontSize="xs" color="text.fgSubtle" letterSpacing="0.08em" textTransform="uppercase" mb={4}>
         {label}
       </Text>
       {children}

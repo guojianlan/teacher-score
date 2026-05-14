@@ -11,15 +11,15 @@ interface Me {
   quota: { yearMonth: string; gradingsUsed: number };
 }
 
-const NAV: { href: string; label: string }[] = [
-  { href: '/dashboard', label: '工作台' },
-  { href: '/students', label: '学生' },
-  { href: '/grade', label: '批改' },
-  { href: '/history', label: '历史' },
-  { href: '/mistakes', label: '错题本' },
-  { href: '/templates', label: '模板' },
-  { href: '/org', label: '组织' },
-  { href: '/settings', label: '设置' },
+const NAV: { href: string; label: string; icon: string }[] = [
+  { href: '/dashboard', label: '工作台', icon: '⌂' },
+  { href: '/students', label: '学生', icon: '◍' },
+  { href: '/grade', label: '批改', icon: '✎' },
+  { href: '/history', label: '历史', icon: '◷' },
+  { href: '/mistakes', label: '错题本', icon: '✕' },
+  { href: '/templates', label: '模板', icon: '☷' },
+  { href: '/org', label: '组织', icon: '⊟' },
+  { href: '/settings', label: '设置', icon: '⚙' },
 ];
 
 export function AppShell({ me, children }: { me: Me; children: React.ReactNode }) {
@@ -36,57 +36,74 @@ export function AppShell({ me, children }: { me: Me; children: React.ReactNode }
   const pct = Math.min(100, Math.round((used / quota) * 100));
 
   return (
-    <Flex minH="100vh" bg="paper.50">
+    <Flex minH="100vh" bg="bg.page">
+      {/* Sidebar */}
       <Box
-        w="240px"
+        w="248px"
         flexShrink={0}
-        bg="paper.100"
+        bg="bg.panel"
         borderRight="1px solid"
-        borderColor="ink.100"
+        borderColor="border.base"
         display="flex"
         flexDirection="column"
         position="sticky"
         top={0}
         h="100vh"
       >
+        {/* Brand */}
         <Box px={6} pt={7} pb={6}>
           <Link href="/dashboard">
-            <Text
-              fontSize="2xl"
-              fontWeight={500}
-              letterSpacing="-0.02em"
-              color="ink.900"
-              cursor="pointer"
-              fontStyle="italic"
-            >
-              教研室
-            </Text>
-            <Text fontSize="xs" color="ink.500" mt={1} fontFamily="mono">
-              teacher-score
-            </Text>
+            <Flex align="center" gap={2} cursor="pointer">
+              <Box
+                w="32px" h="32px" borderRadius="lg"
+                bg="brand.600" color="white"
+                display="flex" alignItems="center" justifyContent="center"
+                fontFamily="serif" fontWeight={600} fontSize="lg"
+              >
+                T
+              </Box>
+              <Box>
+                <Text fontFamily="heading" fontWeight={600} fontSize="md" color="text.fg" lineHeight={1.1}>
+                  教师批改
+                </Text>
+                <Text fontFamily="mono" fontSize="2xs" color="text.fgSubtext" letterSpacing="0.04em">
+                  teacher-score
+                </Text>
+              </Box>
+            </Flex>
           </Link>
         </Box>
 
-        <Box flex="1" px={4} overflowY="auto">
+        {/* Nav */}
+        <Box flex="1" px={3} overflowY="auto">
           {NAV.map((n) => {
             const active = pathname === n.href || pathname.startsWith(n.href + '/');
             return (
               <Link key={n.href} href={n.href}>
                 <Flex
                   align="center"
-                  py="7px"
+                  py={2}
                   px={3}
-                  borderRadius="6px"
+                  borderRadius="md"
                   cursor="pointer"
-                  bg={active ? 'paper.300' : 'transparent'}
-                  color={active ? 'ink.900' : 'ink.700'}
-                  _hover={{ bg: active ? 'paper.300' : 'paper.200' }}
-                  fontSize="md"
-                  fontWeight={active ? 500 : 400}
+                  bg={active ? 'brand.50' : 'transparent'}
+                  color={active ? 'brand.700' : 'text.fgMuted'}
+                  _hover={{ bg: active ? 'brand.50' : 'bg.subtle' }}
+                  fontSize="sm"
+                  fontWeight={active ? 600 : 500}
                   transition="all 120ms ease"
+                  mb="2px"
                 >
-                  <Text as="span" mr={2} color={active ? 'accent.500' : 'ink.300'} fontFamily="mono" fontSize="sm">
-                    {active ? '›' : ' '}
+                  <Text
+                    as="span"
+                    mr={3}
+                    color={active ? 'brand.600' : 'text.fgSubtext'}
+                    fontSize="md"
+                    w="16px"
+                    textAlign="center"
+                    flexShrink={0}
+                  >
+                    {n.icon}
                   </Text>
                   {n.label}
                 </Flex>
@@ -95,47 +112,59 @@ export function AppShell({ me, children }: { me: Me; children: React.ReactNode }
           })}
         </Box>
 
-        <Box px={6} py={4} borderTop="1px solid" borderColor="ink.100">
+        {/* Quota */}
+        <Box mx={4} mb={3} p={4} bg="bg.subtle" borderRadius="lg">
           <Flex justify="space-between" align="baseline" mb={2}>
-            <Text fontSize="xs" color="ink.500" fontFamily="mono">
-              本月 · {me.quota.yearMonth}
+            <Text fontSize="xs" color="text.fgSubtle" fontWeight={500}>
+              本月配额
             </Text>
-            <Text fontSize="xs" color="ink.700" fontFamily="mono">
+            <Text fontSize="xs" color="text.fgMuted" fontFamily="mono" fontWeight={600}>
               {used}/{quota}
             </Text>
           </Flex>
-          <Box h="3px" bg="ink.100" borderRadius="full" overflow="hidden">
-            <Box h="3px" w={`${pct}%`} bg={pct > 85 ? 'danger.500' : 'accent.500'} transition="width 200ms ease" />
+          <Box h="4px" bg="bg.muted" borderRadius="full" overflow="hidden">
+            <Box
+              h="100%"
+              w={`${pct}%`}
+              bg={pct > 85 ? 'red.600' : 'brand.600'}
+              transition="width 200ms ease"
+            />
           </Box>
+          <Text mt={2} fontSize="xs" color="text.fgSubtext" fontFamily="mono">
+            {me.quota.yearMonth}
+          </Text>
         </Box>
 
-        <Box px={6} py={4} borderTop="1px solid" borderColor="ink.100">
+        {/* User */}
+        <Box px={6} py={4} borderTop="1px solid" borderColor="border.subtle">
           <Flex align="center" justify="space-between">
             <Box overflow="hidden">
-              <Text fontSize="sm" color="ink.900" fontWeight={500} noOfLines={1}>
+              <Text fontSize="sm" color="text.fg" fontWeight={600} noOfLines={1}>
                 {me.user.email.split('@')[0]}
               </Text>
-              <Text fontSize="xs" color="ink.500" noOfLines={1}>
+              <Text fontSize="xs" color="text.fgSubtext" noOfLines={1}>
                 {me.user.email}
               </Text>
             </Box>
             <Box
               as="button"
               fontSize="xs"
-              color="ink.500"
-              _hover={{ color: 'ink.900' }}
+              color="text.fgSubtle"
+              _hover={{ color: 'text.fg' }}
               onClick={onSignOut}
-              fontFamily="mono"
-              letterSpacing="0.04em"
+              px={2}
+              py={1}
+              borderRadius="sm"
             >
-              退出 ↪
+              退出
             </Box>
           </Flex>
         </Box>
       </Box>
 
+      {/* Main */}
       <Box flex="1" minW={0}>
-        <Box maxW="980px" mx="auto" px={[6, 10, 14]} py={[6, 10]}>
+        <Box maxW="1080px" mx="auto" px={[6, 10, 14]} py={[8, 12]}>
           {children}
         </Box>
       </Box>

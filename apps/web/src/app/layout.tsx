@@ -1,33 +1,45 @@
 import type { Metadata } from 'next';
-import { Newsreader, JetBrains_Mono } from 'next/font/google';
+import { Open_Sans, Source_Serif_4, Poppins, Figtree } from 'next/font/google';
 import { Providers } from './providers';
+import '../styles/tokens.css';
 
-// 选字考量（按 skill 的要求避开 Inter/Roboto/Arial 一类）：
-// - Newsreader 是 Google 的可变 serif，自带 opsz（光学尺寸）轴，标题/正文一字体即可拉开层次
-// - JetBrains Mono 用于题号、分数、ID 这类需要"知识感"的位置
-const newsreader = Newsreader({
+// Slidepilot V1 字体栈（来自 docs/claude/token.json）
+const openSans = Open_Sans({
   subsets: ['latin'],
-  variable: '--font-display',
-  weight: ['300', '400', '500', '600', '700'],
-  style: ['normal', 'italic'],
+  variable: '--font-body-loaded',
+  weight: ['400', '500', '600', '700'],
   display: 'swap',
 });
-
-const mono = JetBrains_Mono({
+const serif = Source_Serif_4({
   subsets: ['latin'],
-  variable: '--font-mono',
+  variable: '--font-serif-loaded',
+  weight: ['400', '600'],
+  display: 'swap',
+});
+const poppins = Poppins({
+  subsets: ['latin'],
+  variable: '--font-display-loaded',
+  weight: ['400', '500', '600', '700'],
+  display: 'swap',
+});
+const figtree = Figtree({
+  subsets: ['latin'],
+  variable: '--font-mono-loaded',
   weight: ['400', '500', '600'],
   display: 'swap',
 });
 
 export const metadata: Metadata = {
-  title: '教研室 · 教师批改',
+  title: '教师批改 SaaS',
   description: '老师拍照批改试卷，多模态 LLM 自动批改 + 学情资产沉淀',
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="zh-CN" className={`${newsreader.variable} ${mono.variable}`}>
+    <html
+      lang="zh-CN"
+      className={`${openSans.variable} ${serif.variable} ${poppins.variable} ${figtree.variable}`}
+    >
       <body>
         <Providers>{children}</Providers>
       </body>

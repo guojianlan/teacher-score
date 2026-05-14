@@ -4,7 +4,7 @@ import { Box, Flex, Heading, Text } from '@chakra-ui/react';
 import type { ReactNode } from 'react';
 
 interface Props {
-  eyebrow?: string;       // 上方小字，比如 "今天 · 工作台"
+  eyebrow?: string;
   title: string;
   description?: string;
   actions?: ReactNode;
@@ -12,14 +12,15 @@ interface Props {
 
 export function PageHeader({ eyebrow, title, description, actions }: Props) {
   return (
-    <Box pb={8} mb={8} borderBottom="1px solid" borderColor="ink.100">
+    <Box pb={8} mb={8} borderBottom="1px solid" borderColor="border.base">
       {eyebrow && (
         <Text
           fontSize="xs"
           fontFamily="mono"
-          color="ink.500"
+          color="text.fgSubtle"
           letterSpacing="0.08em"
           textTransform="uppercase"
+          fontWeight={600}
           mb={3}
         >
           {eyebrow}
@@ -27,11 +28,11 @@ export function PageHeader({ eyebrow, title, description, actions }: Props) {
       )}
       <Flex align="flex-end" justify="space-between" gap={6} flexWrap="wrap">
         <Box flex="1" minW="240px">
-          <Heading as="h1" size="2xl" fontStyle={title.length < 8 ? 'italic' : 'normal'}>
+          <Heading as="h1" size="2xl" fontFamily="heading">
             {title}
           </Heading>
           {description && (
-            <Text mt={3} color="ink.500" fontSize="md" maxW="60ch">
+            <Text mt={3} color="text.fgSubtle" fontSize="md" maxW="62ch" lineHeight={1.65}>
               {description}
             </Text>
           )}

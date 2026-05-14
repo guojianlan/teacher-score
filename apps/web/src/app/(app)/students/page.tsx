@@ -84,11 +84,11 @@ export default function StudentsPage() {
 
       <Box>
         {loading ? (
-          <Flex p={12} justify="center"><Spinner color="ink.300" /></Flex>
+          <Flex p={12} justify="center"><Spinner color="text.fgSubtext" /></Flex>
         ) : students.length === 0 ? (
-          <Box py={16} textAlign="center" borderTop="1px solid" borderBottom="1px solid" borderColor="ink.100">
-            <Text fontFamily="mono" color="ink.500" fontSize="sm" mb={2}>EMPTY</Text>
-            <Text color="ink.500">还没有学生。点右上角「新建学生」开始。</Text>
+          <Box py={16} textAlign="center" borderTop="1px solid" borderBottom="1px solid" borderColor="border.base">
+            <Text fontFamily="mono" color="text.fgSubtle" fontSize="sm" mb={2}>EMPTY</Text>
+            <Text color="text.fgSubtle">还没有学生。点右上角「新建学生」开始。</Text>
           </Box>
         ) : (
           <Table size="md">
@@ -103,24 +103,24 @@ export default function StudentsPage() {
             </Thead>
             <Tbody>
               {students.map((s) => (
-                <Tr key={s.id} _hover={{ bg: 'paper.100' }} transition="background 100ms ease">
+                <Tr key={s.id} _hover={{ bg: 'bg.subtle' }} transition="background 100ms ease">
                   <Td fontWeight={500} fontSize="md">{s.name}</Td>
-                  <Td color="ink.500">{s.grade ?? '—'}</Td>
+                  <Td color="text.fgSubtle">{s.grade ?? '—'}</Td>
                   <Td>
                     <Flex gap={1.5} wrap="wrap">
                       {(s.subjects ?? []).map((sub) => (
-                        <Badge key={sub} bg="paper.200" color="ink.700">{SUBJECT_LABELS[sub] ?? sub}</Badge>
+                        <Badge key={sub} bg="bg.muted" color="text.fgMuted">{SUBJECT_LABELS[sub] ?? sub}</Badge>
                       ))}
                     </Flex>
                   </Td>
-                  <Td maxW="280px" overflow="hidden" textOverflow="ellipsis" whiteSpace="nowrap" color="ink.500" fontSize="sm">
+                  <Td maxW="280px" overflow="hidden" textOverflow="ellipsis" whiteSpace="nowrap" color="text.fgSubtle" fontSize="sm">
                     {s.notes ?? '—'}
                   </Td>
                   <Td isNumeric>
                     <Button size="xs" variant="ghost" mr={1} onClick={() => { setEditing(s); drawer.onOpen(); }}>
                       编辑
                     </Button>
-                    <Button size="xs" variant="ghost" color="danger.500" onClick={() => onDelete(s.id)}>
+                    <Button size="xs" variant="ghost" color="red.700" onClick={() => onDelete(s.id)}>
                       删除
                     </Button>
                   </Td>

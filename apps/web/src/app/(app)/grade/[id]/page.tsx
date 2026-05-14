@@ -186,61 +186,61 @@ function ResultView({ record, reload }: { record: GradingRecord; reload: () => v
       />
 
       {/* Score grid */}
-      <Box borderTop="1px solid" borderBottom="1px solid" borderColor="ink.100" py={6}>
+      <Box borderTop="1px solid" borderBottom="1px solid" borderColor="border.base" py={6}>
         <Flex gap={[6, 12]} wrap="wrap">
           <Stat label="总分" main={
             <Flex align="baseline" gap={1}>
               <Text fontFamily="mono" fontSize="4xl" fontWeight={500}>{total}</Text>
-              <Text fontFamily="mono" color="ink.500" fontSize="lg">/{max}</Text>
+              <Text fontFamily="mono" color="text.fgSubtle" fontSize="lg">/{max}</Text>
             </Flex>
           } />
           <Stat label="正确率" main={
-            <Text fontFamily="mono" fontSize="4xl" fontWeight={500}>{pct}<Text as="span" fontSize="lg" color="ink.500">%</Text></Text>
+            <Text fontFamily="mono" fontSize="4xl" fontWeight={500}>{pct}<Text as="span" fontSize="lg" color="text.fgSubtle">%</Text></Text>
           } />
           <Stat label="错题数" main={
-            <Text fontFamily="mono" fontSize="4xl" fontWeight={500} color={wrong > 0 ? 'danger.500' : 'ink.900'}>{wrong}</Text>
+            <Text fontFamily="mono" fontSize="4xl" fontWeight={500} color={wrong > 0 ? 'red.700' : 'text.fg'}>{wrong}</Text>
           } />
         </Flex>
         {record.overallComment && (
-          <Text mt={6} pt={6} borderTop="1px solid" borderColor="ink.100" color="ink.700" fontSize="md" fontStyle="italic" lineHeight={1.65}>
+          <Text mt={6} pt={6} borderTop="1px solid" borderColor="border.base" color="text.fgMuted" fontSize="md" fontStyle="italic" lineHeight={1.65}>
             “{record.overallComment}”
           </Text>
         )}
       </Box>
 
       {/* Question by question */}
-      <Stack spacing={0} borderTop="1px solid" borderColor="ink.100">
+      <Stack spacing={0} borderTop="1px solid" borderColor="border.base">
         {results.map((q) => (
-          <Box key={q.no} py={6} borderBottom="1px solid" borderColor="ink.100">
+          <Box key={q.no} py={6} borderBottom="1px solid" borderColor="border.base">
             <Flex align="baseline" gap={3} mb={3} wrap="wrap">
-              <Text fontFamily="mono" fontSize="sm" color="ink.300" w="32px">Q{q.no}</Text>
-              <Badge bg={q.isCorrect ? 'success.100' : 'danger.100'} color={q.isCorrect ? 'success.500' : 'danger.500'}>
+              <Text fontFamily="mono" fontSize="sm" color="text.fgSubtext" w="32px">Q{q.no}</Text>
+              <Badge bg={q.isCorrect ? 'green.50' : 'red.50'} color={q.isCorrect ? 'green.700' : 'red.700'}>
                 {q.isCorrect ? '正确' : '错误'}
               </Badge>
               <Badge
-                bg={q.confidence === 'high' ? 'paper.200' : q.confidence === 'medium' ? 'warn.100' : 'danger.100'}
-                color={q.confidence === 'high' ? 'ink.500' : q.confidence === 'medium' ? 'warn.500' : 'danger.500'}
+                bg={q.confidence === 'high' ? 'bg.muted' : q.confidence === 'medium' ? 'orange.50' : 'red.50'}
+                color={q.confidence === 'high' ? 'text.fgSubtle' : q.confidence === 'medium' ? 'orange.700' : 'red.700'}
               >
                 信心 {q.confidence}
               </Badge>
-              {q.teacherModified && <Badge bg="accent.50" color="accent.700">老师改分</Badge>}
+              {q.teacherModified && <Badge bg="brand.50" color="brand.800">老师改分</Badge>}
             </Flex>
 
-            <Text fontSize="md" color="ink.700" mb={2} lineHeight={1.6}>{q.stem}</Text>
+            <Text fontSize="md" color="text.fgMuted" mb={2} lineHeight={1.6}>{q.stem}</Text>
 
-            <Stack spacing={1.5} fontSize="sm" color="ink.500" mb={4}>
+            <Stack spacing={1.5} fontSize="sm" color="text.fgSubtle" mb={4}>
               <Flex gap={3}>
-                <Text fontFamily="mono" w="60px" flexShrink={0} color="ink.300">学生</Text>
-                <Text color="ink.700">{q.studentAnswer || '（空）'}</Text>
+                <Text fontFamily="mono" w="60px" flexShrink={0} color="text.fgSubtext">学生</Text>
+                <Text color="text.fgMuted">{q.studentAnswer || '（空）'}</Text>
               </Flex>
               <Flex gap={3}>
-                <Text fontFamily="mono" w="60px" flexShrink={0} color="ink.300">参考</Text>
-                <Text color="ink.700">{q.correctAnswer ?? '—'}</Text>
+                <Text fontFamily="mono" w="60px" flexShrink={0} color="text.fgSubtext">参考</Text>
+                <Text color="text.fgMuted">{q.correctAnswer ?? '—'}</Text>
               </Flex>
             </Stack>
 
             <Flex gap={3} align="center" wrap="wrap">
-              <Text fontFamily="mono" fontSize="xs" color="ink.500" letterSpacing="0.06em">SCORE</Text>
+              <Text fontFamily="mono" fontSize="xs" color="text.fgSubtle" letterSpacing="0.06em">SCORE</Text>
               <Input
                 size="sm"
                 w="80px"
@@ -249,7 +249,7 @@ function ResultView({ record, reload }: { record: GradingRecord; reload: () => v
                 fontFamily="mono"
                 onBlur={(e) => { const s = Number(e.target.value); if (s !== q.score) onOverride(q.no, s, q.comment); }}
               />
-              <Text fontFamily="mono" fontSize="sm" color="ink.500">/ {q.maxScore}</Text>
+              <Text fontFamily="mono" fontSize="sm" color="text.fgSubtle">/ {q.maxScore}</Text>
               <Textarea
                 size="sm"
                 placeholder="单题评语"
@@ -270,7 +270,7 @@ function ResultView({ record, reload }: { record: GradingRecord; reload: () => v
 function Stat({ label, main }: { label: string; main: React.ReactNode }) {
   return (
     <Box>
-      <Text fontFamily="mono" fontSize="xs" color="ink.500" letterSpacing="0.08em" textTransform="uppercase" mb={1}>
+      <Text fontFamily="mono" fontSize="xs" color="text.fgSubtle" letterSpacing="0.08em" textTransform="uppercase" mb={1}>
         {label}
       </Text>
       {main}

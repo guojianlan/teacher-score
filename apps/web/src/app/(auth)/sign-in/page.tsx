@@ -40,7 +40,7 @@ export default function SignInPage() {
   return (
     <Stack spacing={8}>
       <Box>
-        <Text fontFamily="mono" fontSize="xs" color="ink.500" letterSpacing="0.12em" textTransform="uppercase" mb={2}>
+        <Text fontFamily="mono" fontSize="xs" color="text.fgSubtle" letterSpacing="0.12em" textTransform="uppercase" mb={2}>
           Welcome back
         </Text>
         <Heading as="h1" size="xl" fontStyle="italic" fontWeight={400}>
@@ -51,11 +51,11 @@ export default function SignInPage() {
       <form onSubmit={onSubmit}>
         <Stack spacing={5}>
           <FormControl isRequired>
-            <FormLabel fontSize="sm" color="ink.700" mb={1.5}>邮箱</FormLabel>
+            <FormLabel fontSize="sm" color="text.fgMuted" mb={1.5}>邮箱</FormLabel>
             <Input type="email" value={email} onChange={(e) => setEmail(e.target.value)} autoComplete="email" />
           </FormControl>
           <FormControl isRequired>
-            <FormLabel fontSize="sm" color="ink.700" mb={1.5}>密码</FormLabel>
+            <FormLabel fontSize="sm" color="text.fgMuted" mb={1.5}>密码</FormLabel>
             <Input type="password" value={password} onChange={(e) => setPassword(e.target.value)} autoComplete="current-password" />
           </FormControl>
           <Button type="submit" isLoading={loading} size="lg" mt={2}>
@@ -77,7 +77,7 @@ export default function SignInPage() {
         </Stack>
       </form>
 
-      <Box fontSize="sm" color="ink.500" pt={4} borderTop="1px solid" borderColor="ink.100">
+      <Box fontSize="sm" color="text.fgSubtle" pt={4} borderTop="1px solid" borderColor="border.base">
         <Text>
           还没有账号？{' '}
           <Link href="/sign-up" style={{ color: '#0969DA', textDecoration: 'underline', textUnderlineOffset: '3px' }}>

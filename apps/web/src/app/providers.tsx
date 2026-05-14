@@ -3,152 +3,130 @@
 import { CacheProvider } from '@chakra-ui/next-js';
 import { ChakraProvider, extendTheme, type ThemeConfig } from '@chakra-ui/react';
 
-// 视觉气质：Notion / iA Writer 教研笔记风。
-// - 纯白底（不是 gray.50 那种"网页感"）
-// - 衬线字体为主（Newsreader 可变字体，opsz 轴标题正文同源）
-// - 配色克制：墨黑为主，#0969DA 蓝只用在 hover/active/链接
-// - 阴影几乎不用，靠 hairline 边界分隔
-// - 圆角小（6px），不要那种 SaaS 圆角胶囊感
+// 全部颜色 / 字号 / 间距值来自 Slidepilot V1 (docs/claude/token.json)。
+// CSS 变量见 apps/web/src/styles/tokens.css（自动生成）。
 
 const config: ThemeConfig = { initialColorMode: 'light', useSystemColorMode: false };
 
 const theme = extendTheme({
   config,
   fonts: {
-    heading: 'var(--font-display), "Songti SC", "STSong", Georgia, serif',
-    body: 'var(--font-display), "Songti SC", "STSong", Georgia, serif',
-    mono: 'var(--font-mono), "SF Mono", Menlo, Consolas, monospace',
+    heading: "var(--font-display-loaded), 'Open Sans', system-ui, sans-serif",
+    body: "var(--font-body-loaded), 'Open Sans', system-ui, sans-serif",
+    mono: "var(--font-mono-loaded), 'Figtree', ui-monospace, monospace",
+    serif: "var(--font-serif-loaded), 'Source Serif 4', Georgia, serif",
   },
   fontSizes: {
-    xs: '12px',
-    sm: '13px',
-    md: '15px',
-    lg: '17px',
-    xl: '20px',
-    '2xl': '24px',
-    '3xl': '30px',
-    '4xl': '38px',
-    '5xl': '48px',
-    '6xl': '60px',
+    '2xs': '10px', xs: '12px', sm: '14px', md: '16px', lg: '18px',
+    xl: '20px', '2xl': '24px', '3xl': '30px', '4xl': '36px', '5xl': '48px', '6xl': '60px', '7xl': '72px',
   },
-  // GitHub 配色族（Notion 也是从这套来的）
+  radii: { none: '0', xs: '2px', sm: '4px', md: '6px', lg: '8px', xl: '10px', '2xl': '12px', '3xl': '16px', '4xl': '24px', full: '9999px' },
   colors: {
-    ink: {
-      900: '#1F2328',   // 主文本
-      700: '#424A53',
-      500: '#656D76',   // muted
-      300: '#8C959F',
-      100: '#D0D7DE',   // hairline
+    gray: {
+      50: '#fafafa', 100: '#f3f4f6', 150: '#ebebeb', 200: '#e5e5e5', 300: '#d8d8d8',
+      400: '#bfbfbf', 500: '#999999', 600: '#808080', 700: '#666666', 800: '#4d4d4d',
+      900: '#333333', 950: '#191922', 960: '#141413',
     },
-    paper: {
-      50: '#FFFFFF',
-      100: '#F6F8FA',   // sidebar / 次级背景
-      200: '#EFF2F5',
-      300: '#E1E7EC',
+    blue: {
+      30: '#F7F9FF', 50: '#F2F6FF', 100: '#E8F0FF', 200: '#C5D7FB', 300: '#A3BCF7',
+      400: '#81A0F3', 500: '#6182EF', 600: '#4263EB', 700: '#2943C3', 800: '#16289C', 900: '#081374',
     },
-    accent: {
-      50: '#DDF4FF',
-      100: '#B6E3FF',
-      200: '#80CCFF',
-      300: '#54AEFF',
-      400: '#218BFF',
-      500: '#0969DA',   // 主蓝
-      600: '#0550AE',
-      700: '#033D8B',
-      800: '#0A3069',
-      900: '#002155',
+    yellow: {
+      20: '#F7F6F2', 50: '#fffbe8', 100: '#fff4c8', 200: '#ffeba8', 300: '#ffdf87',
+      400: '#ffd470', 500: '#ffc247', 600: '#d2952c', 700: '#a66d17', 800: '#835b0b',
     },
-    success: { 500: '#1A7F37', 100: '#DAFBE1' },
-    danger: { 500: '#CF222E', 100: '#FFEBE9' },
-    warn: { 500: '#9A6700', 100: '#FFF8C5' },
-    // 覆盖 Chakra 默认的 brand 别名
+    red: { 50: '#fef2f2', 100: '#fee2e2', 200: '#fecaca', 600: '#dc2626', 700: '#b91c1c' },
+    green: { 50: '#E8FFEA', 100: '#d1fae5', 600: '#16a34a', 700: '#15803d' },
+    orange: { 50: '#FFF7E8', 600: '#ea580c', 700: '#c2410c' },
     brand: {
-      50: '#DDF4FF',
-      100: '#B6E3FF',
-      200: '#80CCFF',
-      300: '#54AEFF',
-      400: '#218BFF',
-      500: '#0969DA',
-      600: '#0550AE',
-      700: '#033D8B',
-      800: '#0A3069',
-      900: '#002155',
+      50: '#F2F6FF', 100: '#E8F0FF', 200: '#C5D7FB', 300: '#A3BCF7', 400: '#81A0F3',
+      500: '#6182EF', 600: '#4263EB', 700: '#2943C3', 800: '#16289C', 900: '#081374',
+    },
+  },
+  semanticTokens: {
+    colors: {
+      'bg.page': '#F7F6F2',
+      'bg.panel': '#ffffff',
+      'bg.subtle': 'gray.100',
+      'bg.muted': '#e8e9eb',
+      'bg.emphasized': 'gray.300',
+      'bg.inverted': '#141413',
+      'bg.info': '#F2F6FF',
+      'bg.success': '#E8FFEA',
+      'bg.warning': '#FFF7E8',
+      'bg.error': '#fef2f2',
+      'text.fg': '#141413',
+      'text.fgMuted': '#333333',
+      'text.fgSubtle': '#666666',
+      'text.fgSubtext': '#999999',
+      'text.fgInverted': '#ffffff',
+      'text.fgInfo': 'blue.700',
+      'text.fgSuccess': 'green.700',
+      'text.fgWarning': 'orange.700',
+      'text.fgError': 'red.700',
+      'border.base': 'gray.200',
+      'border.subtle': 'gray.100',
+      'border.muted': 'gray.150',
+      'border.emphasized': 'gray.300',
+      'border.hover': 'gray.400',
     },
   },
   styles: {
     global: {
       'html, body': {
-        bg: 'paper.50',
-        color: 'ink.900',
-        fontFeatureSettings: '"ss01", "ss02", "cv01", "cv11"',
+        bg: 'bg.page',
+        color: 'text.fg',
         textRendering: 'optimizeLegibility',
         WebkitFontSmoothing: 'antialiased',
         MozOsxFontSmoothing: 'grayscale',
       },
-      // selection 用淡蓝
-      '::selection': { bg: 'accent.100', color: 'accent.800' },
+      '::selection': { bg: 'blue.100', color: 'blue.700' },
     },
   },
   components: {
     Heading: {
-      baseStyle: {
-        fontFamily: 'heading',
-        fontWeight: 500,         // serif 不要太粗，500 已经够重
-        letterSpacing: '-0.01em',
-        color: 'ink.900',
-      },
+      baseStyle: { fontFamily: 'heading', fontWeight: 600, color: 'text.fg', letterSpacing: '-0.01em' },
       sizes: {
-        '2xl': { fontSize: ['38px', '46px'], fontWeight: 500, lineHeight: 1.15 },
-        xl: { fontSize: '30px', fontWeight: 500, lineHeight: 1.2 },
-        lg: { fontSize: '24px', fontWeight: 500, lineHeight: 1.25 },
-        md: { fontSize: '18px', fontWeight: 600, lineHeight: 1.35 },
-        sm: { fontSize: '15px', fontWeight: 600, lineHeight: 1.4 },
+        '2xl': { fontSize: ['32px', '40px'], lineHeight: 1.15, fontWeight: 600 },
+        xl: { fontSize: ['26px', '30px'], lineHeight: 1.2, fontWeight: 600 },
+        lg: { fontSize: '22px', lineHeight: 1.25, fontWeight: 600 },
+        md: { fontSize: '18px', lineHeight: 1.35, fontWeight: 600 },
+        sm: { fontSize: '15px', lineHeight: 1.4, fontWeight: 600 },
       },
     },
     Button: {
-      baseStyle: {
-        fontFamily: 'body',
-        fontWeight: 500,
-        borderRadius: '6px',
+      baseStyle: { fontFamily: 'body', fontWeight: 500, borderRadius: 'lg' },
+      sizes: {
+        sm: { h: '32px', px: '12px', fontSize: 'sm' },
+        md: { h: '40px', px: '16px', fontSize: 'md' },
+        lg: { h: '44px', px: '20px', fontSize: 'md' },
       },
       variants: {
         solid: {
-          bg: 'ink.900',
-          color: 'paper.50',
-          _hover: { bg: 'ink.700', _disabled: { bg: 'ink.900' } },
-          _active: { bg: 'ink.900' },
+          bg: 'brand.600', color: 'white',
+          _hover: { bg: 'brand.700', _disabled: { bg: 'brand.600' } },
+          _active: { bg: 'brand.800' },
         },
         outline: {
-          border: '1px solid',
-          borderColor: 'ink.100',
-          color: 'ink.900',
-          bg: 'transparent',
-          _hover: { bg: 'paper.100', borderColor: 'ink.300' },
+          border: '1px solid', borderColor: 'border.base', color: 'text.fg', bg: 'bg.panel',
+          _hover: { bg: 'bg.subtle', borderColor: 'border.hover' },
         },
         ghost: {
-          color: 'ink.700',
-          _hover: { bg: 'paper.100' },
+          color: 'text.fgMuted', bg: 'transparent',
+          _hover: { bg: 'bg.subtle' },
         },
-        link: {
-          color: 'accent.500',
-          textDecoration: 'underline',
-          textUnderlineOffset: '3px',
-          _hover: { color: 'accent.700' },
-        },
+        link: { color: 'brand.600', _hover: { color: 'brand.700', textDecoration: 'underline' } },
       },
-      defaultProps: { colorScheme: undefined, variant: 'solid' },
+      defaultProps: { variant: 'solid' },
     },
     Input: {
+      sizes: { md: { field: { h: '40px', px: '12px', fontSize: 'md', borderRadius: 'lg' } } },
       variants: {
         outline: {
           field: {
-            border: '1px solid',
-            borderColor: 'ink.100',
-            borderRadius: '6px',
-            bg: 'paper.50',
-            fontSize: 'md',
-            _hover: { borderColor: 'ink.300' },
-            _focus: { borderColor: 'accent.500', boxShadow: '0 0 0 3px rgba(9,105,218,0.15)' },
+            border: '1px solid', borderColor: 'border.base', bg: 'bg.panel',
+            _hover: { borderColor: 'border.hover' },
+            _focus: { borderColor: 'brand.500', boxShadow: '0 0 0 3px rgba(66,99,235,0.18)' },
           },
         },
       },
@@ -157,12 +135,9 @@ const theme = extendTheme({
     Textarea: {
       variants: {
         outline: {
-          border: '1px solid',
-          borderColor: 'ink.100',
-          borderRadius: '6px',
-          bg: 'paper.50',
-          _hover: { borderColor: 'ink.300' },
-          _focus: { borderColor: 'accent.500', boxShadow: '0 0 0 3px rgba(9,105,218,0.15)' },
+          border: '1px solid', borderColor: 'border.base', bg: 'bg.panel', borderRadius: 'lg',
+          _hover: { borderColor: 'border.hover' },
+          _focus: { borderColor: 'brand.500', boxShadow: '0 0 0 3px rgba(66,99,235,0.18)' },
         },
       },
     },
@@ -170,38 +145,25 @@ const theme = extendTheme({
       variants: {
         outline: {
           field: {
-            border: '1px solid',
-            borderColor: 'ink.100',
-            borderRadius: '6px',
-            bg: 'paper.50',
-            _hover: { borderColor: 'ink.300' },
-            _focus: { borderColor: 'accent.500', boxShadow: '0 0 0 3px rgba(9,105,218,0.15)' },
+            border: '1px solid', borderColor: 'border.base', bg: 'bg.panel', borderRadius: 'lg',
+            _hover: { borderColor: 'border.hover' },
+            _focus: { borderColor: 'brand.500', boxShadow: '0 0 0 3px rgba(66,99,235,0.18)' },
           },
         },
       },
     },
     Badge: {
       baseStyle: {
-        textTransform: 'none',
-        fontWeight: 500,
-        borderRadius: '4px',
-        px: 2,
-        py: '2px',
-        fontSize: 'xs',
+        textTransform: 'none', fontWeight: 500, borderRadius: 'sm', px: 2, py: '3px', fontSize: 'xs',
       },
     },
     Table: {
       baseStyle: {
         th: {
-          fontFamily: 'mono',
-          fontSize: 'xs',
-          letterSpacing: '0.04em',
-          textTransform: 'uppercase',
-          color: 'ink.500',
-          fontWeight: 500,
-          borderColor: 'ink.100',
+          fontFamily: 'mono', fontSize: 'xs', letterSpacing: '0.06em',
+          textTransform: 'uppercase', color: 'text.fgSubtext', fontWeight: 500, borderColor: 'border.base',
         },
-        td: { borderColor: 'ink.100' },
+        td: { borderColor: 'border.subtle', color: 'text.fgMuted', fontSize: 'md' },
       },
     },
   },

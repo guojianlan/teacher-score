@@ -79,9 +79,9 @@ export default function MistakesPage() {
       </Flex>
 
       {filtered.length === 0 ? (
-        <Box py={16} textAlign="center" borderTop="1px solid" borderBottom="1px solid" borderColor="ink.100">
-          <Text fontFamily="mono" color="ink.500" fontSize="sm" mb={2}>EMPTY</Text>
-          <Text color="ink.500">没有匹配的错题。</Text>
+        <Box py={16} textAlign="center" borderTop="1px solid" borderBottom="1px solid" borderColor="border.base">
+          <Text fontFamily="mono" color="text.fgSubtle" fontSize="sm" mb={2}>EMPTY</Text>
+          <Text color="text.fgSubtle">没有匹配的错题。</Text>
         </Box>
       ) : (
         <Table size="md">
@@ -97,19 +97,19 @@ export default function MistakesPage() {
           </Thead>
           <Tbody>
             {filtered.map((r) => (
-              <Tr key={r.id} opacity={r.mastered ? 0.5 : 1} _hover={{ bg: 'paper.100' }}>
+              <Tr key={r.id} opacity={r.mastered ? 0.5 : 1} _hover={{ bg: 'bg.subtle' }}>
                 <Td maxW="380px" overflow="hidden" textOverflow="ellipsis" whiteSpace="nowrap">{r.questionStem}</Td>
-                <Td color="ink.500" fontSize="sm">{SUBJECT_LABELS[r.subject] ?? r.subject}</Td>
+                <Td color="text.fgSubtle" fontSize="sm">{SUBJECT_LABELS[r.subject] ?? r.subject}</Td>
                 <Td>
                   <Flex gap={1} wrap="wrap">
-                    {(r.knowledgeTags ?? []).map((t) => <Badge key={t} bg="paper.200" color="ink.700">{t}</Badge>)}
+                    {(r.knowledgeTags ?? []).map((t) => <Badge key={t} bg="bg.muted" color="text.fgMuted">{t}</Badge>)}
                   </Flex>
                 </Td>
                 <Td isNumeric fontFamily="mono" fontWeight={500}>{r.occurrences}</Td>
-                <Td color="ink.500" fontSize="sm" fontFamily="mono">{new Date(r.lastSeenAt).toLocaleDateString('zh-CN')}</Td>
+                <Td color="text.fgSubtle" fontSize="sm" fontFamily="mono">{new Date(r.lastSeenAt).toLocaleDateString('zh-CN')}</Td>
                 <Td>
                   {r.mastered
-                    ? <Badge bg="success.100" color="success.500">已掌握</Badge>
+                    ? <Badge bg="green.50" color="green.700">已掌握</Badge>
                     : <Button size="xs" variant="ghost" onClick={() => onMastered(r.id)}>标记掌握</Button>}
                 </Td>
               </Tr>

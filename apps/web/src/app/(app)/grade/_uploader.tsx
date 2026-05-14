@@ -28,8 +28,8 @@ export function Uploader({ onUploaded }: { onUploaded: (key: string) => void }) 
     <Box
       borderWidth="1px"
       borderStyle="dashed"
-      borderColor={dragOver ? 'accent.500' : 'ink.100'}
-      bg={dragOver ? 'accent.50' : 'paper.50'}
+      borderColor={dragOver ? 'brand.500' : 'border.base'}
+      bg={dragOver ? 'brand.50' : 'bg.panel'}
       borderRadius="6px"
       p={10}
       textAlign="center"
@@ -47,11 +47,11 @@ export function Uploader({ onUploaded }: { onUploaded: (key: string) => void }) 
         onChange={(e) => submit(e.target.files)}
       />
       {busy ? (
-        <Spinner color="ink.300" />
+        <Spinner color="text.fgSubtext" />
       ) : (
         <>
-          <Text fontSize="md" mb={1} color="ink.700">把图片拖到这里</Text>
-          <Text fontSize="sm" color="ink.500" mb={4} fontFamily="mono" letterSpacing="0.04em">
+          <Text fontSize="md" mb={1} color="text.fgMuted">把图片拖到这里</Text>
+          <Text fontSize="sm" color="text.fgSubtle" mb={4} fontFamily="mono" letterSpacing="0.04em">
             JPG · PNG · WEBP · HEIC · ≤ 10MB
           </Text>
           <Button onClick={() => inputRef.current?.click()} variant="outline" size="sm">

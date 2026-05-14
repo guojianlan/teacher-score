@@ -43,7 +43,7 @@ export function MobileQrCapture({ onCaptured }: { onCaptured: (key: string) => v
 
   if (!session) {
     return (
-      <Box flex="1" borderWidth="1px" borderColor="ink.100" borderRadius="6px" p={4}>
+      <Box flex="1" borderWidth="1px" borderColor="border.base" borderRadius="6px" p={4}>
         <Button onClick={start} variant="outline" size="sm" w="100%">
           📱 手机扫码拍照
         </Button>
@@ -54,9 +54,9 @@ export function MobileQrCapture({ onCaptured }: { onCaptured: (key: string) => v
   const qrSrc = `https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${encodeURIComponent(session.url)}`;
 
   return (
-    <Box flex="1" borderWidth="1px" borderColor="ink.100" borderRadius="6px" p={4}>
+    <Box flex="1" borderWidth="1px" borderColor="border.base" borderRadius="6px" p={4}>
       <Stack spacing={3} align="center">
-        <Text fontSize="xs" color="ink.500" fontFamily="mono">15 分钟内有效</Text>
+        <Text fontSize="xs" color="text.fgSubtle" fontFamily="mono">15 分钟内有效</Text>
         <Image src={qrSrc} alt="QR" width="160px" height="160px" />
         <HStack><Button size="xs" variant="ghost" onClick={finish}>结束会话</Button></HStack>
       </Stack>
