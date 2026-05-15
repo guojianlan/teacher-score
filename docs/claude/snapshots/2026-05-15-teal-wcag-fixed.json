@@ -1,0 +1,2913 @@
+{
+  "$schema": "https://design-tokens.github.io/community-group/format/",
+  "core": {
+    "color": {
+      "gray": {
+        "50": {
+          "$type": "color",
+          "$value": "#FAFAF9",
+          "$description": "gray.50 · app 底色 / 卡片底"
+        },
+        "100": {
+          "$type": "color",
+          "$value": "#F5F5F4",
+          "$description": "gray.100 · UI 元素背景"
+        },
+        "150": {
+          "$type": "color",
+          "$value": "#EFEEEC",
+          "$description": "gray.150"
+        },
+        "200": {
+          "$type": "color",
+          "$value": "#E7E5E4",
+          "$description": "gray.200 · 弱边线"
+        },
+        "300": {
+          "$type": "color",
+          "$value": "#D6D3D1",
+          "$description": "gray.300 · 边线 emphasized"
+        },
+        "400": {
+          "$type": "color",
+          "$value": "#A8A29E",
+          "$description": "gray.400 · disabled fg / placeholder"
+        },
+        "500": {
+          "$type": "color",
+          "$value": "#78716C",
+          "$description": "gray.500 · 低对比文本"
+        },
+        "600": {
+          "$type": "color",
+          "$value": "#57534E",
+          "$description": "gray.600 · 主操作 solid (按钮底)"
+        },
+        "700": {
+          "$type": "color",
+          "$value": "#44403C",
+          "$description": "gray.700 · 主操作 hover"
+        },
+        "800": {
+          "$type": "color",
+          "$value": "#292524",
+          "$description": "gray.800 · 主操作 active"
+        },
+        "900": {
+          "$type": "color",
+          "$value": "#1C1917",
+          "$description": "gray.900 · 高对比文本"
+        },
+        "950": {
+          "$type": "color",
+          "$value": "#0C0A09",
+          "$description": "gray.950 · 反色背景 / 最深"
+        }
+      },
+      "green": {
+        "50": {
+          "$type": "color",
+          "$value": "#F0FDF4",
+          "$description": "green.50 · app 底色 / 卡片底"
+        },
+        "100": {
+          "$type": "color",
+          "$value": "#DCFCE7",
+          "$description": "green.100 · UI 元素背景"
+        },
+        "200": {
+          "$type": "color",
+          "$value": "#BBF7D0",
+          "$description": "green.200 · 弱边线"
+        },
+        "300": {
+          "$type": "color",
+          "$value": "#86EFAC",
+          "$description": "green.300 · 边线 emphasized"
+        },
+        "400": {
+          "$type": "color",
+          "$value": "#4ADE80",
+          "$description": "green.400 · disabled fg / placeholder"
+        },
+        "500": {
+          "$type": "color",
+          "$value": "#22C55E",
+          "$description": "green.500 · 低对比文本"
+        },
+        "600": {
+          "$type": "color",
+          "$value": "#16A34A",
+          "$description": "green.600 · 主操作 solid (按钮底)"
+        },
+        "700": {
+          "$type": "color",
+          "$value": "#15803D",
+          "$description": "green.700 · 主操作 hover"
+        },
+        "800": {
+          "$type": "color",
+          "$value": "#166534",
+          "$description": "green.800 · 主操作 active"
+        },
+        "900": {
+          "$type": "color",
+          "$value": "#14532D",
+          "$description": "green.900 · 高对比文本"
+        },
+        "950": {
+          "$type": "color",
+          "$value": "#052E16",
+          "$description": "green.950 · 反色背景 / 最深"
+        }
+      },
+      "red": {
+        "50": {
+          "$type": "color",
+          "$value": "#FEF2F2",
+          "$description": "red.50 · app 底色 / 卡片底"
+        },
+        "100": {
+          "$type": "color",
+          "$value": "#FEE2E2",
+          "$description": "red.100 · UI 元素背景"
+        },
+        "200": {
+          "$type": "color",
+          "$value": "#FECACA",
+          "$description": "red.200 · 弱边线"
+        },
+        "300": {
+          "$type": "color",
+          "$value": "#FCA5A5",
+          "$description": "red.300 · 边线 emphasized"
+        },
+        "400": {
+          "$type": "color",
+          "$value": "#F87171",
+          "$description": "red.400 · disabled fg / placeholder"
+        },
+        "500": {
+          "$type": "color",
+          "$value": "#EF4444",
+          "$description": "red.500 · 低对比文本"
+        },
+        "600": {
+          "$type": "color",
+          "$value": "#DC2626",
+          "$description": "red.600 · 主操作 solid (按钮底)"
+        },
+        "700": {
+          "$type": "color",
+          "$value": "#B91C1C",
+          "$description": "red.700 · 主操作 hover"
+        },
+        "800": {
+          "$type": "color",
+          "$value": "#991B1B",
+          "$description": "red.800 · 主操作 active"
+        },
+        "900": {
+          "$type": "color",
+          "$value": "#7F1D1D",
+          "$description": "red.900 · 高对比文本"
+        },
+        "950": {
+          "$type": "color",
+          "$value": "#450A0A",
+          "$description": "red.950 · 反色背景 / 最深"
+        }
+      },
+      "orange": {
+        "50": {
+          "$type": "color",
+          "$value": "#FFF7ED",
+          "$description": "orange.50 · app 底色 / 卡片底"
+        },
+        "100": {
+          "$type": "color",
+          "$value": "#FFEDD5",
+          "$description": "orange.100 · UI 元素背景"
+        },
+        "200": {
+          "$type": "color",
+          "$value": "#FED7AA",
+          "$description": "orange.200 · 弱边线"
+        },
+        "300": {
+          "$type": "color",
+          "$value": "#FDBA74",
+          "$description": "orange.300 · 边线 emphasized"
+        },
+        "400": {
+          "$type": "color",
+          "$value": "#FB923C",
+          "$description": "orange.400 · disabled fg / placeholder"
+        },
+        "500": {
+          "$type": "color",
+          "$value": "#F97316",
+          "$description": "orange.500 · 低对比文本"
+        },
+        "600": {
+          "$type": "color",
+          "$value": "#EA580C",
+          "$description": "orange.600 · 主操作 solid (按钮底)"
+        },
+        "700": {
+          "$type": "color",
+          "$value": "#C2410C",
+          "$description": "orange.700 · 主操作 hover"
+        },
+        "800": {
+          "$type": "color",
+          "$value": "#9A3412",
+          "$description": "orange.800 · 主操作 active"
+        },
+        "900": {
+          "$type": "color",
+          "$value": "#7C2D12",
+          "$description": "orange.900 · 高对比文本"
+        },
+        "950": {
+          "$type": "color",
+          "$value": "#431407",
+          "$description": "orange.950 · 反色背景 / 最深"
+        }
+      },
+      "yellow": {
+        "50": {
+          "$type": "color",
+          "$value": "#FEFCE8",
+          "$description": "yellow.50 · app 底色 / 卡片底"
+        },
+        "100": {
+          "$type": "color",
+          "$value": "#FEF9C3",
+          "$description": "yellow.100 · UI 元素背景"
+        },
+        "200": {
+          "$type": "color",
+          "$value": "#FEF08A",
+          "$description": "yellow.200 · 弱边线"
+        },
+        "300": {
+          "$type": "color",
+          "$value": "#FDE68A",
+          "$description": "yellow.300 · 边线 emphasized"
+        },
+        "400": {
+          "$type": "color",
+          "$value": "#FACC15",
+          "$description": "yellow.400 · disabled fg / placeholder"
+        },
+        "500": {
+          "$type": "color",
+          "$value": "#EAB308",
+          "$description": "yellow.500 · 低对比文本"
+        },
+        "600": {
+          "$type": "color",
+          "$value": "#CA8A04",
+          "$description": "yellow.600 · 主操作 solid (按钮底)"
+        },
+        "700": {
+          "$type": "color",
+          "$value": "#A16207",
+          "$description": "yellow.700 · 主操作 hover"
+        },
+        "800": {
+          "$type": "color",
+          "$value": "#854D0E",
+          "$description": "yellow.800 · 主操作 active"
+        },
+        "900": {
+          "$type": "color",
+          "$value": "#713F12",
+          "$description": "yellow.900 · 高对比文本"
+        },
+        "950": {
+          "$type": "color",
+          "$value": "#422006",
+          "$description": "yellow.950 · 反色背景 / 最深"
+        }
+      },
+      "blackAlpha": {
+        "50": {
+          "$type": "color",
+          "$value": "rgba(0,0,0,0.04)",
+          "$description": "blackAlpha.50 · app 底色 / 卡片底"
+        },
+        "100": {
+          "$type": "color",
+          "$value": "rgba(0,0,0,0.06)",
+          "$description": "blackAlpha.100 · UI 元素背景"
+        },
+        "200": {
+          "$type": "color",
+          "$value": "rgba(0,0,0,0.08)",
+          "$description": "blackAlpha.200 · 弱边线"
+        },
+        "300": {
+          "$type": "color",
+          "$value": "rgba(0,0,0,0.16)",
+          "$description": "blackAlpha.300 · 边线 emphasized"
+        },
+        "400": {
+          "$type": "color",
+          "$value": "rgba(0,0,0,0.24)",
+          "$description": "blackAlpha.400 · disabled fg / placeholder"
+        },
+        "500": {
+          "$type": "color",
+          "$value": "rgba(0,0,0,0.36)",
+          "$description": "blackAlpha.500 · 低对比文本"
+        },
+        "600": {
+          "$type": "color",
+          "$value": "rgba(0,0,0,0.48)",
+          "$description": "blackAlpha.600 · 主操作 solid (按钮底)"
+        },
+        "700": {
+          "$type": "color",
+          "$value": "rgba(0,0,0,0.64)",
+          "$description": "blackAlpha.700 · 主操作 hover"
+        },
+        "800": {
+          "$type": "color",
+          "$value": "rgba(0,0,0,0.80)",
+          "$description": "blackAlpha.800 · 主操作 active"
+        }
+      },
+      "whiteAlpha": {
+        "50": {
+          "$type": "color",
+          "$value": "rgba(255,255,255,0.04)",
+          "$description": "whiteAlpha.50 · app 底色 / 卡片底"
+        },
+        "100": {
+          "$type": "color",
+          "$value": "rgba(255,255,255,0.06)",
+          "$description": "whiteAlpha.100 · UI 元素背景"
+        },
+        "200": {
+          "$type": "color",
+          "$value": "rgba(255,255,255,0.08)",
+          "$description": "whiteAlpha.200 · 弱边线"
+        },
+        "300": {
+          "$type": "color",
+          "$value": "rgba(255,255,255,0.16)",
+          "$description": "whiteAlpha.300 · 边线 emphasized"
+        },
+        "400": {
+          "$type": "color",
+          "$value": "rgba(255,255,255,0.24)",
+          "$description": "whiteAlpha.400 · disabled fg / placeholder"
+        },
+        "500": {
+          "$type": "color",
+          "$value": "rgba(255,255,255,0.36)",
+          "$description": "whiteAlpha.500 · 低对比文本"
+        },
+        "600": {
+          "$type": "color",
+          "$value": "rgba(255,255,255,0.48)",
+          "$description": "whiteAlpha.600 · 主操作 solid (按钮底)"
+        },
+        "700": {
+          "$type": "color",
+          "$value": "rgba(255,255,255,0.64)",
+          "$description": "whiteAlpha.700 · 主操作 hover"
+        },
+        "800": {
+          "$type": "color",
+          "$value": "rgba(255,255,255,0.80)",
+          "$description": "whiteAlpha.800 · 主操作 active"
+        }
+      },
+      "white": {
+        "$type": "color",
+        "$value": "#FFFFFF",
+        "$description": "纯白"
+      },
+      "black": {
+        "$type": "color",
+        "$value": "#000000",
+        "$description": "纯黑"
+      },
+      "transparent": {
+        "$type": "color",
+        "$value": "transparent",
+        "$description": "透明"
+      },
+      "brown": {
+        "50": {
+          "$type": "color",
+          "$value": "#FAF7F0",
+          "$description": "brown.50 · app 底色 / 卡片底"
+        },
+        "100": {
+          "$type": "color",
+          "$value": "#F5EBE0",
+          "$description": "brown.100 · UI 元素背景"
+        },
+        "200": {
+          "$type": "color",
+          "$value": "#E8D5C4",
+          "$description": "brown.200 · 弱边线"
+        },
+        "300": {
+          "$type": "color",
+          "$value": "#D9B79C",
+          "$description": "brown.300 · 边线 emphasized"
+        },
+        "400": {
+          "$type": "color",
+          "$value": "#C39477",
+          "$description": "brown.400 · disabled fg / placeholder"
+        },
+        "500": {
+          "$type": "color",
+          "$value": "#A07758",
+          "$description": "brown.500 · 低对比文本"
+        },
+        "600": {
+          "$type": "color",
+          "$value": "#7A5A40",
+          "$description": "brown.600 · 主操作 solid (按钮底)"
+        },
+        "700": {
+          "$type": "color",
+          "$value": "#5C4530",
+          "$description": "brown.700 · 主操作 hover"
+        },
+        "800": {
+          "$type": "color",
+          "$value": "#443322",
+          "$description": "brown.800 · 主操作 active"
+        },
+        "900": {
+          "$type": "color",
+          "$value": "#2F2418",
+          "$description": "brown.900 · 高对比文本"
+        },
+        "950": {
+          "$type": "color",
+          "$value": "#1A140C",
+          "$description": "brown.950 · 反色背景 / 最深"
+        }
+      },
+      "teal": {
+        "50": {
+          "$type": "color",
+          "$value": "#e7faf7",
+          "$description": "teal.50 · OKLCH"
+        },
+        "100": {
+          "$type": "color",
+          "$value": "#cef4ef",
+          "$description": "teal.100 · OKLCH"
+        },
+        "200": {
+          "$type": "color",
+          "$value": "#99e9e0",
+          "$description": "teal.200 · OKLCH"
+        },
+        "300": {
+          "$type": "color",
+          "$value": "#4bd7ca",
+          "$description": "teal.300 · OKLCH"
+        },
+        "400": {
+          "$type": "color",
+          "$value": "#00bdae",
+          "$description": "teal.400 · OKLCH"
+        },
+        "500": {
+          "$type": "color",
+          "$value": "#00a293",
+          "$description": "teal.500 · OKLCH · hue source: #0F766E"
+        },
+        "600": {
+          "$type": "color",
+          "$value": "#00897b",
+          "$description": "teal.600 · OKLCH"
+        },
+        "700": {
+          "$type": "color",
+          "$value": "#006e62",
+          "$description": "teal.700 · OKLCH"
+        },
+        "800": {
+          "$type": "color",
+          "$value": "#005149",
+          "$description": "teal.800 · OKLCH"
+        },
+        "900": {
+          "$type": "color",
+          "$value": "#003731",
+          "$description": "teal.900 · OKLCH"
+        },
+        "950": {
+          "$type": "color",
+          "$value": "#001916",
+          "$description": "teal.950 · OKLCH"
+        }
+      }
+    },
+    "fontFamily": {
+      "sans": {
+        "$type": "fontFamily",
+        "$value": "var(--font-body-loaded), 'Open Sans', system-ui, -apple-system, 'Segoe UI', 'PingFang SC', sans-serif",
+        "$description": "默认无衬线 · Open Sans"
+      },
+      "display": {
+        "$type": "fontFamily",
+        "$value": "var(--font-display-loaded), 'Poppins', system-ui, sans-serif",
+        "$description": "展示字体 · Poppins · hero 标题用"
+      },
+      "serif": {
+        "$type": "fontFamily",
+        "$value": "var(--font-serif-loaded), 'Source Serif 4', Georgia, serif",
+        "$description": "衬线 · Source Serif 4 · 装饰性场景"
+      },
+      "mono": {
+        "$type": "fontFamily",
+        "$value": "var(--font-mono-loaded), 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace",
+        "$description": "等宽 · JetBrains Mono · 数字/ID/代码"
+      }
+    },
+    "fontSize": {
+      "2xs": {
+        "$type": "dimension",
+        "$value": "10px",
+        "$description": "2xs"
+      },
+      "xs": {
+        "$type": "dimension",
+        "$value": "12px",
+        "$description": "xs"
+      },
+      "sm": {
+        "$type": "dimension",
+        "$value": "13px",
+        "$description": "sm"
+      },
+      "md": {
+        "$type": "dimension",
+        "$value": "14px",
+        "$description": "md"
+      },
+      "lg": {
+        "$type": "dimension",
+        "$value": "16px",
+        "$description": "lg"
+      },
+      "xl": {
+        "$type": "dimension",
+        "$value": "18px",
+        "$description": "xl"
+      },
+      "2xl": {
+        "$type": "dimension",
+        "$value": "20px",
+        "$description": "2xl"
+      },
+      "3xl": {
+        "$type": "dimension",
+        "$value": "24px",
+        "$description": "3xl"
+      },
+      "4xl": {
+        "$type": "dimension",
+        "$value": "30px",
+        "$description": "4xl"
+      },
+      "5xl": {
+        "$type": "dimension",
+        "$value": "36px",
+        "$description": "5xl"
+      },
+      "6xl": {
+        "$type": "dimension",
+        "$value": "48px",
+        "$description": "6xl"
+      },
+      "7xl": {
+        "$type": "dimension",
+        "$value": "60px",
+        "$description": "7xl"
+      },
+      "8xl": {
+        "$type": "dimension",
+        "$value": "72px",
+        "$description": "8xl"
+      }
+    },
+    "fontWeight": {
+      "regular": {
+        "$type": "fontWeight",
+        "$value": 400,
+        "$description": "regular"
+      },
+      "medium": {
+        "$type": "fontWeight",
+        "$value": 500,
+        "$description": "medium"
+      },
+      "semibold": {
+        "$type": "fontWeight",
+        "$value": 600,
+        "$description": "semibold"
+      },
+      "bold": {
+        "$type": "fontWeight",
+        "$value": 700,
+        "$description": "bold"
+      }
+    },
+    "lineHeight": {
+      "none": {
+        "$type": "number",
+        "$value": 1,
+        "$description": "none"
+      },
+      "tight": {
+        "$type": "number",
+        "$value": 1.15,
+        "$description": "tight"
+      },
+      "snug": {
+        "$type": "number",
+        "$value": 1.3,
+        "$description": "snug"
+      },
+      "base": {
+        "$type": "number",
+        "$value": 1.5,
+        "$description": "base"
+      },
+      "relaxed": {
+        "$type": "number",
+        "$value": 1.65,
+        "$description": "relaxed"
+      },
+      "loose": {
+        "$type": "number",
+        "$value": 1.85,
+        "$description": "loose"
+      }
+    },
+    "letterSpacing": {
+      "tighter": {
+        "$type": "dimension",
+        "$value": "-0.04em",
+        "$description": "tighter"
+      },
+      "tight": {
+        "$type": "dimension",
+        "$value": "-0.02em",
+        "$description": "tight"
+      },
+      "normal": {
+        "$type": "dimension",
+        "$value": "0",
+        "$description": "normal"
+      },
+      "wide": {
+        "$type": "dimension",
+        "$value": "0.02em",
+        "$description": "wide"
+      },
+      "wider": {
+        "$type": "dimension",
+        "$value": "0.05em",
+        "$description": "wider"
+      },
+      "widest": {
+        "$type": "dimension",
+        "$value": "0.12em",
+        "$description": "widest"
+      }
+    },
+    "space": {
+      "0": {
+        "$type": "dimension",
+        "$value": "0",
+        "$description": "0"
+      },
+      "1": {
+        "$type": "dimension",
+        "$value": "4px",
+        "$description": "1"
+      },
+      "2": {
+        "$type": "dimension",
+        "$value": "8px",
+        "$description": "2"
+      },
+      "3": {
+        "$type": "dimension",
+        "$value": "12px",
+        "$description": "3"
+      },
+      "4": {
+        "$type": "dimension",
+        "$value": "16px",
+        "$description": "4"
+      },
+      "5": {
+        "$type": "dimension",
+        "$value": "20px",
+        "$description": "5"
+      },
+      "6": {
+        "$type": "dimension",
+        "$value": "24px",
+        "$description": "6"
+      },
+      "7": {
+        "$type": "dimension",
+        "$value": "28px",
+        "$description": "7"
+      },
+      "8": {
+        "$type": "dimension",
+        "$value": "32px",
+        "$description": "8"
+      },
+      "9": {
+        "$type": "dimension",
+        "$value": "36px",
+        "$description": "9"
+      },
+      "10": {
+        "$type": "dimension",
+        "$value": "40px",
+        "$description": "10"
+      },
+      "12": {
+        "$type": "dimension",
+        "$value": "48px",
+        "$description": "12"
+      },
+      "14": {
+        "$type": "dimension",
+        "$value": "56px",
+        "$description": "14"
+      },
+      "16": {
+        "$type": "dimension",
+        "$value": "64px",
+        "$description": "16"
+      },
+      "20": {
+        "$type": "dimension",
+        "$value": "80px",
+        "$description": "20"
+      },
+      "24": {
+        "$type": "dimension",
+        "$value": "96px",
+        "$description": "24"
+      },
+      "28": {
+        "$type": "dimension",
+        "$value": "112px",
+        "$description": "28"
+      },
+      "32": {
+        "$type": "dimension",
+        "$value": "128px",
+        "$description": "32"
+      },
+      "40": {
+        "$type": "dimension",
+        "$value": "160px",
+        "$description": "40"
+      },
+      "48": {
+        "$type": "dimension",
+        "$value": "192px",
+        "$description": "48"
+      },
+      "56": {
+        "$type": "dimension",
+        "$value": "224px",
+        "$description": "56"
+      },
+      "64": {
+        "$type": "dimension",
+        "$value": "256px",
+        "$description": "64"
+      },
+      "80": {
+        "$type": "dimension",
+        "$value": "320px",
+        "$description": "80"
+      },
+      "96": {
+        "$type": "dimension",
+        "$value": "384px",
+        "$description": "96"
+      },
+      "0.5": {
+        "$type": "dimension",
+        "$value": "2px",
+        "$description": "0.5"
+      },
+      "1.5": {
+        "$type": "dimension",
+        "$value": "6px",
+        "$description": "1.5"
+      },
+      "2.5": {
+        "$type": "dimension",
+        "$value": "10px",
+        "$description": "2.5"
+      },
+      "3.5": {
+        "$type": "dimension",
+        "$value": "14px",
+        "$description": "3.5"
+      }
+    },
+    "radius": {
+      "none": {
+        "$type": "dimension",
+        "$value": "0",
+        "$description": "none"
+      },
+      "xs": {
+        "$type": "dimension",
+        "$value": "2px",
+        "$description": "xs"
+      },
+      "sm": {
+        "$type": "dimension",
+        "$value": "4px",
+        "$description": "sm"
+      },
+      "md": {
+        "$type": "dimension",
+        "$value": "6px",
+        "$description": "md"
+      },
+      "lg": {
+        "$type": "dimension",
+        "$value": "8px",
+        "$description": "lg"
+      },
+      "xl": {
+        "$type": "dimension",
+        "$value": "12px",
+        "$description": "xl"
+      },
+      "2xl": {
+        "$type": "dimension",
+        "$value": "16px",
+        "$description": "2xl"
+      },
+      "3xl": {
+        "$type": "dimension",
+        "$value": "24px",
+        "$description": "3xl"
+      },
+      "full": {
+        "$type": "dimension",
+        "$value": "9999px",
+        "$description": "full"
+      }
+    },
+    "borderWidth": {
+      "0": {
+        "$type": "dimension",
+        "$value": "0",
+        "$description": "0"
+      },
+      "hairline": {
+        "$type": "dimension",
+        "$value": "0.5px",
+        "$description": "hairline"
+      },
+      "sm": {
+        "$type": "dimension",
+        "$value": "1px",
+        "$description": "sm"
+      },
+      "md": {
+        "$type": "dimension",
+        "$value": "2px",
+        "$description": "md"
+      },
+      "lg": {
+        "$type": "dimension",
+        "$value": "4px",
+        "$description": "lg"
+      }
+    },
+    "shadow": {
+      "xs": {
+        "$type": "shadow",
+        "$value": "0 1px 2px rgba(28,25,23,0.04)",
+        "$description": "xs"
+      },
+      "sm": {
+        "$type": "shadow",
+        "$value": "0 1px 3px rgba(28,25,23,0.06), 0 1px 2px rgba(28,25,23,0.04)",
+        "$description": "sm"
+      },
+      "md": {
+        "$type": "shadow",
+        "$value": "0 4px 8px -2px rgba(28,25,23,0.08), 0 2px 4px -2px rgba(28,25,23,0.04)",
+        "$description": "md"
+      },
+      "lg": {
+        "$type": "shadow",
+        "$value": "0 12px 24px -6px rgba(28,25,23,0.10), 0 4px 8px -4px rgba(28,25,23,0.04)",
+        "$description": "lg"
+      },
+      "xl": {
+        "$type": "shadow",
+        "$value": "0 24px 48px -12px rgba(28,25,23,0.14)",
+        "$description": "xl"
+      }
+    },
+    "duration": {
+      "instant": {
+        "$type": "duration",
+        "$value": "0ms",
+        "$description": "instant"
+      },
+      "fast": {
+        "$type": "duration",
+        "$value": "120ms",
+        "$description": "fast"
+      },
+      "base": {
+        "$type": "duration",
+        "$value": "200ms",
+        "$description": "base"
+      },
+      "slow": {
+        "$type": "duration",
+        "$value": "400ms",
+        "$description": "slow"
+      }
+    },
+    "easing": {
+      "out": {
+        "$type": "cubicBezier",
+        "$value": "cubic-bezier(0.16, 1, 0.3, 1)",
+        "$description": "out"
+      },
+      "inOut": {
+        "$type": "cubicBezier",
+        "$value": "cubic-bezier(0.4, 0, 0.2, 1)",
+        "$description": "inOut"
+      },
+      "in": {
+        "$type": "cubicBezier",
+        "$value": "cubic-bezier(0.4, 0, 1, 1)",
+        "$description": "in"
+      },
+      "spring": {
+        "$type": "cubicBezier",
+        "$value": "cubic-bezier(0.34, 1.56, 0.64, 1)",
+        "$description": "spring"
+      }
+    }
+  },
+  "light": {
+    "bg": {
+      "canvas": {
+        "$type": "color",
+        "$value": "{core.color.gray.50}",
+        "$description": "light · bg.canvas"
+      },
+      "surface": {
+        "$type": "color",
+        "$value": "{core.color.white}",
+        "$description": "light · bg.surface"
+      },
+      "surfaceSubtle": {
+        "$type": "color",
+        "$value": "{core.color.gray.50}",
+        "$description": "light · bg.surfaceSubtle"
+      },
+      "surfaceHover": {
+        "$type": "color",
+        "$value": "{core.color.gray.100}",
+        "$description": "light · bg.surfaceHover"
+      },
+      "muted": {
+        "$type": "color",
+        "$value": "{core.color.gray.100}",
+        "$description": "light · bg.muted"
+      },
+      "inverse": {
+        "$type": "color",
+        "$value": "{core.color.gray.900}",
+        "$description": "light · bg.inverse"
+      },
+      "overlay": {
+        "$type": "color",
+        "$value": "{core.color.blackAlpha.500}",
+        "$description": "light · bg.overlay"
+      },
+      "primary": {
+        "$type": "color",
+        "$value": "{core.color.teal.600}",
+        "$description": "light · bg.primary"
+      },
+      "primarySubtle": {
+        "$type": "color",
+        "$value": "{core.color.teal.50}",
+        "$description": "light · bg.primarySubtle"
+      },
+      "primaryMuted": {
+        "$type": "color",
+        "$value": "{core.color.teal.100}",
+        "$description": "light · bg.primaryMuted"
+      }
+    },
+    "fg": {
+      "default": {
+        "$type": "color",
+        "$value": "{core.color.gray.900}",
+        "$description": "light · fg.default"
+      },
+      "muted": {
+        "$type": "color",
+        "$value": "{core.color.gray.700}",
+        "$description": "light · fg.muted"
+      },
+      "subtle": {
+        "$type": "color",
+        "$value": "{core.color.gray.500}",
+        "$description": "light · fg.subtle"
+      },
+      "disabled": {
+        "$type": "color",
+        "$value": "{core.color.gray.400}",
+        "$description": "light · fg.disabled"
+      },
+      "inverse": {
+        "$type": "color",
+        "$value": "{core.color.white}",
+        "$description": "light · fg.inverse"
+      },
+      "onPrimary": {
+        "$type": "color",
+        "$value": "{core.color.white}",
+        "$description": "light · fg.onPrimary"
+      },
+      "primary": {
+        "$type": "color",
+        "$value": "{core.color.teal.700}",
+        "$description": "light · fg.primary"
+      },
+      "link": {
+        "$type": "color",
+        "$value": "{core.color.teal.600}",
+        "$description": "light · fg.link"
+      },
+      "linkHover": {
+        "$type": "color",
+        "$value": "{core.color.teal.700}",
+        "$description": "light · fg.linkHover"
+      }
+    },
+    "border": {
+      "default": {
+        "$type": "color",
+        "$value": "{core.color.gray.200}",
+        "$description": "light · border.default"
+      },
+      "subtle": {
+        "$type": "color",
+        "$value": "{core.color.gray.150}",
+        "$description": "light · border.subtle"
+      },
+      "strong": {
+        "$type": "color",
+        "$value": "{core.color.gray.300}",
+        "$description": "light · border.strong"
+      },
+      "focus": {
+        "$type": "color",
+        "$value": "{core.color.teal.500}",
+        "$description": "light · border.focus"
+      },
+      "primary": {
+        "$type": "color",
+        "$value": "{core.color.teal.600}",
+        "$description": "light · border.primary"
+      }
+    },
+    "interactive": {
+      "primary": {
+        "bg": {
+          "$type": "color",
+          "$value": "{core.color.teal.600}",
+          "$description": "light · interactive.primary.bg"
+        },
+        "bgHover": {
+          "$type": "color",
+          "$value": "{core.color.teal.700}",
+          "$description": "light · interactive.primary.bgHover"
+        },
+        "bgActive": {
+          "$type": "color",
+          "$value": "{core.color.teal.800}",
+          "$description": "light · interactive.primary.bgActive"
+        },
+        "fg": {
+          "$type": "color",
+          "$value": "{core.color.white}",
+          "$description": "light · interactive.primary.fg"
+        },
+        "border": {
+          "$type": "color",
+          "$value": "{core.color.teal.600}",
+          "$description": "light · interactive.primary.border"
+        }
+      },
+      "secondary": {
+        "bg": {
+          "$type": "color",
+          "$value": "{core.color.white}",
+          "$description": "light · interactive.secondary.bg"
+        },
+        "bgHover": {
+          "$type": "color",
+          "$value": "{core.color.gray.50}",
+          "$description": "light · interactive.secondary.bgHover"
+        },
+        "bgActive": {
+          "$type": "color",
+          "$value": "{core.color.gray.100}",
+          "$description": "light · interactive.secondary.bgActive"
+        },
+        "fg": {
+          "$type": "color",
+          "$value": "{core.color.gray.900}",
+          "$description": "light · interactive.secondary.fg"
+        },
+        "border": {
+          "$type": "color",
+          "$value": "{core.color.gray.300}",
+          "$description": "light · interactive.secondary.border"
+        }
+      },
+      "ghost": {
+        "bg": {
+          "$type": "color",
+          "$value": "{core.color.transparent}",
+          "$description": "light · interactive.ghost.bg"
+        },
+        "bgHover": {
+          "$type": "color",
+          "$value": "{core.color.gray.100}",
+          "$description": "light · interactive.ghost.bgHover"
+        },
+        "bgActive": {
+          "$type": "color",
+          "$value": "{core.color.gray.200}",
+          "$description": "light · interactive.ghost.bgActive"
+        },
+        "fg": {
+          "$type": "color",
+          "$value": "{core.color.gray.700}",
+          "$description": "light · interactive.ghost.fg"
+        },
+        "border": {
+          "$type": "color",
+          "$value": "{core.color.transparent}",
+          "$description": "light · interactive.ghost.border"
+        }
+      },
+      "danger": {
+        "bg": {
+          "$type": "color",
+          "$value": "{core.color.red.600}",
+          "$description": "light · interactive.danger.bg"
+        },
+        "bgHover": {
+          "$type": "color",
+          "$value": "{core.color.red.700}",
+          "$description": "light · interactive.danger.bgHover"
+        },
+        "bgActive": {
+          "$type": "color",
+          "$value": "{core.color.red.800}",
+          "$description": "light · interactive.danger.bgActive"
+        },
+        "fg": {
+          "$type": "color",
+          "$value": "{core.color.white}",
+          "$description": "light · interactive.danger.fg"
+        },
+        "border": {
+          "$type": "color",
+          "$value": "{core.color.red.600}",
+          "$description": "light · interactive.danger.border"
+        }
+      }
+    },
+    "status": {
+      "info": {
+        "bg": {
+          "$type": "color",
+          "$value": "{core.color.teal.50}",
+          "$description": "light · status.info.bg"
+        },
+        "fg": {
+          "$type": "color",
+          "$value": "{core.color.teal.700}",
+          "$description": "light · status.info.fg"
+        },
+        "border": {
+          "$type": "color",
+          "$value": "{core.color.teal.200}",
+          "$description": "light · status.info.border"
+        },
+        "solid": {
+          "$type": "color",
+          "$value": "{core.color.teal.600}",
+          "$description": "light · status.info.solid"
+        }
+      },
+      "success": {
+        "bg": {
+          "$type": "color",
+          "$value": "{core.color.green.50}",
+          "$description": "light · status.success.bg"
+        },
+        "fg": {
+          "$type": "color",
+          "$value": "{core.color.green.700}",
+          "$description": "light · status.success.fg"
+        },
+        "border": {
+          "$type": "color",
+          "$value": "{core.color.green.200}",
+          "$description": "light · status.success.border"
+        },
+        "solid": {
+          "$type": "color",
+          "$value": "{core.color.green.600}",
+          "$description": "light · status.success.solid"
+        }
+      },
+      "warning": {
+        "bg": {
+          "$type": "color",
+          "$value": "{core.color.orange.50}",
+          "$description": "light · status.warning.bg"
+        },
+        "fg": {
+          "$type": "color",
+          "$value": "{core.color.orange.700}",
+          "$description": "light · status.warning.fg"
+        },
+        "border": {
+          "$type": "color",
+          "$value": "{core.color.orange.200}",
+          "$description": "light · status.warning.border"
+        },
+        "solid": {
+          "$type": "color",
+          "$value": "{core.color.orange.600}",
+          "$description": "light · status.warning.solid"
+        }
+      },
+      "danger": {
+        "bg": {
+          "$type": "color",
+          "$value": "{core.color.red.50}",
+          "$description": "light · status.danger.bg"
+        },
+        "fg": {
+          "$type": "color",
+          "$value": "{core.color.red.700}",
+          "$description": "light · status.danger.fg"
+        },
+        "border": {
+          "$type": "color",
+          "$value": "{core.color.red.200}",
+          "$description": "light · status.danger.border"
+        },
+        "solid": {
+          "$type": "color",
+          "$value": "{core.color.red.600}",
+          "$description": "light · status.danger.solid"
+        }
+      },
+      "neutral": {
+        "bg": {
+          "$type": "color",
+          "$value": "{core.color.gray.100}",
+          "$description": "light · status.neutral.bg"
+        },
+        "fg": {
+          "$type": "color",
+          "$value": "{core.color.gray.700}",
+          "$description": "light · status.neutral.fg"
+        },
+        "border": {
+          "$type": "color",
+          "$value": "{core.color.gray.200}",
+          "$description": "light · status.neutral.border"
+        },
+        "solid": {
+          "$type": "color",
+          "$value": "{core.color.gray.600}",
+          "$description": "light · status.neutral.solid"
+        }
+      }
+    },
+    "effect": {
+      "focusRing": {
+        "$type": "shadow",
+        "$value": "0 0 0 3px rgba(61,102,245,0.2)",
+        "$description": "light · focus 状态的 3px 环 (输入框、按钮)"
+      },
+      "focusRingDanger": {
+        "$type": "shadow",
+        "$value": "0 0 0 3px rgba(220,38,38,0.2)",
+        "$description": "light · 危险态 focus 环 (删除按钮、错误输入框)"
+      }
+    },
+    "palette": {
+      "primary": {
+        "contrast": {
+          "$type": "color",
+          "$value": "{core.color.white}",
+          "$description": "light · primary.contrast (auto vs solid: #FFFFFF)"
+        },
+        "fg": {
+          "$type": "color",
+          "$value": "{core.color.teal.700}",
+          "$description": "light · brand.fg"
+        },
+        "subtle": {
+          "$type": "color",
+          "$value": "{core.color.teal.50}",
+          "$description": "light · brand.subtle"
+        },
+        "muted": {
+          "$type": "color",
+          "$value": "{core.color.teal.100}",
+          "$description": "light · brand.muted"
+        },
+        "emphasized": {
+          "$type": "color",
+          "$value": "{core.color.teal.200}",
+          "$description": "light · brand.emphasized"
+        },
+        "border": {
+          "$type": "color",
+          "$value": "{core.color.teal.300}",
+          "$description": "light · brand.border"
+        },
+        "solid": {
+          "$type": "color",
+          "$value": "{core.color.teal.700}",
+          "$description": "light · brand.solid"
+        },
+        "focusRing": {
+          "$type": "color",
+          "$value": "{core.color.teal.400}",
+          "$description": "light · brand.focusRing"
+        }
+      },
+      "neutral": {
+        "contrast": {
+          "$type": "color",
+          "$value": "{core.color.white}",
+          "$description": "light · neutral.contrast"
+        },
+        "fg": {
+          "$type": "color",
+          "$value": "{core.color.gray.700}",
+          "$description": "light · neutral.fg"
+        },
+        "subtle": {
+          "$type": "color",
+          "$value": "{core.color.gray.50}",
+          "$description": "light · neutral.subtle"
+        },
+        "muted": {
+          "$type": "color",
+          "$value": "{core.color.gray.100}",
+          "$description": "light · neutral.muted"
+        },
+        "emphasized": {
+          "$type": "color",
+          "$value": "{core.color.gray.200}",
+          "$description": "light · neutral.emphasized"
+        },
+        "border": {
+          "$type": "color",
+          "$value": "{core.color.gray.300}",
+          "$description": "light · neutral.border"
+        },
+        "solid": {
+          "$type": "color",
+          "$value": "{core.color.gray.700}",
+          "$description": "light · neutral.solid"
+        },
+        "focusRing": {
+          "$type": "color",
+          "$value": "{core.color.gray.400}",
+          "$description": "light · neutral.focusRing"
+        }
+      },
+      "danger": {
+        "contrast": {
+          "$type": "color",
+          "$value": "{core.color.white}",
+          "$description": "light · danger.contrast"
+        },
+        "fg": {
+          "$type": "color",
+          "$value": "{core.color.red.700}",
+          "$description": "light · danger.fg"
+        },
+        "subtle": {
+          "$type": "color",
+          "$value": "{core.color.red.50}",
+          "$description": "light · danger.subtle"
+        },
+        "muted": {
+          "$type": "color",
+          "$value": "{core.color.red.100}",
+          "$description": "light · danger.muted"
+        },
+        "emphasized": {
+          "$type": "color",
+          "$value": "{core.color.red.200}",
+          "$description": "light · danger.emphasized"
+        },
+        "border": {
+          "$type": "color",
+          "$value": "{core.color.red.300}",
+          "$description": "light · danger.border"
+        },
+        "solid": {
+          "$type": "color",
+          "$value": "{core.color.red.600}",
+          "$description": "light · danger.solid"
+        },
+        "focusRing": {
+          "$type": "color",
+          "$value": "{core.color.red.500}",
+          "$description": "light · danger.focusRing"
+        }
+      },
+      "success": {
+        "contrast": {
+          "$type": "color",
+          "$value": "{core.color.black}",
+          "$description": "light · success.contrast (auto vs solid: #1A1A1A)"
+        },
+        "fg": {
+          "$type": "color",
+          "$value": "{core.color.green.700}",
+          "$description": "light · success.fg"
+        },
+        "subtle": {
+          "$type": "color",
+          "$value": "{core.color.green.50}",
+          "$description": "light · success.subtle"
+        },
+        "muted": {
+          "$type": "color",
+          "$value": "{core.color.green.100}",
+          "$description": "light · success.muted"
+        },
+        "emphasized": {
+          "$type": "color",
+          "$value": "{core.color.green.200}",
+          "$description": "light · success.emphasized"
+        },
+        "border": {
+          "$type": "color",
+          "$value": "{core.color.green.300}",
+          "$description": "light · success.border"
+        },
+        "solid": {
+          "$type": "color",
+          "$value": "{core.color.green.600}",
+          "$description": "light · success.solid"
+        },
+        "focusRing": {
+          "$type": "color",
+          "$value": "{core.color.green.500}",
+          "$description": "light · success.focusRing"
+        }
+      },
+      "warning": {
+        "contrast": {
+          "$type": "color",
+          "$value": "{core.color.black}",
+          "$description": "light · warning.contrast (auto vs solid: #1A1A1A)"
+        },
+        "fg": {
+          "$type": "color",
+          "$value": "{core.color.orange.700}",
+          "$description": "light · warning.fg"
+        },
+        "subtle": {
+          "$type": "color",
+          "$value": "{core.color.orange.50}",
+          "$description": "light · warning.subtle"
+        },
+        "muted": {
+          "$type": "color",
+          "$value": "{core.color.orange.100}",
+          "$description": "light · warning.muted"
+        },
+        "emphasized": {
+          "$type": "color",
+          "$value": "{core.color.orange.200}",
+          "$description": "light · warning.emphasized"
+        },
+        "border": {
+          "$type": "color",
+          "$value": "{core.color.orange.300}",
+          "$description": "light · warning.border"
+        },
+        "solid": {
+          "$type": "color",
+          "$value": "{core.color.orange.600}",
+          "$description": "light · warning.solid"
+        },
+        "focusRing": {
+          "$type": "color",
+          "$value": "{core.color.orange.500}",
+          "$description": "light · warning.focusRing"
+        }
+      }
+    }
+  },
+  "dark": {
+    "bg": {
+      "canvas": {
+        "$type": "color",
+        "$value": "{core.color.gray.950}",
+        "$description": "dark · bg.canvas"
+      },
+      "surface": {
+        "$type": "color",
+        "$value": "{core.color.gray.900}",
+        "$description": "dark · bg.surface"
+      },
+      "surfaceSubtle": {
+        "$type": "color",
+        "$value": "{core.color.gray.800}",
+        "$description": "dark · bg.surfaceSubtle"
+      },
+      "surfaceHover": {
+        "$type": "color",
+        "$value": "{core.color.gray.800}",
+        "$description": "dark · bg.surfaceHover"
+      },
+      "muted": {
+        "$type": "color",
+        "$value": "{core.color.gray.800}",
+        "$description": "dark · bg.muted"
+      },
+      "inverse": {
+        "$type": "color",
+        "$value": "{core.color.gray.50}",
+        "$description": "dark · bg.inverse"
+      },
+      "overlay": {
+        "$type": "color",
+        "$value": "{core.color.blackAlpha.700}",
+        "$description": "dark · bg.overlay"
+      },
+      "primary": {
+        "$type": "color",
+        "$value": "{core.color.teal.500}",
+        "$description": "dark · bg.primary"
+      },
+      "primarySubtle": {
+        "$type": "color",
+        "$value": "{core.color.teal.950}",
+        "$description": "dark · bg.primarySubtle"
+      },
+      "primaryMuted": {
+        "$type": "color",
+        "$value": "{core.color.teal.900}",
+        "$description": "dark · bg.primaryMuted"
+      }
+    },
+    "fg": {
+      "default": {
+        "$type": "color",
+        "$value": "{core.color.gray.50}",
+        "$description": "dark · fg.default"
+      },
+      "muted": {
+        "$type": "color",
+        "$value": "{core.color.gray.300}",
+        "$description": "dark · fg.muted"
+      },
+      "subtle": {
+        "$type": "color",
+        "$value": "{core.color.gray.400}",
+        "$description": "dark · fg.subtle"
+      },
+      "disabled": {
+        "$type": "color",
+        "$value": "{core.color.gray.600}",
+        "$description": "dark · fg.disabled"
+      },
+      "inverse": {
+        "$type": "color",
+        "$value": "{core.color.gray.900}",
+        "$description": "dark · fg.inverse"
+      },
+      "onPrimary": {
+        "$type": "color",
+        "$value": "{core.color.white}",
+        "$description": "dark · fg.onPrimary"
+      },
+      "primary": {
+        "$type": "color",
+        "$value": "{core.color.teal.300}",
+        "$description": "dark · fg.primary"
+      },
+      "link": {
+        "$type": "color",
+        "$value": "{core.color.teal.400}",
+        "$description": "dark · fg.link"
+      },
+      "linkHover": {
+        "$type": "color",
+        "$value": "{core.color.teal.300}",
+        "$description": "dark · fg.linkHover"
+      }
+    },
+    "border": {
+      "default": {
+        "$type": "color",
+        "$value": "{core.color.gray.800}",
+        "$description": "dark · border.default"
+      },
+      "subtle": {
+        "$type": "color",
+        "$value": "{core.color.gray.800}",
+        "$description": "dark · border.subtle"
+      },
+      "strong": {
+        "$type": "color",
+        "$value": "{core.color.gray.700}",
+        "$description": "dark · border.strong"
+      },
+      "focus": {
+        "$type": "color",
+        "$value": "{core.color.teal.400}",
+        "$description": "dark · border.focus"
+      },
+      "primary": {
+        "$type": "color",
+        "$value": "{core.color.teal.500}",
+        "$description": "dark · border.primary"
+      }
+    },
+    "interactive": {
+      "primary": {
+        "bg": {
+          "$type": "color",
+          "$value": "{core.color.teal.500}",
+          "$description": "dark · interactive.primary.bg"
+        },
+        "bgHover": {
+          "$type": "color",
+          "$value": "{core.color.teal.400}",
+          "$description": "dark · interactive.primary.bgHover"
+        },
+        "bgActive": {
+          "$type": "color",
+          "$value": "{core.color.teal.300}",
+          "$description": "dark · interactive.primary.bgActive"
+        },
+        "fg": {
+          "$type": "color",
+          "$value": "{core.color.white}",
+          "$description": "dark · interactive.primary.fg"
+        },
+        "border": {
+          "$type": "color",
+          "$value": "{core.color.teal.500}",
+          "$description": "dark · interactive.primary.border"
+        }
+      },
+      "secondary": {
+        "bg": {
+          "$type": "color",
+          "$value": "{core.color.gray.900}",
+          "$description": "dark · interactive.secondary.bg"
+        },
+        "bgHover": {
+          "$type": "color",
+          "$value": "{core.color.gray.800}",
+          "$description": "dark · interactive.secondary.bgHover"
+        },
+        "bgActive": {
+          "$type": "color",
+          "$value": "{core.color.gray.700}",
+          "$description": "dark · interactive.secondary.bgActive"
+        },
+        "fg": {
+          "$type": "color",
+          "$value": "{core.color.gray.50}",
+          "$description": "dark · interactive.secondary.fg"
+        },
+        "border": {
+          "$type": "color",
+          "$value": "{core.color.gray.700}",
+          "$description": "dark · interactive.secondary.border"
+        }
+      },
+      "ghost": {
+        "bg": {
+          "$type": "color",
+          "$value": "{core.color.transparent}",
+          "$description": "dark · interactive.ghost.bg"
+        },
+        "bgHover": {
+          "$type": "color",
+          "$value": "{core.color.gray.800}",
+          "$description": "dark · interactive.ghost.bgHover"
+        },
+        "bgActive": {
+          "$type": "color",
+          "$value": "{core.color.gray.700}",
+          "$description": "dark · interactive.ghost.bgActive"
+        },
+        "fg": {
+          "$type": "color",
+          "$value": "{core.color.gray.300}",
+          "$description": "dark · interactive.ghost.fg"
+        },
+        "border": {
+          "$type": "color",
+          "$value": "{core.color.transparent}",
+          "$description": "dark · interactive.ghost.border"
+        }
+      },
+      "danger": {
+        "bg": {
+          "$type": "color",
+          "$value": "{core.color.red.500}",
+          "$description": "dark · interactive.danger.bg"
+        },
+        "bgHover": {
+          "$type": "color",
+          "$value": "{core.color.red.600}",
+          "$description": "dark · interactive.danger.bgHover"
+        },
+        "bgActive": {
+          "$type": "color",
+          "$value": "{core.color.red.700}",
+          "$description": "dark · interactive.danger.bgActive"
+        },
+        "fg": {
+          "$type": "color",
+          "$value": "{core.color.white}",
+          "$description": "dark · interactive.danger.fg"
+        },
+        "border": {
+          "$type": "color",
+          "$value": "{core.color.red.500}",
+          "$description": "dark · interactive.danger.border"
+        }
+      }
+    },
+    "status": {
+      "info": {
+        "bg": {
+          "$type": "color",
+          "$value": "{core.color.teal.950}",
+          "$description": "dark · status.info.bg"
+        },
+        "fg": {
+          "$type": "color",
+          "$value": "{core.color.teal.300}",
+          "$description": "dark · status.info.fg"
+        },
+        "border": {
+          "$type": "color",
+          "$value": "{core.color.teal.800}",
+          "$description": "dark · status.info.border"
+        },
+        "solid": {
+          "$type": "color",
+          "$value": "{core.color.teal.500}",
+          "$description": "dark · status.info.solid"
+        }
+      },
+      "success": {
+        "bg": {
+          "$type": "color",
+          "$value": "{core.color.green.950}",
+          "$description": "dark · status.success.bg"
+        },
+        "fg": {
+          "$type": "color",
+          "$value": "{core.color.green.200}",
+          "$description": "dark · status.success.fg"
+        },
+        "border": {
+          "$type": "color",
+          "$value": "{core.color.green.800}",
+          "$description": "dark · status.success.border"
+        },
+        "solid": {
+          "$type": "color",
+          "$value": "{core.color.green.500}",
+          "$description": "dark · status.success.solid"
+        }
+      },
+      "warning": {
+        "bg": {
+          "$type": "color",
+          "$value": "{core.color.orange.950}",
+          "$description": "dark · status.warning.bg"
+        },
+        "fg": {
+          "$type": "color",
+          "$value": "{core.color.orange.200}",
+          "$description": "dark · status.warning.fg"
+        },
+        "border": {
+          "$type": "color",
+          "$value": "{core.color.orange.800}",
+          "$description": "dark · status.warning.border"
+        },
+        "solid": {
+          "$type": "color",
+          "$value": "{core.color.orange.500}",
+          "$description": "dark · status.warning.solid"
+        }
+      },
+      "danger": {
+        "bg": {
+          "$type": "color",
+          "$value": "{core.color.red.950}",
+          "$description": "dark · status.danger.bg"
+        },
+        "fg": {
+          "$type": "color",
+          "$value": "{core.color.red.200}",
+          "$description": "dark · status.danger.fg"
+        },
+        "border": {
+          "$type": "color",
+          "$value": "{core.color.red.800}",
+          "$description": "dark · status.danger.border"
+        },
+        "solid": {
+          "$type": "color",
+          "$value": "{core.color.red.500}",
+          "$description": "dark · status.danger.solid"
+        }
+      },
+      "neutral": {
+        "bg": {
+          "$type": "color",
+          "$value": "{core.color.gray.800}",
+          "$description": "dark · status.neutral.bg"
+        },
+        "fg": {
+          "$type": "color",
+          "$value": "{core.color.gray.300}",
+          "$description": "dark · status.neutral.fg"
+        },
+        "border": {
+          "$type": "color",
+          "$value": "{core.color.gray.700}",
+          "$description": "dark · status.neutral.border"
+        },
+        "solid": {
+          "$type": "color",
+          "$value": "{core.color.gray.500}",
+          "$description": "dark · status.neutral.solid"
+        }
+      }
+    },
+    "effect": {
+      "focusRing": {
+        "$type": "shadow",
+        "$value": "0 0 0 3px rgba(96,138,250,0.3)",
+        "$description": "dark · focus 状态的 3px 环 (输入框、按钮)"
+      },
+      "focusRingDanger": {
+        "$type": "shadow",
+        "$value": "0 0 0 3px rgba(239,68,68,0.3)",
+        "$description": "dark · 危险态 focus 环 (删除按钮、错误输入框)"
+      }
+    },
+    "palette": {
+      "primary": {
+        "contrast": {
+          "$type": "color",
+          "$value": "{core.color.white}",
+          "$description": "dark · primary.contrast (auto vs solid: #FFFFFF)"
+        },
+        "fg": {
+          "$type": "color",
+          "$value": "{core.color.teal.300}",
+          "$description": "dark · brand.fg"
+        },
+        "subtle": {
+          "$type": "color",
+          "$value": "{core.color.teal.950}",
+          "$description": "dark · brand.subtle"
+        },
+        "muted": {
+          "$type": "color",
+          "$value": "{core.color.teal.900}",
+          "$description": "dark · brand.muted"
+        },
+        "emphasized": {
+          "$type": "color",
+          "$value": "{core.color.teal.800}",
+          "$description": "dark · brand.emphasized"
+        },
+        "border": {
+          "$type": "color",
+          "$value": "{core.color.teal.700}",
+          "$description": "dark · brand.border"
+        },
+        "solid": {
+          "$type": "color",
+          "$value": "{core.color.teal.600}",
+          "$description": "dark · brand.solid"
+        },
+        "focusRing": {
+          "$type": "color",
+          "$value": "{core.color.teal.400}",
+          "$description": "dark · brand.focusRing"
+        }
+      },
+      "neutral": {
+        "contrast": {
+          "$type": "color",
+          "$value": "{core.color.black}",
+          "$description": "dark · neutral.contrast (auto vs solid: #1A1A1A)"
+        },
+        "fg": {
+          "$type": "color",
+          "$value": "{core.color.gray.300}",
+          "$description": "dark · neutral.fg"
+        },
+        "subtle": {
+          "$type": "color",
+          "$value": "{core.color.gray.900}",
+          "$description": "dark · neutral.subtle"
+        },
+        "muted": {
+          "$type": "color",
+          "$value": "{core.color.gray.800}",
+          "$description": "dark · neutral.muted"
+        },
+        "emphasized": {
+          "$type": "color",
+          "$value": "{core.color.gray.700}",
+          "$description": "dark · neutral.emphasized"
+        },
+        "border": {
+          "$type": "color",
+          "$value": "{core.color.gray.700}",
+          "$description": "dark · neutral.border"
+        },
+        "solid": {
+          "$type": "color",
+          "$value": "{core.color.gray.300}",
+          "$description": "dark · neutral.solid"
+        },
+        "focusRing": {
+          "$type": "color",
+          "$value": "{core.color.gray.600}",
+          "$description": "dark · neutral.focusRing"
+        }
+      },
+      "danger": {
+        "contrast": {
+          "$type": "color",
+          "$value": "{core.color.black}",
+          "$description": "dark · danger.contrast (auto vs solid: #1A1A1A)"
+        },
+        "fg": {
+          "$type": "color",
+          "$value": "{core.color.red.300}",
+          "$description": "dark · danger.fg"
+        },
+        "subtle": {
+          "$type": "color",
+          "$value": "{core.color.red.950}",
+          "$description": "dark · danger.subtle"
+        },
+        "muted": {
+          "$type": "color",
+          "$value": "{core.color.red.900}",
+          "$description": "dark · danger.muted"
+        },
+        "emphasized": {
+          "$type": "color",
+          "$value": "{core.color.red.800}",
+          "$description": "dark · danger.emphasized"
+        },
+        "border": {
+          "$type": "color",
+          "$value": "{core.color.red.700}",
+          "$description": "dark · danger.border"
+        },
+        "solid": {
+          "$type": "color",
+          "$value": "{core.color.red.500}",
+          "$description": "dark · danger.solid"
+        },
+        "focusRing": {
+          "$type": "color",
+          "$value": "{core.color.red.400}",
+          "$description": "dark · danger.focusRing"
+        }
+      },
+      "success": {
+        "contrast": {
+          "$type": "color",
+          "$value": "{core.color.black}",
+          "$description": "dark · success.contrast (auto vs solid: #1A1A1A)"
+        },
+        "fg": {
+          "$type": "color",
+          "$value": "{core.color.green.300}",
+          "$description": "dark · success.fg"
+        },
+        "subtle": {
+          "$type": "color",
+          "$value": "{core.color.green.950}",
+          "$description": "dark · success.subtle"
+        },
+        "muted": {
+          "$type": "color",
+          "$value": "{core.color.green.900}",
+          "$description": "dark · success.muted"
+        },
+        "emphasized": {
+          "$type": "color",
+          "$value": "{core.color.green.800}",
+          "$description": "dark · success.emphasized"
+        },
+        "border": {
+          "$type": "color",
+          "$value": "{core.color.green.700}",
+          "$description": "dark · success.border"
+        },
+        "solid": {
+          "$type": "color",
+          "$value": "{core.color.green.500}",
+          "$description": "dark · success.solid"
+        },
+        "focusRing": {
+          "$type": "color",
+          "$value": "{core.color.green.400}",
+          "$description": "dark · success.focusRing"
+        }
+      },
+      "warning": {
+        "contrast": {
+          "$type": "color",
+          "$value": "{core.color.black}",
+          "$description": "dark · warning.contrast (auto vs solid: #1A1A1A)"
+        },
+        "fg": {
+          "$type": "color",
+          "$value": "{core.color.orange.300}",
+          "$description": "dark · warning.fg"
+        },
+        "subtle": {
+          "$type": "color",
+          "$value": "{core.color.orange.950}",
+          "$description": "dark · warning.subtle"
+        },
+        "muted": {
+          "$type": "color",
+          "$value": "{core.color.orange.900}",
+          "$description": "dark · warning.muted"
+        },
+        "emphasized": {
+          "$type": "color",
+          "$value": "{core.color.orange.800}",
+          "$description": "dark · warning.emphasized"
+        },
+        "border": {
+          "$type": "color",
+          "$value": "{core.color.orange.700}",
+          "$description": "dark · warning.border"
+        },
+        "solid": {
+          "$type": "color",
+          "$value": "{core.color.orange.500}",
+          "$description": "dark · warning.solid"
+        },
+        "focusRing": {
+          "$type": "color",
+          "$value": "{core.color.orange.400}",
+          "$description": "dark · warning.focusRing"
+        }
+      }
+    }
+  },
+  "motion": {
+    "subtle": {
+      "$type": "transition",
+      "$value": {
+        "duration": "120ms",
+        "timingFunction": "cubic-bezier(0.16, 1, 0.3, 1)"
+      },
+      "$description": "motion.subtle · hover/active/focus 微交互, 120ms"
+    },
+    "enter": {
+      "$type": "transition",
+      "$value": {
+        "duration": "200ms",
+        "timingFunction": "cubic-bezier(0.16, 1, 0.3, 1)"
+      },
+      "$description": "motion.enter · 元素进入视图（弹窗/toast）, 200ms"
+    },
+    "exit": {
+      "$type": "transition",
+      "$value": {
+        "duration": "140ms",
+        "timingFunction": "cubic-bezier(0.4, 0, 1, 1)"
+      },
+      "$description": "motion.exit · 元素离开, 140ms"
+    },
+    "emphasize": {
+      "$type": "transition",
+      "$value": {
+        "duration": "320ms",
+        "timingFunction": "cubic-bezier(0.34, 1.56, 0.64, 1)"
+      },
+      "$description": "motion.emphasize · 强调态, 320ms + spring"
+    },
+    "page": {
+      "$type": "transition",
+      "$value": {
+        "duration": "240ms",
+        "timingFunction": "cubic-bezier(0.16, 1, 0.3, 1)"
+      },
+      "$description": "motion.page · 页面级转场, 240ms"
+    }
+  },
+  "textStyle": {
+    "display": {
+      "$type": "typography",
+      "$value": {
+        "fontFamily": "{core.fontFamily.display}",
+        "fontSize": "60px",
+        "fontWeight": 600,
+        "lineHeight": 1.15,
+        "letterSpacing": "-0.04em",
+        "textTransform": "none"
+      },
+      "$description": "textStyle.display"
+    },
+    "pageTitle": {
+      "$type": "typography",
+      "$value": {
+        "fontFamily": "{core.fontFamily.sans}",
+        "fontSize": "30px",
+        "fontWeight": 600,
+        "lineHeight": 1.3,
+        "letterSpacing": "-0.02em",
+        "textTransform": "none"
+      },
+      "$description": "textStyle.pageTitle"
+    },
+    "sectionTitle": {
+      "$type": "typography",
+      "$value": {
+        "fontFamily": "{core.fontFamily.sans}",
+        "fontSize": "20px",
+        "fontWeight": 600,
+        "lineHeight": 1.3,
+        "letterSpacing": "0",
+        "textTransform": "none"
+      },
+      "$description": "textStyle.sectionTitle"
+    },
+    "cardTitle": {
+      "$type": "typography",
+      "$value": {
+        "fontFamily": "{core.fontFamily.sans}",
+        "fontSize": "16px",
+        "fontWeight": 600,
+        "lineHeight": 1.3,
+        "letterSpacing": "0",
+        "textTransform": "none"
+      },
+      "$description": "textStyle.cardTitle"
+    },
+    "bodyLg": {
+      "$type": "typography",
+      "$value": {
+        "fontFamily": "{core.fontFamily.sans}",
+        "fontSize": "16px",
+        "fontWeight": 400,
+        "lineHeight": 1.65,
+        "letterSpacing": "0",
+        "textTransform": "none"
+      },
+      "$description": "textStyle.bodyLg"
+    },
+    "body": {
+      "$type": "typography",
+      "$value": {
+        "fontFamily": "{core.fontFamily.sans}",
+        "fontSize": "14px",
+        "fontWeight": 400,
+        "lineHeight": 1.5,
+        "letterSpacing": "0",
+        "textTransform": "none"
+      },
+      "$description": "textStyle.body"
+    },
+    "bodySm": {
+      "$type": "typography",
+      "$value": {
+        "fontFamily": "{core.fontFamily.sans}",
+        "fontSize": "13px",
+        "fontWeight": 400,
+        "lineHeight": 1.5,
+        "letterSpacing": "0",
+        "textTransform": "none"
+      },
+      "$description": "textStyle.bodySm"
+    },
+    "label": {
+      "$type": "typography",
+      "$value": {
+        "fontFamily": "{core.fontFamily.sans}",
+        "fontSize": "13px",
+        "fontWeight": 500,
+        "lineHeight": 1.3,
+        "letterSpacing": "0",
+        "textTransform": "none"
+      },
+      "$description": "textStyle.label"
+    },
+    "mono": {
+      "$type": "typography",
+      "$value": {
+        "fontFamily": "{core.fontFamily.mono}",
+        "fontSize": "13px",
+        "fontWeight": 400,
+        "lineHeight": 1.3,
+        "letterSpacing": "0",
+        "textTransform": "none"
+      },
+      "$description": "textStyle.mono"
+    },
+    "overline": {
+      "$type": "typography",
+      "$value": {
+        "fontFamily": "{core.fontFamily.mono}",
+        "fontSize": "12px",
+        "fontWeight": 600,
+        "lineHeight": 1.3,
+        "letterSpacing": "0.12em",
+        "textTransform": "uppercase"
+      },
+      "$description": "textStyle.overline"
+    }
+  },
+  "$themes": [
+    {
+      "id": "light",
+      "name": "Light",
+      "selectedTokenSets": {
+        "core": "source",
+        "light": "enabled",
+        "motion": "source",
+        "textStyle": "source"
+      }
+    },
+    {
+      "id": "dark",
+      "name": "Dark",
+      "selectedTokenSets": {
+        "core": "source",
+        "dark": "enabled",
+        "motion": "source",
+        "textStyle": "source"
+      }
+    },
+    {
+      "id": "sepia",
+      "name": "Sepia",
+      "selectedTokenSets": {
+        "core": "source",
+        "sepia": "enabled",
+        "motion": "source",
+        "textStyle": "source"
+      }
+    }
+  ],
+  "$metadata": {
+    "tokenSetOrder": [
+      "core",
+      "light",
+      "dark",
+      "sepia",
+      "motion",
+      "textStyle"
+    ],
+    "version": "1.0.0",
+    "generator": "scripts/export-tokens-json.ts",
+    "generatedAt": "2026-05-14T09:17:00.425Z"
+  },
+  "sepia": {
+    "bg": {
+      "canvas": {
+        "$type": "color",
+        "$value": "{core.color.brown.50}",
+        "$description": "sepia · 页面底，暖米色"
+      },
+      "surface": {
+        "$type": "color",
+        "$value": "{core.color.white}",
+        "$description": "sepia · 卡片/面板，纯白对比"
+      },
+      "surfaceSubtle": {
+        "$type": "color",
+        "$value": "{core.color.brown.50}",
+        "$description": "sepia · 次级 surface"
+      },
+      "surfaceHover": {
+        "$type": "color",
+        "$value": "{core.color.brown.100}",
+        "$description": "sepia · hover 态"
+      },
+      "muted": {
+        "$type": "color",
+        "$value": "{core.color.brown.100}",
+        "$description": "sepia · 静默色块"
+      },
+      "inverse": {
+        "$type": "color",
+        "$value": "{core.color.brown.900}",
+        "$description": "sepia · 反色背景"
+      },
+      "overlay": {
+        "$type": "color",
+        "$value": "rgba(26,20,12,0.45)",
+        "$description": "sepia · 弹层遮罩，暖暗调"
+      },
+      "primary": {
+        "$type": "color",
+        "$value": "{core.color.brown.700}",
+        "$description": "sepia · 品牌主色，深棕"
+      },
+      "primarySubtle": {
+        "$type": "color",
+        "$value": "{core.color.brown.100}",
+        "$description": "sepia · 品牌色淡"
+      },
+      "primaryMuted": {
+        "$type": "color",
+        "$value": "{core.color.brown.200}",
+        "$description": "sepia · 品牌色 muted"
+      }
+    },
+    "fg": {
+      "default": {
+        "$type": "color",
+        "$value": "{core.color.brown.900}",
+        "$description": "sepia · 主文本"
+      },
+      "muted": {
+        "$type": "color",
+        "$value": "{core.color.brown.700}",
+        "$description": "sepia · 副文本"
+      },
+      "subtle": {
+        "$type": "color",
+        "$value": "{core.color.brown.500}",
+        "$description": "sepia · 弱化文本"
+      },
+      "disabled": {
+        "$type": "color",
+        "$value": "{core.color.brown.400}",
+        "$description": "sepia · 禁用"
+      },
+      "inverse": {
+        "$type": "color",
+        "$value": "{core.color.brown.50}",
+        "$description": "sepia · 反色文本"
+      },
+      "onPrimary": {
+        "$type": "color",
+        "$value": "{core.color.brown.50}",
+        "$description": "sepia · brand 背景上的前景色"
+      },
+      "primary": {
+        "$type": "color",
+        "$value": "{core.color.brown.700}",
+        "$description": "sepia · brand 文本"
+      },
+      "link": {
+        "$type": "color",
+        "$value": "{core.color.brown.700}",
+        "$description": "sepia · 链接"
+      },
+      "linkHover": {
+        "$type": "color",
+        "$value": "{core.color.brown.800}",
+        "$description": "sepia · 链接 hover"
+      }
+    },
+    "border": {
+      "default": {
+        "$type": "color",
+        "$value": "{core.color.brown.200}",
+        "$description": "sepia · 默认边线"
+      },
+      "subtle": {
+        "$type": "color",
+        "$value": "{core.color.brown.100}",
+        "$description": "sepia · 弱边线"
+      },
+      "strong": {
+        "$type": "color",
+        "$value": "{core.color.brown.300}",
+        "$description": "sepia · 强边线"
+      },
+      "focus": {
+        "$type": "color",
+        "$value": "{core.color.brown.500}",
+        "$description": "sepia · focus 边"
+      },
+      "primary": {
+        "$type": "color",
+        "$value": "{core.color.brown.700}",
+        "$description": "sepia · 品牌边"
+      }
+    },
+    "interactive": {
+      "primary": {
+        "bg": {
+          "$type": "color",
+          "$value": "{core.color.brown.700}",
+          "$description": "sepia · 主按钮底"
+        },
+        "bgHover": {
+          "$type": "color",
+          "$value": "{core.color.brown.800}",
+          "$description": "sepia · 主按钮 hover"
+        },
+        "bgActive": {
+          "$type": "color",
+          "$value": "{core.color.brown.900}",
+          "$description": "sepia · 主按钮 active"
+        },
+        "fg": {
+          "$type": "color",
+          "$value": "{core.color.brown.50}",
+          "$description": "sepia · 主按钮文字"
+        },
+        "border": {
+          "$type": "color",
+          "$value": "{core.color.brown.700}",
+          "$description": "sepia · 主按钮边"
+        }
+      },
+      "secondary": {
+        "bg": {
+          "$type": "color",
+          "$value": "{core.color.white}",
+          "$description": "sepia · 次按钮底"
+        },
+        "bgHover": {
+          "$type": "color",
+          "$value": "{core.color.brown.50}",
+          "$description": "sepia · 次按钮 hover"
+        },
+        "bgActive": {
+          "$type": "color",
+          "$value": "{core.color.brown.100}",
+          "$description": "sepia · 次按钮 active"
+        },
+        "fg": {
+          "$type": "color",
+          "$value": "{core.color.brown.900}",
+          "$description": "sepia · 次按钮文字"
+        },
+        "border": {
+          "$type": "color",
+          "$value": "{core.color.brown.300}",
+          "$description": "sepia · 次按钮边"
+        }
+      },
+      "ghost": {
+        "bg": {
+          "$type": "color",
+          "$value": "{core.color.transparent}",
+          "$description": "sepia · ghost 底"
+        },
+        "bgHover": {
+          "$type": "color",
+          "$value": "{core.color.brown.100}",
+          "$description": "sepia · ghost hover"
+        },
+        "bgActive": {
+          "$type": "color",
+          "$value": "{core.color.brown.200}",
+          "$description": "sepia · ghost active"
+        },
+        "fg": {
+          "$type": "color",
+          "$value": "{core.color.brown.700}",
+          "$description": "sepia · ghost 文字"
+        },
+        "border": {
+          "$type": "color",
+          "$value": "{core.color.transparent}",
+          "$description": "sepia · ghost 边"
+        }
+      },
+      "danger": {
+        "bg": {
+          "$type": "color",
+          "$value": "{core.color.red.600}",
+          "$description": "sepia · danger 底（统一红）"
+        },
+        "bgHover": {
+          "$type": "color",
+          "$value": "{core.color.red.700}",
+          "$description": "sepia · danger hover"
+        },
+        "bgActive": {
+          "$type": "color",
+          "$value": "{core.color.red.800}",
+          "$description": "sepia · danger active"
+        },
+        "fg": {
+          "$type": "color",
+          "$value": "{core.color.white}",
+          "$description": "sepia · danger 文字"
+        },
+        "border": {
+          "$type": "color",
+          "$value": "{core.color.red.600}",
+          "$description": "sepia · danger 边"
+        }
+      }
+    },
+    "status": {
+      "info": {
+        "bg": {
+          "$type": "color",
+          "$value": "{core.color.teal.50}",
+          "$description": "sepia · info bg"
+        },
+        "fg": {
+          "$type": "color",
+          "$value": "{core.color.teal.700}",
+          "$description": "sepia · info fg"
+        },
+        "border": {
+          "$type": "color",
+          "$value": "{core.color.teal.200}",
+          "$description": "sepia · info border"
+        },
+        "solid": {
+          "$type": "color",
+          "$value": "{core.color.teal.600}",
+          "$description": "sepia · info solid"
+        }
+      },
+      "success": {
+        "bg": {
+          "$type": "color",
+          "$value": "{core.color.green.50}",
+          "$description": "sepia · success bg"
+        },
+        "fg": {
+          "$type": "color",
+          "$value": "{core.color.green.700}",
+          "$description": "sepia · success fg"
+        },
+        "border": {
+          "$type": "color",
+          "$value": "{core.color.green.200}",
+          "$description": "sepia · success border"
+        },
+        "solid": {
+          "$type": "color",
+          "$value": "{core.color.green.600}",
+          "$description": "sepia · success solid"
+        }
+      },
+      "warning": {
+        "bg": {
+          "$type": "color",
+          "$value": "{core.color.orange.50}",
+          "$description": "sepia · warning bg"
+        },
+        "fg": {
+          "$type": "color",
+          "$value": "{core.color.orange.700}",
+          "$description": "sepia · warning fg"
+        },
+        "border": {
+          "$type": "color",
+          "$value": "{core.color.orange.200}",
+          "$description": "sepia · warning border"
+        },
+        "solid": {
+          "$type": "color",
+          "$value": "{core.color.orange.600}",
+          "$description": "sepia · warning solid"
+        }
+      },
+      "danger": {
+        "bg": {
+          "$type": "color",
+          "$value": "{core.color.red.50}",
+          "$description": "sepia · danger bg"
+        },
+        "fg": {
+          "$type": "color",
+          "$value": "{core.color.red.700}",
+          "$description": "sepia · danger fg"
+        },
+        "border": {
+          "$type": "color",
+          "$value": "{core.color.red.200}",
+          "$description": "sepia · danger border"
+        },
+        "solid": {
+          "$type": "color",
+          "$value": "{core.color.red.600}",
+          "$description": "sepia · danger solid"
+        }
+      },
+      "neutral": {
+        "bg": {
+          "$type": "color",
+          "$value": "{core.color.brown.100}",
+          "$description": "sepia · neutral bg"
+        },
+        "fg": {
+          "$type": "color",
+          "$value": "{core.color.brown.700}",
+          "$description": "sepia · neutral fg"
+        },
+        "border": {
+          "$type": "color",
+          "$value": "{core.color.brown.200}",
+          "$description": "sepia · neutral border"
+        },
+        "solid": {
+          "$type": "color",
+          "$value": "{core.color.brown.600}",
+          "$description": "sepia · neutral solid"
+        }
+      }
+    },
+    "effect": {
+      "focusRing": {
+        "$type": "shadow",
+        "$value": "0 0 0 3px rgba(160,119,88,0.30)",
+        "$description": "sepia · focus 状态 3px 环，棕色"
+      },
+      "focusRingDanger": {
+        "$type": "shadow",
+        "$value": "0 0 0 3px rgba(220,38,38,0.20)",
+        "$description": "sepia · 危险态 focus 环"
+      }
+    },
+    "palette": {
+      "primary": {
+        "contrast": {
+          "$type": "color",
+          "$value": "{core.color.white}",
+          "$description": "sepia · primary.contrast (auto vs solid: #FFFFFF)"
+        },
+        "fg": {
+          "$type": "color",
+          "$value": "{core.color.brown.700}",
+          "$description": "sepia · brand.fg"
+        },
+        "subtle": {
+          "$type": "color",
+          "$value": "{core.color.brown.50}",
+          "$description": "sepia · brand.subtle"
+        },
+        "muted": {
+          "$type": "color",
+          "$value": "{core.color.brown.100}",
+          "$description": "sepia · brand.muted"
+        },
+        "emphasized": {
+          "$type": "color",
+          "$value": "{core.color.brown.200}",
+          "$description": "sepia · brand.emphasized"
+        },
+        "border": {
+          "$type": "color",
+          "$value": "{core.color.brown.300}",
+          "$description": "sepia · brand.border"
+        },
+        "solid": {
+          "$type": "color",
+          "$value": "{core.color.brown.700}",
+          "$description": "sepia · brand.solid"
+        },
+        "focusRing": {
+          "$type": "color",
+          "$value": "{core.color.brown.400}",
+          "$description": "sepia · brand.focusRing"
+        }
+      },
+      "neutral": {
+        "contrast": {
+          "$type": "color",
+          "$value": "{core.color.white}",
+          "$description": "sepia · neutral.contrast"
+        },
+        "fg": {
+          "$type": "color",
+          "$value": "{core.color.brown.700}",
+          "$description": "sepia · neutral.fg"
+        },
+        "subtle": {
+          "$type": "color",
+          "$value": "{core.color.brown.50}",
+          "$description": "sepia · neutral.subtle"
+        },
+        "muted": {
+          "$type": "color",
+          "$value": "{core.color.brown.100}",
+          "$description": "sepia · neutral.muted"
+        },
+        "emphasized": {
+          "$type": "color",
+          "$value": "{core.color.brown.200}",
+          "$description": "sepia · neutral.emphasized"
+        },
+        "border": {
+          "$type": "color",
+          "$value": "{core.color.brown.300}",
+          "$description": "sepia · neutral.border"
+        },
+        "solid": {
+          "$type": "color",
+          "$value": "{core.color.brown.700}",
+          "$description": "sepia · neutral.solid"
+        },
+        "focusRing": {
+          "$type": "color",
+          "$value": "{core.color.brown.400}",
+          "$description": "sepia · neutral.focusRing"
+        }
+      },
+      "danger": {
+        "contrast": {
+          "$type": "color",
+          "$value": "{core.color.white}",
+          "$description": "sepia · danger.contrast"
+        },
+        "fg": {
+          "$type": "color",
+          "$value": "{core.color.red.700}",
+          "$description": "sepia · danger.fg"
+        },
+        "subtle": {
+          "$type": "color",
+          "$value": "{core.color.red.50}",
+          "$description": "sepia · danger.subtle"
+        },
+        "muted": {
+          "$type": "color",
+          "$value": "{core.color.red.100}",
+          "$description": "sepia · danger.muted"
+        },
+        "emphasized": {
+          "$type": "color",
+          "$value": "{core.color.red.200}",
+          "$description": "sepia · danger.emphasized"
+        },
+        "border": {
+          "$type": "color",
+          "$value": "{core.color.red.300}",
+          "$description": "sepia · danger.border"
+        },
+        "solid": {
+          "$type": "color",
+          "$value": "{core.color.red.600}",
+          "$description": "sepia · danger.solid"
+        },
+        "focusRing": {
+          "$type": "color",
+          "$value": "{core.color.red.500}",
+          "$description": "sepia · danger.focusRing"
+        }
+      },
+      "success": {
+        "contrast": {
+          "$type": "color",
+          "$value": "{core.color.black}",
+          "$description": "sepia · success.contrast (auto vs solid: #1A1A1A)"
+        },
+        "fg": {
+          "$type": "color",
+          "$value": "{core.color.green.700}",
+          "$description": "sepia · success.fg"
+        },
+        "subtle": {
+          "$type": "color",
+          "$value": "{core.color.green.50}",
+          "$description": "sepia · success.subtle"
+        },
+        "muted": {
+          "$type": "color",
+          "$value": "{core.color.green.100}",
+          "$description": "sepia · success.muted"
+        },
+        "emphasized": {
+          "$type": "color",
+          "$value": "{core.color.green.200}",
+          "$description": "sepia · success.emphasized"
+        },
+        "border": {
+          "$type": "color",
+          "$value": "{core.color.green.300}",
+          "$description": "sepia · success.border"
+        },
+        "solid": {
+          "$type": "color",
+          "$value": "{core.color.green.600}",
+          "$description": "sepia · success.solid"
+        },
+        "focusRing": {
+          "$type": "color",
+          "$value": "{core.color.green.500}",
+          "$description": "sepia · success.focusRing"
+        }
+      },
+      "warning": {
+        "contrast": {
+          "$type": "color",
+          "$value": "{core.color.black}",
+          "$description": "sepia · warning.contrast (auto vs solid: #1A1A1A)"
+        },
+        "fg": {
+          "$type": "color",
+          "$value": "{core.color.orange.700}",
+          "$description": "sepia · warning.fg"
+        },
+        "subtle": {
+          "$type": "color",
+          "$value": "{core.color.orange.50}",
+          "$description": "sepia · warning.subtle"
+        },
+        "muted": {
+          "$type": "color",
+          "$value": "{core.color.orange.100}",
+          "$description": "sepia · warning.muted"
+        },
+        "emphasized": {
+          "$type": "color",
+          "$value": "{core.color.orange.200}",
+          "$description": "sepia · warning.emphasized"
+        },
+        "border": {
+          "$type": "color",
+          "$value": "{core.color.orange.300}",
+          "$description": "sepia · warning.border"
+        },
+        "solid": {
+          "$type": "color",
+          "$value": "{core.color.orange.600}",
+          "$description": "sepia · warning.solid"
+        },
+        "focusRing": {
+          "$type": "color",
+          "$value": "{core.color.orange.500}",
+          "$description": "sepia · warning.focusRing"
+        }
+      }
+    }
+  }
+}
