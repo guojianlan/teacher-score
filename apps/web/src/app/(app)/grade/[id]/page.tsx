@@ -223,7 +223,7 @@ function ResultView({ record, reload }: { record: GradingRecord; reload: () => v
               >
                 信心 {q.confidence}
               </Badge>
-              {q.teacherModified && <Badge bg="bg.brandSubtle" color="fg.brand">老师改分</Badge>}
+              {q.teacherModified && <Badge bg="bg.primarySubtle" color="fg.primary">老师改分</Badge>}
             </Flex>
 
             <Text fontSize="md" color="fg.muted" mb={2} lineHeight={1.6}>{q.stem}</Text>

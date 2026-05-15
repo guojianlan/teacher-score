@@ -75,7 +75,7 @@ export default async function StudentDetailPage({ params }: { params: Promise<{ 
                 </Text>
                 <Text fontSize="sm" w="60px" flexShrink={0}>{SUBJECT_LABELS[p.subject] ?? p.subject}</Text>
                 <Box flex="1" h="6px" bg="bg.muted" borderRadius="full" overflow="hidden">
-                  <Box h="100%" w={`${Math.min(100, p.pct)}%`} bg="bg.brandSubtle0" />
+                  <Box h="100%" w={`${Math.min(100, p.pct)}%`} bg="bg.primarySubtle" />
                 </Box>
                 <Text fontFamily="mono" fontSize="sm" w="100px" textAlign="right" color="fg.muted">
                   {p.score}/{p.maxScore} · {p.pct}%

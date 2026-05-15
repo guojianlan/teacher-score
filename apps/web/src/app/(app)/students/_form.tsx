@@ -139,7 +139,7 @@ export function StudentFormDrawer({
           <Button variant="ghost" mr={3} onClick={onClose}>
             取消
           </Button>
-          <Button colorScheme="brand" onClick={submit} loading={saving}>
+          <Button colorPalette="primary" onClick={submit} loading={saving}>
             保存
           </Button>
         </DrawerFooter>

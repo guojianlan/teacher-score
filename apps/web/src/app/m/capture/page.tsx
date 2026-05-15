@@ -72,7 +72,7 @@ function CaptureInner() {
           {busy ? (
             <Spinner />
           ) : (
-            <Button colorScheme="brand" size="lg" onClick={() => inputRef.current?.click()}>
+            <Button colorPalette="primary" size="lg" onClick={() => inputRef.current?.click()}>
               拍照 / 选择照片
             </Button>
           )}

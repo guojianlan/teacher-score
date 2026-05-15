@@ -87,9 +87,9 @@ export function AppShell({ me, children }: { me: Me; children: React.ReactNode }
                   px={3}
                   borderRadius="md"
                   cursor="pointer"
-                  bg={active ? 'bg.brandSubtle' : 'transparent'}
+                  bg={active ? 'bg.primarySubtle' : 'transparent'}
                   color={active ? 'interactive.primary.bgHover' : 'fg.muted'}
-                  _hover={{ bg: active ? 'bg.brandSubtle' : 'bg.surfaceSubtle' }}
+                  _hover={{ bg: active ? 'bg.primarySubtle' : 'bg.surfaceSubtle' }}
                   fontSize="sm"
                   fontWeight={active ? 600 : 500}
                   transition="all 120ms ease"

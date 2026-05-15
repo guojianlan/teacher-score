@@ -33,10 +33,10 @@ export default function HomePage() {
           </Text>
           <Heading
             as="h1"
-            fontSize={['40px', '56px']}
-            lineHeight={1.1}
-            letterSpacing="-0.02em"
-            fontWeight={600}
+            fontSize={['36px', '52px']}
+            lineHeight={1.15}
+            letterSpacing="-0.01em"
+            fontWeight={500}
             fontFamily="heading"
           >
             一张照片，批改完成。

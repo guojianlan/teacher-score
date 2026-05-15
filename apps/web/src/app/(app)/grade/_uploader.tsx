@@ -28,8 +28,8 @@ export function Uploader({ onUploaded }: { onUploaded: (key: string) => void }) 
     <Box
       borderWidth="1px"
       borderStyle="dashed"
-      borderColor={dragOver ? 'bg.brandSubtle0' : 'border.default'}
-      bg={dragOver ? 'bg.brandSubtle' : 'bg.surface'}
+      borderColor={dragOver ? 'bg.primarySubtle' : 'border.default'}
+      bg={dragOver ? 'bg.primarySubtle' : 'bg.surface'}
       borderRadius="6px"
       p={10}
       textAlign="center"

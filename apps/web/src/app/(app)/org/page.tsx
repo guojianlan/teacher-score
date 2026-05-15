@@ -79,7 +79,7 @@ export default function OrgPage() {
               <Tr key={m.id} _hover={{ bg: 'bg.surfaceSubtle' }}>
                 <Td>{m.userName}</Td>
                 <Td color="fg.subtle" fontSize="sm">{m.userEmail}</Td>
-                <Td><Badge bg={m.role === 'owner' ? 'bg.brandSubtle' : 'bg.muted'} color={m.role === 'owner' ? 'brand.800' : 'fg.muted'}>{m.role}</Badge></Td>
+                <Td><Badge colorPalette={m.role === 'owner' ? 'primary' : 'neutral'} variant="subtle">{m.role}</Badge></Td>
               </Tr>
             ))}
           </Tbody>

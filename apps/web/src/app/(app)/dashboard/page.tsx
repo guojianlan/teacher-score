@@ -50,7 +50,7 @@ export default function DashboardPage() {
               <Box
                 pt={2}
                 color="fg.subtle"
-                _groupHover={{ color: 'bg.brandSubtle0', transform: 'translateX(4px)' }}
+                _groupHover={{ color: 'bg.primarySubtle', transform: 'translateX(4px)' }}
                 transition="all 120ms ease"
               >
                 →
