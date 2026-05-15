@@ -8,12 +8,18 @@ importers:
 
   .:
     devDependencies:
+      '@types/culori':
+        specifier: ^4.0.1
+        version: 4.0.1
       '@types/node':
         specifier: ^20.16.0
         version: 20.19.41
       concurrently:
         specifier: ^9.2.1
         version: 9.2.1
+      culori:
+        specifier: ^4.0.2
+        version: 4.0.2
       dotenv-cli:
         specifier: ^11.0.0
         version: 11.0.0
@@ -1870,6 +1876,9 @@ packages:
   '@tybys/wasm-util@0.10.2':
     resolution: {integrity: sha512-RoBvJ2X0wuKlWFIjrwffGw1IqZHKQqzIchKaadZZfnNpsAYp2mM0h36JtPCjNDAHGgYez/15uMBpfGwchhiMgg==}
 
+  '@types/culori@4.0.1':
+    resolution: {integrity: sha512-43M51r/22CjhbOXyGT361GZ9vncSVQ39u62x5eJdBQFviI8zWp2X5jzqg7k4M6PVgDQAClpy2bUe2dtwEgEDVQ==}
+
   '@types/estree@1.0.8':
     resolution: {integrity: sha512-dWHzHa2WqEXI/O1E9OjrocMTKJl2mSrEolh1Iomrv6U+JuNwaHXsXx9bLu5gG7BUWFIN0skIQJQ/L1rIex4X6w==}
 
@@ -2601,6 +2610,10 @@ packages:
 
   csstype@3.2.3:
     resolution: {integrity: sha512-z1HGKcYy2xA8AGQfwrn0PAy+PB7X/GSj3UVJW9qKyn43xWa+gl5nXmU4qqLMRzWVLFC8KusUX8T/0kCiOYpAIQ==}
+
+  culori@4.0.2:
+    resolution: {integrity: sha512-1+BhOB8ahCn4O0cep0Sh2l9KCOfOdY+BXJnKMHFFzDEouSr/el18QwXEMRlOj9UY5nCeA8UN3a/82rUWRBeyBw==}
+    engines: {node: ^12.20.0 || ^14.13.1 || >=16.0.0}
 
   damerau-levenshtein@1.0.8:
     resolution: {integrity: sha512-sdQSFB7+llfUcQHUQO3+B8ERRj0Oa4w9POWMI/puGtuf7gFywGmkaLCElnudfTiKZV+NvHqL0ifzdrI8Ro7ESA==}
@@ -5357,6 +5370,8 @@ snapshots:
       tslib: 2.8.1
     optional: true
 
+  '@types/culori@4.0.1': {}
+
   '@types/estree@1.0.8': {}
 
   '@types/estree@1.0.9': {}
@@ -6425,6 +6440,8 @@ snapshots:
       which: 2.0.2
 
   csstype@3.2.3: {}
+
+  culori@4.0.2: {}
 
   damerau-levenshtein@1.0.8: {}
 
