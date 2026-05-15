@@ -14,6 +14,7 @@
  */
 import { promises as fs } from 'node:fs';
 import path from 'node:path';
+import { spawnSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -121,6 +122,14 @@ function cssValue(t: Token): string {
 
 // ─── main ────────────────────────────────────────────────────────────
 async function main() {
+  // 校验 token.json 结构，任何违规 abort
+  const validateScript = path.join(REPO, 'scripts/validate-tokens.ts');
+  const validation = spawnSync('npx', ['tsx', validateScript], { cwd: REPO, stdio: 'inherit' });
+  if (validation.status !== 0) {
+    console.error('\n✗ token.json 校验失败，sync aborted。修了再来。');
+    process.exit(1);
+  }
+
   const raw = JSON.parse(await fs.readFile(JSON_IN, 'utf8')) as Doc;
   const resolved = resolveRefs(raw);
 
@@ -413,6 +422,44 @@ code.t { font-family: 'JetBrains Mono'; font-size: 12px; color: var(--fg-default
 code.v { font-family: 'JetBrains Mono'; font-size: 11px; color: var(--fg-muted); }
 .chip { display: inline-block; width: 28px; height: 16px; border-radius: 3px; border: 1px solid var(--border-default); vertical-align: middle; }
 .d { color: var(--fg-subtle); }
+
+/* ── 设计原则卡片 ── */
+.principles { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; margin: 24px 0 40px; }
+.principle { background: var(--bg-surface); border: 1px solid var(--border-default); border-radius: 8px; padding: 14px 16px; }
+.principle-h { font-family: 'JetBrains Mono'; font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--fg-subtle); margin: 0 0 6px; }
+.principle-b { font-size: 13px; line-height: 1.55; color: var(--fg-default); margin: 0; }
+
+/* ── palette 卡片：8 swatch + 真实预览 ── */
+.palette-showcase { display: grid; grid-template-columns: 1fr; gap: 24px; }
+.palette-card { background: var(--bg-surface); border: 1px solid var(--border-default); border-radius: 10px; padding: 18px 20px; }
+.palette-card-h { display: flex; align-items: baseline; gap: 12px; margin: 0 0 14px; }
+.palette-card-h .name { font-family: 'JetBrains Mono'; font-size: 14px; font-weight: 600; }
+.palette-card-h .use { color: var(--fg-subtle); font-size: 12px; }
+.keys { display: grid; grid-template-columns: repeat(8, 1fr); gap: 4px; margin-bottom: 16px; }
+.key { aspect-ratio: 1.6; border-radius: 5px; display: flex; flex-direction: column; justify-content: flex-end; padding: 6px 8px; font-family: 'JetBrains Mono'; font-size: 10px; line-height: 1.2; }
+.key-label { font-weight: 600; }
+.key-val { opacity: 0.7; font-size: 9px; }
+.preview-buttons { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.demo-btn { font-family: 'Open Sans'; font-size: 13px; font-weight: 500; padding: 8px 14px; border-radius: 6px; border: 1px solid transparent; cursor: pointer; transition: filter 0.1s; }
+.demo-btn:hover { filter: brightness(0.95); }
+.demo-card { padding: 10px 14px; border-radius: 6px; font-size: 13px; }
+
+/* ── textStyle 样本 ── */
+.typo-row { display: grid; grid-template-columns: 180px 1fr; gap: 16px; padding: 16px 0; border-bottom: 1px solid var(--border-subtle); align-items: baseline; }
+.typo-row:last-child { border-bottom: none; }
+.typo-meta { font-family: 'JetBrains Mono'; font-size: 11px; color: var(--fg-subtle); line-height: 1.5; }
+.typo-meta b { color: var(--fg-default); font-weight: 600; }
+.typo-sample { color: var(--fg-default); }
+
+/* ── 命令速查 ── */
+.cheatsheet { background: var(--bg-surface); border: 1px solid var(--border-default); border-radius: 10px; padding: 18px 22px; margin-top: 24px; }
+.cheatsheet h3 { font-family: 'Open Sans'; font-weight: 600; font-size: 14px; margin: 0 0 12px; }
+.cheatsheet table { font-size: 12px; }
+.cheatsheet td:first-child { width: 38%; font-family: 'JetBrains Mono'; color: var(--fg-default); }
+.cheatsheet td:last-child { color: var(--fg-muted); }
+.links { display: flex; gap: 14px; flex-wrap: wrap; margin: 20px 0 0; font-size: 12px; font-family: 'JetBrains Mono'; }
+.links a { color: var(--fg-subtle); text-decoration: none; padding: 4px 10px; border: 1px solid var(--border-default); border-radius: 5px; }
+.links a:hover { color: var(--fg-default); border-color: var(--fg-muted); }
 </style></head><body>
 <div class="app">
 <header class="brand">
@@ -427,13 +474,124 @@ code.v { font-family: 'JetBrains Mono'; font-size: 11px; color: var(--fg-muted);
 </header>
 
 <div class="intro">
-  <p><b>token.json</b> 是这套设计系统的唯一真实来源（W3C DTCG 格式 · 兼容 Figma Tokens Studio）。</p>
-  <p>三层：<b>core</b>（原料）→ <b>semantic</b>（语义化，按 theme 区分）→ <b>textStyle / motion / effects</b>（组合 token）。</p>
-  <p>业务代码用 <code>__generated.ts</code> 里的 semantic / textStyle / motion，不直接用 core。</p>
-  <p>修改流程：改 <code>token.json</code>（或由设计师在 Figma Tokens Studio 改 → push 分支）→ 跑 <code>pnpm tokens:sync</code> → CSS + TS + 本文档自动更新。</p>
+  <p><b>token.json</b> 是这套设计系统的唯一真实来源（W3C DTCG · Figma Tokens Studio 直读）。本页**自动生成**自该 JSON，跑 <code>pnpm tokens:sync</code> 重生成。</p>
+  <p>三层：<b>core</b>（11 档色阶等原料）→ <b>palette + bg/fg/border</b>（语义化，按 theme 区分）→ <b>textStyle / motion / effect</b>（组合 token）。</p>
+  <p>业务代码只用 semantic 层：<code>&lt;Button colorPalette="primary"&gt;</code> · <code>color="fg.default"</code> · <code>textStyle="cardTitle"</code>。<b>不要</b>直接用 <code>blue.500</code> / <code>#xxx</code>，ESLint 拦。</p>
 </div>
 
+<h2 class="section">设计原则</h2>
+<div class="principles">
+  <div class="principle">
+    <p class="principle-h">8 keys per palette</p>
+    <p class="principle-b">每个 palette 8 个语义槽：solid · contrast · fg · subtle · muted · emphasized · border · focusRing。源自 Chakra v3 源码实测。</p>
+  </div>
+  <div class="principle">
+    <p class="principle-h">5 默认 palettes</p>
+    <p class="principle-b">primary / neutral / success / warning / danger。secondary/info/其他色族 opt-in（<code>pnpm tokens:add-color</code>）。</p>
+  </div>
+  <div class="principle">
+    <p class="principle-h">3 themes</p>
+    <p class="principle-b">light / dark / sepia。<code>data-theme</code> 属性 + CSS 变量切换。Chakra 通过 <code>var(--xxx)</code> 引用，无主题二分。</p>
+  </div>
+  <div class="principle">
+    <p class="principle-h">OKLCH from hue</p>
+    <p class="principle-b">设计师给 1 个 hex 提供"色相"，算法生成 11 档色阶（固定 L/C 曲线）。输入 hex 不一定等于 500 档。</p>
+  </div>
+  <div class="principle">
+    <p class="principle-h">Contrast 自动选</p>
+    <p class="principle-b">每个 palette 的 contrast 键按对 solid 的 WCAG 对比度自动选 white / near-black，避免硬编码白色撞色。</p>
+  </div>
+  <div class="principle">
+    <p class="principle-h">WCAG 审计</p>
+    <p class="principle-b">text 对比 ≥4.5:1 + focusRing ≥3:1 为 ERROR（CI 必挂）；border vs bg 为 WARN。跑 <code>pnpm tokens:audit</code>。</p>
+  </div>
+</div>
+
+<h2 class="section">5 个标准 palette</h2>
+<p style="color:var(--fg-subtle);font-size:13px;margin:0 0 20px;">每个 palette 的 8 键 + 真实按钮样例（在当前主题下）。</p>
+<div class="palette-showcase">
+${(() => {
+  const palette = (themeColors as Doc).palette as Doc | undefined;
+  if (!palette) return '<p style="color:var(--fg-subtle)">无 palette 数据</p>';
+  const purposeMap: Record<string, string> = {
+    primary:   '主操作色 · 主按钮 / 链接 / 强调',
+    neutral:   '中性色 · 次按钮 / 卡片 / 边线 / 占位',
+    success:   '成功色 · 通过 / 保存成功 / 已完成',
+    warning:   '警告色 · 注意 / 配额低 / 待处理',
+    danger:    '错误色 · 删除 / 注销 / 失败',
+    secondary: '品牌副色 (opt-in)',
+    info:      '信息色 (opt-in)',
+  };
+  return Object.entries(palette).map(([name, val]) => {
+    const p = val as Doc;
+    const keys = ['solid', 'contrast', 'fg', 'subtle', 'muted', 'emphasized', 'border', 'focusRing'];
+    const swatches = keys.map((k) => {
+      const t = p[k] as Token | undefined;
+      const hex = t?.$value as string | undefined ?? '#000';
+      const txtColor = isDarkColor(hex) ? '#fff' : '#000';
+      return `<div class="key" style="background:${hex};color:${txtColor};">
+        <span class="key-label">${k}</span>
+        <span class="key-val">${typeof hex === 'string' ? hex.toUpperCase() : ''}</span>
+      </div>`;
+    }).join('');
+    const solidHex = (p.solid as Token | undefined)?.$value as string | undefined;
+    const contrastHex = (p.contrast as Token | undefined)?.$value as string | undefined;
+    const fgHex = (p.fg as Token | undefined)?.$value as string | undefined;
+    const subtleHex = (p.subtle as Token | undefined)?.$value as string | undefined;
+    const borderHex = (p.border as Token | undefined)?.$value as string | undefined;
+    return `<div class="palette-card">
+      <div class="palette-card-h">
+        <span class="name">${name}</span>
+        <span class="use">${purposeMap[name] ?? ''}</span>
+      </div>
+      <div class="keys">${swatches}</div>
+      <div class="preview-buttons">
+        <button class="demo-btn" style="background:${solidHex};color:${contrastHex};">主操作</button>
+        <button class="demo-btn" style="background:transparent;color:${fgHex};border-color:${borderHex};">描边按钮</button>
+        <button class="demo-btn" style="background:transparent;color:${fgHex};">幽灵按钮</button>
+        <span class="demo-card" style="background:${subtleHex};color:${fgHex};border:1px solid ${borderHex};">浅底卡片 · ${name}.subtle</span>
+      </div>
+    </div>`;
+  }).join('');
+})()}
+</div>
+
+<h2 class="section">Typography · 10 种 textStyle</h2>
+<p style="color:var(--fg-subtle);font-size:13px;margin:0 0 20px;">每行：左边 token 元数据；右边实际渲染样例。用法：<code>&lt;Heading textStyle="display"&gt;</code></p>
+${(() => {
+  const styles = textStyleD;
+  const sampleText: Record<string, string> = {
+    display:      '一张照片，批改完成',
+    pageTitle:    '学情报告 · 第 12 周',
+    sectionTitle: '本周错题归集',
+    cardTitle:    '函数与导数',
+    bodyLg:       '老师拍照上传，多模态模型识别题目并判分。',
+    body:         '每一道错题被静默归档，按知识点排序，按重复次数排序。',
+    bodySm:       '辅助说明：第二次同卷直接对照判分。',
+    label:        '题目编号',
+    mono:         'questionHash · 0x4f3d',
+    overline:     'features',
+  };
+  return Object.entries(styles).map(([name, val]) => {
+    const v = (val as Token).$value as Record<string, unknown>;
+    const cssDecl = Object.entries(v).map(([prop, propVal]) => {
+      const k = prop.replace(/[A-Z]/g, (m) => '-' + m.toLowerCase());
+      return `${k}: ${propVal}`;
+    }).join('; ');
+    const text = sampleText[name] ?? name;
+    return `<div class="typo-row">
+      <div class="typo-meta">
+        <b>${name}</b><br>
+        ${(v.fontSize as string) ?? ''} · ${(v.fontWeight as number | string) ?? 400}<br>
+        line-height ${(v.lineHeight as number | string) ?? '—'}
+      </div>
+      <div class="typo-sample" style="${cssDecl}">${text}</div>
+    </div>`;
+  }).join('');
+})()}
+
 <h2 class="section">theme · ${defaultTheme}（default）${themeNames.length > 1 ? ` · 其他 theme: ${themeNames.slice(1).join(', ')}` : ''}</h2>
+<p style="color:var(--fg-subtle);font-size:13px;margin:0 0 16px;">底层 token 引用（按 group 列）。切换右上角 theme 看其他主题的解析结果。</p>
 ${Object.entries(themeColors as Doc).map(([g, v]) =>
   `<section class="block"><h3>${g}</h3><table>${rowsFor(v as Doc, g)}</table></section>`,
 ).join('')}
@@ -456,8 +614,39 @@ ${['fontSize', 'fontWeight', 'lineHeight', 'letterSpacing', 'space', 'radius', '
   return `<section class="block"><h3>core.${k}</h3><table>${rowsFor(node, `core.${k}`)}</table></section>`;
 }).join('')}
 
-<footer style="margin-top:80px;padding-top:20px;border-top:1px solid #E7E5E4;font-family:'JetBrains Mono';font-size:11px;color:#78716C">
-  生成自 <code>docs/claude/token.json</code> · 修改后跑 <code>pnpm tokens:sync</code>
+<h2 class="section">命令速查</h2>
+<div class="cheatsheet">
+  <h3>日常命令</h3>
+  <table>
+    <tr><td>pnpm tokens:sync</td><td>校验 + 生成 CSS / TS / 本页（每次改完 token.json 跑）</td></tr>
+    <tr><td>pnpm tokens:validate</td><td>只校验结构（3 主题、8 键齐全、refs 解析、palette ≤8）</td></tr>
+    <tr><td>pnpm tokens:audit</td><td>WCAG 对比度审计，ERROR 挂 CI</td></tr>
+    <tr><td>pnpm tokens:audit --palette=primary</td><td>只审某个 palette</td></tr>
+    <tr><td>pnpm tokens:audit --strict</td><td>用 AAA 标准（默认 AA）</td></tr>
+    <tr><td>pnpm tokens:audit --verbose</td><td>显示所有 WARN 明细</td></tr>
+  </table>
+  <h3 style="margin-top:18px;">扩展系统</h3>
+  <table>
+    <tr><td>pnpm tokens:add-color violet "#8B5CF6"</td><td>加新色族：OKLCH 生 11 档 + 8 键 × 3 主题</td></tr>
+    <tr><td>pnpm tokens:palette mint green</td><td>已有色族起别名为新 palette</td></tr>
+  </table>
+  <h3 style="margin-top:18px;">业务代码用法</h3>
+  <table>
+    <tr><td>&lt;Button colorPalette="primary"&gt;</td><td>主操作（自动 8 键解析 + 主题切换）</td></tr>
+    <tr><td>&lt;Box bg="bg.surface" color="fg.default"&gt;</td><td>标准卡片底色 + 默认文字</td></tr>
+    <tr><td>&lt;Heading textStyle="display"&gt;</td><td>预定义文字样式</td></tr>
+    <tr><td>&lt;Box bg="primary.subtle" borderColor="primary.border"&gt;</td><td>直接读 palette 子键（受控场景）</td></tr>
+  </table>
+  <div class="links">
+    <a href="DESIGN-TOKENS-SPEC.md">📐 完整规范 DESIGN-TOKENS-SPEC.md</a>
+    <a href="DESIGN-TOKENS-DISCUSSION.md">💬 Claude vs Codex 共识记录</a>
+    <a href="design-lab.html">🎨 调色 Lab（OKLCH 实时预览）</a>
+    <a href="token.json">📄 token.json 真源</a>
+  </div>
+</div>
+
+<footer style="margin-top:60px;padding-top:20px;border-top:1px solid var(--border-default);font-family:'JetBrains Mono';font-size:11px;color:var(--fg-subtle);">
+  生成自 <code>docs/claude/token.json</code> · 修改后跑 <code>pnpm tokens:sync</code> · 本页不进 git，每次重生成
 </footer>
 </div></body></html>`;
 }

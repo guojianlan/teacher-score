@@ -1,0 +1,561 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>Design Lab · Token Playground</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<script src="https://unpkg.com/culori@4/bundled/culori.min.js"></script>
+<style>
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
+  /* chrome 颜色由 JS 在 setTheme 时按当前 neutral palette 注入到 :root */
+  :root {
+    --page-bg: #FAFAFA; --page-fg: #1C1917; --page-muted: #78716C;
+    --panel-bg: #FFFFFF; --panel-border: #E7E5E4;
+    --accent: #2849E8; --accent-fg: #FFFFFF;
+  }
+  body { background: var(--page-bg); color: var(--page-fg); min-height: 100vh; transition: background 0.2s, color 0.2s; }
+
+  header { position: sticky; top: 0; z-index: 10; background: var(--panel-bg); border-bottom: 1px solid var(--panel-border); padding: 14px 24px; display: flex; gap: 16px; align-items: center; flex-wrap: wrap; }
+  header h1 { font-size: 16px; margin: 0; font-weight: 600; }
+  header .spacer { flex: 1; }
+  header button { padding: 6px 12px; font-size: 13px; border: 1px solid var(--panel-border); background: var(--page-bg); color: var(--page-fg); border-radius: 6px; cursor: pointer; font-family: inherit; }
+  header button:hover { background: var(--panel-border); }
+  header button.primary { background: var(--accent); color: var(--accent-fg); border-color: var(--accent); }
+  header select { padding: 6px 8px; font-size: 13px; border: 1px solid var(--panel-border); background: var(--page-bg); color: var(--page-fg); border-radius: 6px; font-family: inherit; }
+  header .theme-pills { display: inline-flex; gap: 2px; border: 1px solid var(--panel-border); border-radius: 6px; padding: 2px; }
+  header .theme-pills button { border: none; padding: 4px 10px; font-size: 12px; border-radius: 4px; background: transparent; }
+  header .theme-pills button.active { background: var(--accent); color: var(--accent-fg); }
+
+  main { padding: 24px; max-width: 1400px; margin: 0 auto; display: grid; grid-template-columns: 280px 1fr; gap: 24px; }
+  @media (max-width: 980px) { main { grid-template-columns: 1fr; } }
+
+  section { background: var(--panel-bg); border: 1px solid var(--panel-border); border-radius: 8px; padding: 16px; }
+  section h2 { font-size: 13px; font-weight: 600; margin: 0 0 12px; color: var(--page-muted); text-transform: uppercase; letter-spacing: 0.06em; }
+
+  .palette-row { display: flex; gap: 8px; align-items: center; padding: 6px 0; }
+  .palette-row label { font-size: 13px; font-weight: 500; flex: 0 0 90px; }
+  .palette-row input[type='color'] { width: 32px; height: 32px; border: 1px solid var(--panel-border); border-radius: 6px; cursor: pointer; background: none; padding: 0; }
+  .palette-row input[type='text'] { flex: 1; min-width: 0; padding: 6px 8px; font-family: 'SF Mono', 'Menlo', monospace; font-size: 12px; border: 1px solid var(--panel-border); background: var(--page-bg); color: var(--page-fg); border-radius: 4px; }
+
+  .right-col { display: flex; flex-direction: column; gap: 16px; }
+
+  .scale-grid { display: grid; grid-template-columns: 90px repeat(11, 1fr); gap: 4px; font-size: 11px; align-items: center; }
+  .scale-grid .palette-name { font-weight: 600; }
+  .scale-grid .step-head { font-family: 'SF Mono', monospace; color: var(--page-muted); text-align: center; padding: 2px 0; }
+  .scale-grid .swatch { height: 36px; border-radius: 4px; cursor: pointer; position: relative; }
+  .scale-grid .swatch:hover::after { content: attr(data-hex); position: absolute; left: 50%; top: -22px; transform: translateX(-50%); background: var(--page-fg); color: var(--page-bg); padding: 2px 6px; font-size: 10px; font-family: 'SF Mono', monospace; border-radius: 3px; white-space: nowrap; z-index: 5; }
+
+  .palette-card { border: 1px solid var(--panel-border); border-radius: 8px; padding: 12px; margin-bottom: 12px; }
+  .palette-card-head { display: flex; gap: 8px; align-items: center; margin-bottom: 10px; }
+  .palette-card-head .name { font-weight: 600; font-size: 14px; }
+  .palette-card-head .badge { padding: 2px 6px; font-size: 11px; border-radius: 4px; font-family: 'SF Mono', monospace; }
+  .badge-pass { background: rgba(34, 197, 94, 0.18); color: #16A34A; }
+  .badge-warn { background: rgba(245, 158, 11, 0.18); color: #B45309; }
+  .badge-fail { background: rgba(239, 68, 68, 0.18); color: #DC2626; }
+
+  .key-grid { display: grid; grid-template-columns: repeat(8, 1fr); gap: 6px; }
+  .key-swatch { height: 56px; border-radius: 6px; display: flex; flex-direction: column; justify-content: space-between; padding: 6px; font-size: 10px; font-family: 'SF Mono', monospace; border: 1px solid rgba(0,0,0,0.05); position: relative; }
+  .key-swatch .label { font-weight: 600; opacity: 0.85; }
+  .key-swatch .val { opacity: 0.6; font-size: 9px; word-break: break-all; }
+
+  .wcag-row { display: grid; grid-template-columns: 200px 60px 1fr; gap: 8px; font-size: 11px; padding: 3px 0; font-family: 'SF Mono', monospace; align-items: center; }
+  .wcag-name { color: var(--page-muted); }
+  .wcag-ratio { text-align: right; font-weight: 600; }
+  .wcag-bar { height: 6px; background: var(--panel-border); border-radius: 3px; overflow: hidden; }
+  .wcag-bar > div { height: 100%; }
+  .wcag-pass .wcag-bar > div { background: #16A34A; }
+  .wcag-warn .wcag-bar > div { background: #F59E0B; }
+  .wcag-fail .wcag-bar > div { background: #DC2626; }
+  .wcag-pass .wcag-ratio { color: #16A34A; }
+  .wcag-warn .wcag-ratio { color: #B45309; }
+  .wcag-fail .wcag-ratio { color: #DC2626; }
+
+  .preview-row { display: flex; gap: 8px; flex-wrap: wrap; padding: 8px 0; align-items: center; }
+  .preview-label { width: 90px; font-size: 12px; color: var(--page-muted); font-weight: 500; }
+  .preview-btn { padding: 8px 14px; font-size: 13px; border-radius: 6px; cursor: pointer; font-family: inherit; font-weight: 500; border: 1px solid transparent; transition: transform 0.05s; }
+  .preview-btn:active { transform: scale(0.98); }
+
+  details { margin-top: 8px; }
+  summary { cursor: pointer; font-size: 12px; color: var(--page-muted); padding: 4px 0; }
+  summary:hover { color: var(--page-fg); }
+
+  .hint { font-size: 12px; color: var(--page-muted); margin-bottom: 12px; }
+  .hint code { background: var(--panel-border); padding: 1px 5px; border-radius: 3px; font-family: 'SF Mono', monospace; }
+
+  .toast { position: fixed; bottom: 24px; right: 24px; padding: 10px 16px; background: var(--page-fg); color: var(--page-bg); border-radius: 6px; font-size: 13px; opacity: 0; transition: opacity 0.2s; pointer-events: none; }
+  .toast.show { opacity: 1; }
+</style>
+</head>
+<body data-theme="light">
+
+<header>
+  <h1>Design Lab</h1>
+  <span class="spacer"></span>
+  <input type="file" id="fileInput" accept=".json" hidden>
+  <button onclick="document.getElementById('fileInput').click()">导入 token.json</button>
+  <button class="primary" onclick="exportTokens()">导出 token.json</button>
+  <button onclick="resetAll()">重置默认</button>
+  <div class="theme-pills" id="themePills">
+    <button data-theme="light">Light</button>
+    <button data-theme="dark">Dark</button>
+    <button data-theme="sepia">Sepia</button>
+  </div>
+</header>
+
+<main>
+  <!-- 左：调色板锚点 -->
+  <section>
+    <h2>Palette 锚点（色相来源）</h2>
+    <p class="hint">每个 palette 一个 hex 提供<strong>色相 (hue)</strong>。OKLCH 用固定 L/C 曲线算 11 档色阶。<br>
+    <strong>注意</strong>：输入 hex 不一定等于生成的 500 档（500 档由曲线决定，只有 hue 来自输入）。</p>
+    <div id="anchors"></div>
+    <details>
+      <summary>OKLCH 曲线（高级）</summary>
+      <p class="hint" style="margin-top: 8px;">11 档色阶的固定 L/C 值。手改要小心。</p>
+      <pre id="curveDisplay" style="font-size: 10px; color: var(--page-muted); margin: 0;"></pre>
+    </details>
+  </section>
+
+  <!-- 右：色阶 + key 网格 + WCAG + 组件预览 -->
+  <div class="right-col">
+    <section>
+      <h2>11 档色阶</h2>
+      <div id="scaleGrid" class="scale-grid"></div>
+    </section>
+
+    <section>
+      <h2>8 键 palette × WCAG（当前主题：<span id="currentTheme">light</span>）</h2>
+      <div id="paletteCards"></div>
+    </section>
+
+    <section>
+      <h2>组件预览</h2>
+      <p class="hint">用当前主题渲染。按钮 hover/active 用 CSS 状态自动切。</p>
+      <div id="componentPreview"></div>
+    </section>
+  </div>
+</main>
+
+<div class="toast" id="toast"></div>
+
+<script>
+'use strict';
+
+// ============================================================================
+// OKLCH 色阶曲线（与 scripts/add-color.ts 同步）
+// ============================================================================
+const STEPS = {
+  50:  { l: 0.97, c: 0.02 },
+  100: { l: 0.94, c: 0.04 },
+  200: { l: 0.88, c: 0.08 },
+  300: { l: 0.80, c: 0.12 },
+  400: { l: 0.70, c: 0.16 },
+  500: { l: 0.60, c: 0.20 },
+  600: { l: 0.52, c: 0.20 },
+  700: { l: 0.44, c: 0.18 },
+  800: { l: 0.36, c: 0.14 },
+  900: { l: 0.28, c: 0.10 },
+  950: { l: 0.18, c: 0.06 },
+};
+
+// 8 键 × 3 主题映射约定（与 scripts/add-palette.ts 同步）
+const CONVENTIONS = {
+  light: { contrast: '#FFFFFF', fg: 700, subtle: 50,  muted: 100, emphasized: 200, border: 300, solid: 600, focusRing: 500 },
+  dark:  { contrast: '#FFFFFF', fg: 300, subtle: 950, muted: 900, emphasized: 800, border: 700, solid: 500, focusRing: 400 },
+  sepia: { contrast: '#FFFFFF', fg: 700, subtle: 50,  muted: 100, emphasized: 200, border: 300, solid: 700, focusRing: 500 },
+};
+
+// 默认锚点：5 个标准 palette。secondary/info/purple 是 opt-in，需手加。
+const DEFAULT_ANCHORS = {
+  primary:   '#3B82F6',
+  neutral:   '#737373',
+  success:   '#10B981',
+  warning:   '#F59E0B',
+  danger:    '#EF4444',
+};
+
+// 各主题的 bg.canvas 颜色（用于 border/focusRing WCAG 校验背景）
+const BG_CANVAS = { light: '#FFFFFF', dark: '#0A0A0A', sepia: '#F4EFE6' };
+
+// ============================================================================
+// 工具函数
+// ============================================================================
+const { oklch, formatHex, wcagContrast } = culori;
+
+function hexToScale(hex) {
+  const src = oklch(hex);
+  if (!src) return null;
+  const h = src.h ?? 0;
+  const out = {};
+  for (const [step, { l, c }] of Object.entries(STEPS)) {
+    out[step] = formatHex({ mode: 'oklch', l, c, h });
+  }
+  return out;
+}
+
+function buildPalette(scale, themeName) {
+  const conv = CONVENTIONS[themeName];
+  const out = {};
+  for (const [key, ruleVal] of Object.entries(conv)) {
+    out[key] = typeof ruleVal === 'string' ? ruleVal : scale[String(ruleVal)];
+  }
+  return out;
+}
+
+function classifyContrast(ratio, threshold) {
+  if (ratio >= threshold) return 'pass';
+  if (ratio >= threshold * 0.85) return 'warn';
+  return 'fail';
+}
+
+// WCAG 检查矩阵（与 audit-tokens.ts 一致）
+function checkPalette(palette, themeName) {
+  const bg = BG_CANVAS[themeName];
+  return [
+    { name: 'solid + contrast',       a: palette.solid,      b: palette.contrast,  th: 4.5, severity: 'error' },
+    { name: 'subtle + fg',            a: palette.subtle,     b: palette.fg,        th: 4.5, severity: 'error' },
+    { name: 'muted + fg',             a: palette.muted,      b: palette.fg,        th: 4.5, severity: 'error' },
+    { name: 'emphasized + fg',        a: palette.emphasized, b: palette.fg,        th: 4.5, severity: 'error' },
+    { name: 'border vs bg.canvas',    a: palette.border,     b: bg,                th: 3.0, severity: 'warn'  },
+    { name: 'focusRing vs bg.canvas', a: palette.focusRing,  b: bg,                th: 3.0, severity: 'warn'  },
+    { name: 'focusRing vs solid',     a: palette.focusRing,  b: palette.solid,     th: 3.0, severity: 'warn'  },
+  ].map((c) => ({ ...c, ratio: wcagContrast(c.a, c.b) }));
+}
+
+// ============================================================================
+// 状态
+// ============================================================================
+let state = { anchors: { ...DEFAULT_ANCHORS }, theme: 'light' };
+
+function loadFromStorage() {
+  try {
+    const saved = localStorage.getItem('design-lab-anchors');
+    if (saved) state.anchors = { ...DEFAULT_ANCHORS, ...JSON.parse(saved) };
+  } catch {}
+}
+
+function saveToStorage() {
+  localStorage.setItem('design-lab-anchors', JSON.stringify(state.anchors));
+}
+
+// ============================================================================
+// 渲染
+// ============================================================================
+// 完整重建：仅在初始化 / 导入 / 重置时调用
+function renderAll() {
+  applyChromeColors();
+  renderAnchors();
+  renderCurveDisplay();
+  renderScaleGrid();
+  renderPaletteCards();
+  renderComponentPreview();
+  renderThemePills();
+  document.getElementById('currentTheme').textContent = state.theme;
+}
+
+// 部分重建：调色 / 切主题时调用，跳过 renderAnchors（避免销毁 picker 输入框中断事件链）
+function renderRight() {
+  applyChromeColors();
+  renderScaleGrid();
+  renderPaletteCards();
+  renderComponentPreview();
+  renderThemePills();
+  document.getElementById('currentTheme').textContent = state.theme;
+}
+
+// 用当前主题的 neutral palette 给 lab chrome 染色
+// （这样调 neutral 锚点，整个 lab 也会变；切换主题，chrome 颜色立即跟随）
+function applyChromeColors() {
+  const neutralScale = hexToScale(state.anchors.neutral);
+  const primaryScale = hexToScale(state.anchors.primary);
+  if (!neutralScale || !primaryScale) return;
+  const neutral = buildPalette(neutralScale, state.theme);
+  const primary = buildPalette(primaryScale, state.theme);
+
+  // page-bg：用主题对应的 bg.canvas（保持视觉熟悉度），dark 主题用 neutral.subtle 也行
+  const bgCanvas = state.theme === 'dark' ? neutral.subtle : (state.theme === 'sepia' ? neutralScale[50] : '#FAFAFA');
+  const panelBg = state.theme === 'dark' ? neutral.muted : neutralScale[50];
+  const panelBorder = state.theme === 'dark' ? neutral.muted : neutral.border;
+  const pageFg = state.theme === 'dark' ? neutral.fg : neutralScale[900];
+  const pageMuted = neutral.fg;
+
+  const root = document.documentElement;
+  root.style.setProperty('--page-bg', bgCanvas);
+  root.style.setProperty('--page-fg', pageFg);
+  root.style.setProperty('--page-muted', pageMuted);
+  root.style.setProperty('--panel-bg', panelBg);
+  root.style.setProperty('--panel-border', panelBorder);
+  root.style.setProperty('--accent', primary.solid);
+  root.style.setProperty('--accent-fg', primary.contrast);
+}
+
+function renderThemePills() {
+  document.querySelectorAll('#themePills button').forEach((b) => {
+    b.classList.toggle('active', b.dataset.theme === state.theme);
+  });
+}
+
+function renderAnchors() {
+  const root = document.getElementById('anchors');
+  root.innerHTML = '';
+  for (const name of Object.keys(DEFAULT_ANCHORS)) {
+    const hex = state.anchors[name];
+    const row = document.createElement('div');
+    row.className = 'palette-row';
+    row.innerHTML = `
+      <label>${name}</label>
+      <input type="color" value="${hex}" data-name="${name}" />
+      <input type="text" value="${hex}" data-name="${name}" maxlength="7" />
+    `;
+    row.querySelector('input[type=color]').addEventListener('input', (e) => updateAnchor(name, e.target.value));
+    row.querySelector('input[type=text]').addEventListener('change', (e) => {
+      const v = e.target.value.trim();
+      if (/^#[0-9A-Fa-f]{6}$/.test(v)) updateAnchor(name, v);
+      else { e.target.value = state.anchors[name]; toast('hex 格式必须 #RRGGBB'); }
+    });
+    root.appendChild(row);
+  }
+}
+
+function renderCurveDisplay() {
+  const lines = Object.entries(STEPS).map(([s, { l, c }]) =>
+    `  ${s.padStart(3)}: L=${l.toFixed(2)}, C=${c.toFixed(2)}`,
+  );
+  document.getElementById('curveDisplay').textContent = lines.join('\n');
+}
+
+function renderScaleGrid() {
+  const grid = document.getElementById('scaleGrid');
+  grid.innerHTML = '';
+  grid.appendChild(makeHead(''));
+  for (const step of Object.keys(STEPS)) grid.appendChild(makeHead(step));
+
+  for (const name of Object.keys(DEFAULT_ANCHORS)) {
+    const scale = hexToScale(state.anchors[name]);
+    if (!scale) continue;
+    const nameCell = document.createElement('div');
+    nameCell.className = 'palette-name';
+    nameCell.textContent = name;
+    grid.appendChild(nameCell);
+    for (const [step, hex] of Object.entries(scale)) {
+      const sw = document.createElement('div');
+      sw.className = 'swatch';
+      sw.style.background = hex;
+      sw.dataset.hex = `${name}.${step} ${hex}`;
+      grid.appendChild(sw);
+    }
+  }
+}
+
+function makeHead(text) {
+  const el = document.createElement('div');
+  el.className = 'step-head';
+  el.textContent = text;
+  return el;
+}
+
+function renderPaletteCards() {
+  const root = document.getElementById('paletteCards');
+  root.innerHTML = '';
+  for (const name of Object.keys(DEFAULT_ANCHORS)) {
+    const scale = hexToScale(state.anchors[name]);
+    if (!scale) continue;
+    const palette = buildPalette(scale, state.theme);
+    const checks = checkPalette(palette, state.theme);
+    const errors = checks.filter((c) => c.severity === 'error' && c.ratio < c.th);
+    const warns  = checks.filter((c) => c.severity === 'warn'  && c.ratio < c.th);
+
+    const card = document.createElement('div');
+    card.className = 'palette-card';
+
+    const badgeClass = errors.length ? 'badge-fail' : warns.length ? 'badge-warn' : 'badge-pass';
+    const badgeText = errors.length ? `${errors.length} FAIL` : warns.length ? `${warns.length} WARN` : 'PASS';
+
+    card.innerHTML = `
+      <div class="palette-card-head">
+        <span class="name">${name}</span>
+        <span class="badge ${badgeClass}">${badgeText}</span>
+      </div>
+      <div class="key-grid"></div>
+      <details>
+        <summary>WCAG 详情（${checks.length} 项）</summary>
+        <div class="wcag-list"></div>
+      </details>
+    `;
+    const keyGrid = card.querySelector('.key-grid');
+    const order = ['solid', 'contrast', 'fg', 'subtle', 'muted', 'emphasized', 'border', 'focusRing'];
+    for (const k of order) {
+      const sw = document.createElement('div');
+      sw.className = 'key-swatch';
+      sw.style.background = palette[k];
+      sw.style.color = wcagContrast(palette[k], '#FFFFFF') > wcagContrast(palette[k], '#000000') ? '#FFFFFF' : '#000000';
+      sw.innerHTML = `<span class="label">${k}</span><span class="val">${palette[k]}</span>`;
+      keyGrid.appendChild(sw);
+    }
+
+    const wcagList = card.querySelector('.wcag-list');
+    for (const c of checks) {
+      const cls = classifyContrast(c.ratio, c.th);
+      const row = document.createElement('div');
+      row.className = `wcag-row wcag-${cls}`;
+      row.innerHTML = `
+        <span class="wcag-name">${c.name}</span>
+        <span class="wcag-ratio">${c.ratio.toFixed(2)}:1</span>
+        <span class="wcag-bar"><div style="width: ${Math.min(100, (c.ratio / 7) * 100)}%"></div></span>
+      `;
+      wcagList.appendChild(row);
+    }
+
+    root.appendChild(card);
+  }
+}
+
+function renderComponentPreview() {
+  const root = document.getElementById('componentPreview');
+  root.innerHTML = '';
+
+  for (const name of Object.keys(DEFAULT_ANCHORS)) {
+    const scale = hexToScale(state.anchors[name]);
+    if (!scale) continue;
+    const p = buildPalette(scale, state.theme);
+
+    const row = document.createElement('div');
+    row.className = 'preview-row';
+    row.innerHTML = `
+      <span class="preview-label">${name}</span>
+      <button class="preview-btn" style="background: ${p.solid}; color: ${p.contrast};">solid</button>
+      <button class="preview-btn" style="background: transparent; color: ${p.fg}; border: 1px solid ${p.border};">outline</button>
+      <button class="preview-btn" style="background: transparent; color: ${p.fg};">ghost</button>
+      <button class="preview-btn" style="background: ${p.subtle}; color: ${p.fg}; border: 1px solid ${p.border};">subtle</button>
+      <span class="preview-btn" style="background: ${p.subtle}; color: ${p.fg}; border: 1px solid ${p.border}; cursor: default;">badge</span>
+    `;
+    root.appendChild(row);
+  }
+}
+
+// ============================================================================
+// 事件
+// ============================================================================
+function updateAnchor(name, hex) {
+  state.anchors[name] = hex.toUpperCase();
+  saveToStorage();
+  // 调色时只更新右侧（不动 anchor 输入框，否则会打断当前 picker 事件）
+  // 但同步把同名 anchor 行内的 text input 显示更新
+  syncAnchorRow(name);
+  renderRight();
+}
+
+// 同步同名 anchor 行的 text input 显示值（不重建输入框）
+function syncAnchorRow(name) {
+  const root = document.getElementById('anchors');
+  root.querySelectorAll(`input[type=text][data-name="${name}"]`).forEach((el) => {
+    el.value = state.anchors[name];
+  });
+  root.querySelectorAll(`input[type=color][data-name="${name}"]`).forEach((el) => {
+    if (el.value.toLowerCase() !== state.anchors[name].toLowerCase()) el.value = state.anchors[name];
+  });
+}
+
+function setTheme(theme) {
+  state.theme = theme;
+  document.body.dataset.theme = theme;
+  renderRight();
+}
+
+function resetAll() {
+  if (!confirm('确定重置所有锚点到默认？')) return;
+  state.anchors = { ...DEFAULT_ANCHORS };
+  saveToStorage();
+  renderAll();
+  toast('已重置');
+}
+
+function exportTokens() {
+  // 生成 token.json 结构（只导出 core.color + 三主题 palette）
+  const out = {
+    $description: 'Generated by design-lab.html',
+    core: { color: {} },
+    light: { palette: {} },
+    dark:  { palette: {} },
+    sepia: { palette: {} },
+  };
+  for (const [name, hex] of Object.entries(state.anchors)) {
+    const scale = hexToScale(hex);
+    if (!scale) continue;
+    out.core.color[name] = Object.fromEntries(
+      Object.entries(scale).map(([step, v]) => [step, { $type: 'color', $value: v, $description: `${name}.${step} (OKLCH from ${hex})` }]),
+    );
+    for (const theme of ['light', 'dark', 'sepia']) {
+      const conv = CONVENTIONS[theme];
+      const palette = {};
+      for (const [key, ruleVal] of Object.entries(conv)) {
+        if (typeof ruleVal === 'string') palette[key] = { $type: 'color', $value: ruleVal, $description: `${theme} · ${name}.${key}` };
+        else palette[key] = { $type: 'color', $value: `{core.color.${name}.${ruleVal}}`, $description: `${theme} · ${name}.${key}` };
+      }
+      out[theme].palette[name] = palette;
+    }
+  }
+
+  const blob = new Blob([JSON.stringify(out, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'token-anchors.json';
+  a.click();
+  URL.revokeObjectURL(url);
+  toast('已导出 token-anchors.json');
+}
+
+// Load from imported file
+document.getElementById('fileInput').addEventListener('change', async (e) => {
+  const file = e.target.files[0];
+  if (!file) return;
+  try {
+    const text = await file.text();
+    const json = JSON.parse(text);
+    let count = 0;
+    if (json.core?.color) {
+      for (const [name, scale] of Object.entries(json.core.color)) {
+        if (!(name in DEFAULT_ANCHORS)) continue;
+        const anchor = scale['500']?.$value ?? scale['500'];
+        if (typeof anchor === 'string' && /^#[0-9A-Fa-f]{6}$/.test(anchor)) {
+          state.anchors[name] = anchor.toUpperCase();
+          count++;
+        }
+      }
+    }
+    saveToStorage();
+    renderAll();
+    toast(`已导入 ${count} 个 palette 锚点`);
+  } catch (err) {
+    toast('导入失败：' + err.message);
+  }
+  e.target.value = '';
+});
+
+function toast(msg) {
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.classList.add('show');
+  setTimeout(() => el.classList.remove('show'), 2000);
+}
+
+// ============================================================================
+// 启动
+// ============================================================================
+document.querySelectorAll('#themePills button').forEach((b) => {
+  b.addEventListener('click', () => setTheme(b.dataset.theme));
+});
+
+// 清掉迁移前的旧 key（'brand'），避免残留污染 saveToStorage
+loadFromStorage();
+if (state.anchors.brand && !DEFAULT_ANCHORS.brand) {
+  delete state.anchors.brand;
+  saveToStorage();
+}
+renderAll();
+</script>
+
+</body>
+</html>
