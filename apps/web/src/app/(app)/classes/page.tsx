@@ -175,6 +175,9 @@ export default function ClassesPage() {
                 </Td>
                 <Td>
                   <HStack gap={1}>
+                    <Button asChild size="xs" variant="ghost">
+                      <a href={`/heatmap/class/${k.id}`}>热力图</a>
+                    </Button>
                     <Button size="xs" variant="ghost" onClick={() => onEdit(k)}>编辑</Button>
                     <Button size="xs" variant="ghost" colorPalette="danger" onClick={() => onDelete(k.id)}>删除</Button>
                   </HStack>

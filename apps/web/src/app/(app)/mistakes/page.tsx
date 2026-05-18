@@ -16,6 +16,7 @@ interface MistakeRow {
 }
 
 type SortKey = 'occurrences' | 'lastSeenAt' | 'firstSeenAt' | 'tag';
+type ViewMode = 'flat' | 'byTag';
 
 export default function MistakesPage() {
   const toast = useToast();
@@ -24,6 +25,7 @@ export default function MistakesPage() {
   const [subject, setSubject] = useState('');
   const [showMastered, setShowMastered] = useState(false);
   const [sortKey, setSortKey] = useState<SortKey>('occurrences');
+  const [viewMode, setViewMode] = useState<ViewMode>('flat');
 
   const refresh = async () => {
     const res = await apiClient.get<{ mistakes: MistakeRow[] }>('/api/mistakes');
@@ -46,6 +48,26 @@ export default function MistakesPage() {
       return (a.knowledgeTags ?? []).join().localeCompare((b.knowledgeTags ?? []).join());
     });
   }, [rows, search, subject, showMastered, sortKey]);
+
+  // 按知识点聚合
+  const byTag = useMemo(() => {
+    const map: Record<string, MistakeRow[]> = {};
+    for (const r of filtered) {
+      const tags = r.knowledgeTags ?? [];
+      if (tags.length === 0) {
+        (map['(无标签)'] ??= []).push(r);
+      } else {
+        for (const t of tags) (map[t] ??= []).push(r);
+      }
+    }
+    return Object.entries(map)
+      .map(([tag, items]) => ({
+        tag,
+        items,
+        totalOccurrences: items.reduce((s, x) => s + x.occurrences, 0),
+      }))
+      .sort((a, b) => b.totalOccurrences - a.totalOccurrences);
+  }, [filtered]);
 
   const onMastered = async (id: string) => {
     const res = await apiClient.post(`/api/mistakes/${id}/master`);
@@ -76,6 +98,14 @@ export default function MistakesPage() {
         <Button size="md" variant={showMastered ? 'solid' : 'outline'} onClick={() => setShowMastered((v) => !v)}>
           {showMastered ? '隐藏已掌握' : '显示已掌握'}
         </Button>
+        <Button
+          size="md"
+          variant={viewMode === 'byTag' ? 'solid' : 'outline'}
+          colorPalette="primary"
+          onClick={() => setViewMode((v) => v === 'flat' ? 'byTag' : 'flat')}
+        >
+          {viewMode === 'byTag' ? '平铺视图' : '按知识点聚合'}
+        </Button>
       </Flex>
 
       {filtered.length === 0 ? (
@@ -83,6 +113,63 @@ export default function MistakesPage() {
           <Text fontFamily="mono" color="fg.subtle" fontSize="sm" mb={2}>EMPTY</Text>
           <Text color="fg.subtle">没有匹配的错题。</Text>
         </Box>
+      ) : viewMode === 'byTag' ? (
+        <Stack gap={4}>
+          {byTag.map((group) => (
+            <Box key={group.tag} borderWidth="1px" borderColor="border.default" borderRadius="md" overflow="hidden">
+              <Flex
+                justify="space-between" align="center" p={3}
+                bg="bg.surfaceSubtle" borderBottomWidth="1px" borderColor="border.default"
+              >
+                <Flex gap={3} align="center">
+                  <Badge colorPalette="primary" variant="subtle">{group.tag}</Badge>
+                  <Text fontSize="sm" color="fg.subtle">
+                    {group.items.length} 题 · 累计错 {group.totalOccurrences} 次
+                  </Text>
+                </Flex>
+                <Box
+                  flex="1" mx={4} h="6px" bg="bg.muted" borderRadius="full" overflow="hidden"
+                  maxW="200px"
+                >
+                  <Box
+                    h="100%" bg="status.danger.solid"
+                    w={`${Math.min(100, group.totalOccurrences * 5)}%`}
+                  />
+                </Box>
+              </Flex>
+              <Stack gap={0}>
+                {group.items.slice(0, 8).map((r) => (
+                  <Flex
+                    key={r.id} px={3} py={2} gap={3} align="center"
+                    borderBottomWidth="1px" borderColor="border.subtle"
+                    _hover={{ bg: 'bg.surfaceSubtle' }}
+                    opacity={r.mastered ? 0.5 : 1}
+                  >
+                    <Text flex="1" fontSize="sm" overflow="hidden" textOverflow="ellipsis" whiteSpace="nowrap">
+                      {r.questionStem}
+                    </Text>
+                    <Badge colorPalette="neutral" variant="subtle">
+                      {SUBJECT_LABELS[r.subject] ?? r.subject}
+                    </Badge>
+                    <Text fontFamily="mono" fontSize="sm" minW="40px" textAlign="right">
+                      ×{r.occurrences}
+                    </Text>
+                    {r.mastered ? (
+                      <Badge colorPalette="success" variant="subtle">已掌握</Badge>
+                    ) : (
+                      <Button size="xs" variant="ghost" onClick={() => onMastered(r.id)}>标记掌握</Button>
+                    )}
+                  </Flex>
+                ))}
+                {group.items.length > 8 && (
+                  <Text fontSize="xs" color="fg.subtle" p={2} textAlign="center">
+                    +{group.items.length - 8} 更多…切到平铺视图查看完整列表
+                  </Text>
+                )}
+              </Stack>
+            </Box>
+          ))}
+        </Stack>
       ) : (
         <Table size="md">
           <Thead>

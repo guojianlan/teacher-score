@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import Link from 'next/link';
 import {
   Badge,
   Box,
@@ -117,6 +118,9 @@ export default function StudentsPage() {
                     {s.notes ?? '—'}
                   </Td>
                   <Td>
+                    <Button asChild size="xs" variant="ghost" mr={1}>
+                      <Link href={`/heatmap/student/${s.id}`}>学情</Link>
+                    </Button>
                     <Button size="xs" variant="ghost" mr={1} onClick={() => { setEditing(s); drawer.onOpen(); }}>
                       编辑
                     </Button>
