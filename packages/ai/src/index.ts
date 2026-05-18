@@ -207,3 +207,12 @@ function mockResult(input: GradeExamInput): GradeExamResult {
 }
 
 export { GradeExamSchema, buildSystemPrompt, buildUserPrompt };
+export { scoreBlank, scoreMcq } from './scoring';
+export {
+  extractStudentAnswers,
+  gradeAnswerSheet,
+  type ExtractInput,
+  type ExtractResult,
+  type McqExtraction,
+  type SheetGradingResult,
+} from './extract';
