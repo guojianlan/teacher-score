@@ -12,6 +12,7 @@ import { gradeRoute } from './routes/grade';
 import { meRoute } from './routes/me';
 import { mistakesRoute } from './routes/mistakes';
 import { templatesRoute } from './routes/templates';
+import { classesRoute } from './routes/classes';
 import { analyticsRoute } from './routes/analytics';
 import { pdfRoute } from './routes/pdf';
 import { orgsRoute } from './routes/organizations';
@@ -62,6 +63,8 @@ export function createApp() {
   app.use('/api/mistakes/*', requireOrgMiddleware);
   app.use('/api/templates', requireOrgMiddleware);
   app.use('/api/templates/*', requireOrgMiddleware);
+  app.use('/api/classes', requireOrgMiddleware);
+  app.use('/api/classes/*', requireOrgMiddleware);
   app.use('/api/analytics', requireOrgMiddleware);
   app.use('/api/analytics/*', requireOrgMiddleware);
   app.use('/api/pdf', requireOrgMiddleware);
@@ -82,6 +85,7 @@ export function createApp() {
   app.route('/api/grade', gradeRoute);
   app.route('/api/mistakes', mistakesRoute);
   app.route('/api/templates', templatesRoute);
+  app.route('/api/classes', classesRoute);
   app.route('/api/analytics', analyticsRoute);
   app.route('/api/pdf', pdfRoute);
   app.route('/api/orgs', orgsRoute);

@@ -22,11 +22,19 @@ const LABELS: Record<ThemeChoice, string> = {
   sepia: '米色 · Sepia',
 };
 
-function applyTheme(theme: ThemeChoice) {
+// auto 模式下根据 OS 偏好解析为具体值。
+// 关键：data-theme 属性必须永远存在（含 'light'），否则 Chakra v3 的 _dark 条件
+// 在内置组件（Drawer / Table / Menu）里不激活，会导致它们用 light 默认色但我们的
+// 业务 token 走 OS-dark 路径，文字 / 背景错配（白底浅字看不见）。
+function resolveTheme(choice: ThemeChoice): 'light' | 'dark' | 'sepia' {
+  if (choice !== 'auto') return choice;
+  if (typeof window === 'undefined') return 'light';
+  return window.matchMedia?.('(prefers-color-scheme: dark)')?.matches ? 'dark' : 'light';
+}
+
+function applyTheme(choice: ThemeChoice) {
   if (typeof document === 'undefined') return;
-  const root = document.documentElement;
-  if (theme === 'auto') root.removeAttribute('data-theme');
-  else root.setAttribute('data-theme', theme);
+  document.documentElement.setAttribute('data-theme', resolveTheme(choice));
 }
 
 function readStored(): ThemeChoice {
@@ -45,8 +53,20 @@ export function useTheme(): [ThemeChoice, (t: ThemeChoice) => void] {
 
   // 首次渲染后从 localStorage 读
   useEffect(() => {
-    setThemeState(readStored());
+    const stored = readStored();
+    setThemeState(stored);
+    applyTheme(stored); // 保险：init 脚本可能未跑（仅 storage 有值时跑）
   }, []);
+
+  // auto 模式下监听 OS 主题变化，自动重应用
+  useEffect(() => {
+    if (theme !== 'auto' || typeof window === 'undefined') return;
+    const mq = window.matchMedia?.('(prefers-color-scheme: dark)');
+    if (!mq) return;
+    const handler = () => applyTheme('auto');
+    mq.addEventListener?.('change', handler);
+    return () => mq.removeEventListener?.('change', handler);
+  }, [theme]);
 
   const setTheme = (t: ThemeChoice) => {
     setThemeState(t);
@@ -87,9 +107,16 @@ export const themeInitScript = `
 (function() {
   try {
     var t = localStorage.getItem('${THEME_STORAGE_KEY}');
-    if (t && t !== 'auto' && (t === 'light' || t === 'dark' || t === 'sepia')) {
-      document.documentElement.setAttribute('data-theme', t);
+    var resolved = 'light';
+    if (t === 'light' || t === 'dark' || t === 'sepia') {
+      resolved = t;
+    } else {
+      // auto / 未设置：跟随 OS
+      resolved = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
     }
-  } catch (e) {}
+    document.documentElement.setAttribute('data-theme', resolved);
+  } catch (e) {
+    document.documentElement.setAttribute('data-theme', 'light');
+  }
 })();
 `.trim();
