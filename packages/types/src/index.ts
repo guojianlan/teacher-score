@@ -56,3 +56,7 @@ export interface SubscriptionInfo {
   monthlyQuota: number;
   gradingsUsed: number;
 }
+
+// ─── Answer Sheet schema (新模型，D1+) ───
+export * from "./answer-sheet";
+export * as bioFixture from "./fixtures/bio-2025-mock";

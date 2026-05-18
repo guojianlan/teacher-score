@@ -25,6 +25,8 @@ export const gradingRecords = pgTable(
       .notNull()
       .references(() => students.id, { onDelete: 'restrict' }),
     examPaperId: text('exam_paper_id').references(() => examPapers.id, { onDelete: 'set null' }),
+    // 批量分发的 runId（同次上传的多条记录共享）；nullable 为兼容单张上传
+    gradingRunId: text('grading_run_id'),
     subject: text('subject').notNull(),
     status: text('status', { enum: gradingStatusValues }).notNull().default('pending'),
     progress: text('progress', { enum: ['queued', 'recognizing', 'scoring', 'finalizing'] }),
@@ -55,5 +57,6 @@ export const gradingRecords = pgTable(
     orgStatusIdx: index('grading_records_org_status_idx').on(t.organizationId, t.status),
     orgStudentIdx: index('grading_records_org_student_idx').on(t.organizationId, t.studentId),
     orgCreatedIdx: index('grading_records_org_created_idx').on(t.organizationId, t.createdAt),
+    orgRunIdx: index('grading_records_org_run_idx').on(t.organizationId, t.gradingRunId),
   }),
 );

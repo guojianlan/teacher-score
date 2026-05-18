@@ -1,0 +1,2 @@
+ALTER TABLE "grading_records" ADD COLUMN "grading_run_id" text;--> statement-breakpoint
+CREATE INDEX IF NOT EXISTS "grading_records_org_run_idx" ON "grading_records" USING btree ("organization_id","grading_run_id");

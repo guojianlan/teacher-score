@@ -8,6 +8,27 @@
       "when": 1778674949277,
       "tag": "0000_marvelous_mister_sinister",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1779085926527,
+      "tag": "0001_colossal_hairball",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1779088020922,
+      "tag": "0002_fine_oracle",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1779088580842,
+      "tag": "0003_massive_rhino",
+      "breakpoints": true
     }
   ]
 }
