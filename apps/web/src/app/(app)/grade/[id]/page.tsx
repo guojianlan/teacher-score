@@ -154,16 +154,13 @@ function ResultView({ record, reload }: { record: GradingRecord; reload: () => v
             >
               保存为模板
             </Button>
-            <Button
-              size="sm"
-              variant="outline"
-              onClick={async () => {
-                const res = await apiClient.post(`/api/pdf/grading/${record.id}`);
-                if (res.ok) toast({ status: 'info', title: 'PDF 生成已入队' });
-                else toast({ status: 'error', title: '入队失败' });
-              }}
-            >
-              导出 PDF
+            <Button asChild size="sm" variant="outline">
+              <a href={`/api/pdf/grading/${record.id}`} target="_blank" rel="noopener noreferrer">
+                预览 PDF
+              </a>
+            </Button>
+            <Button asChild size="sm" variant="outline">
+              <a href={`/api/pdf/grading/${record.id}?download=1`}>下载 PDF</a>
             </Button>
             <Button
               size="sm"
