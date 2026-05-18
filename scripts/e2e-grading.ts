@@ -81,10 +81,28 @@ async function main() {
         }));
       } else {
         const buf = await fs.readFile(pngPath);
-        const ex = await extractStudentAnswers({
-          questions: bioFixture.BIO_2025_MOCK_QUESTIONS,
-          images: [{ buf, contentType: 'image/png' }],
-        });
+        let ex: Awaited<ReturnType<typeof extractStudentAnswers>> | null = null;
+        for (let attempt = 1; attempt <= 3; attempt++) {
+          try {
+            ex = await extractStudentAnswers({
+              questions: bioFixture.BIO_2025_MOCK_QUESTIONS,
+              images: [{ buf, contentType: 'image/png' }],
+            });
+            break;
+          } catch (err) {
+            const msg = (err as Error).message.slice(0, 100);
+            console.warn(`  ⚠ ${truth.studentName} attempt ${attempt}/3: ${msg}`);
+            if (attempt === 3) {
+              console.warn(`  ⚠ ${truth.studentName}: 3 次失败，跳过该学生`);
+            } else {
+              await new Promise((r) => setTimeout(r, 2000 * attempt));
+            }
+          }
+        }
+        if (!ex) {
+          // 跳过：这条不计入统计
+          continue;
+        }
         mcqAnswers = ex.mcqAnswers;
         blankAnswers = ex.blankAnswers;
         console.log(`  ${truth.studentName} · 调 LLM · ${ex.tokensUsed} tokens`);
