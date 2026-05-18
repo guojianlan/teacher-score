@@ -15,10 +15,11 @@ interface Me {
 const NAV: { href: string; label: string; icon: string }[] = [
   { href: '/dashboard', label: '工作台', icon: '⌂' },
   { href: '/students', label: '学生', icon: '◍' },
+  { href: '/classes', label: '班级', icon: '⊞' },
   { href: '/grade', label: '批改', icon: '✎' },
   { href: '/history', label: '历史', icon: '◷' },
   { href: '/mistakes', label: '错题本', icon: '✕' },
-  { href: '/templates', label: '模板', icon: '☷' },
+  { href: '/answer-sheets', label: '答题卡', icon: '☷' },
   { href: '/org', label: '组织', icon: '⊟' },
   { href: '/settings', label: '设置', icon: '⚙' },
 ];

@@ -2,8 +2,9 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 import {
-  Box, Button, FormControl, FormLabel, Image, Select, Stack, Text, useToast,
+  Box, Button, Flex, FormControl, FormLabel, Image, Select, Stack, Text, useToast,
 } from '@/components/ui';
 import { apiClient } from '@/lib/api-client';
 import { PageHeader } from '@/components/page-header';
@@ -61,11 +62,16 @@ export default function GradePage() {
 
   return (
     <Stack gap={10}>
-      <PageHeader
-        eyebrow="新批改"
-        title="开始批改"
-        description="选学生 → 选学科 → 上传答卷照片 → 提交。整个过程通常不到 30 秒。"
-      />
+      <Flex justify="space-between" align="flex-start" flexWrap="wrap" gap={4}>
+        <PageHeader
+          eyebrow="新批改"
+          title="开始批改"
+          description="选学生 → 选学科 → 上传答卷照片 → 提交。整个过程通常不到 30 秒。"
+        />
+        <Button asChild colorPalette="primary" variant="outline" size="sm">
+          <Link href="/grade/batch">批量批改 →</Link>
+        </Button>
+      </Flex>
 
       <Stack gap={8}>
         <Section number="01" title="学生 / 学科">
