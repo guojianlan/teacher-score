@@ -1,12 +1,12 @@
 import { and, eq, sql } from 'drizzle-orm';
 import { db } from '@teacher-score/db';
 import * as schema from '@teacher-score/db/schema';
-import { gradeExam, type GradeExamResult } from '@teacher-score/ai';
+import { gradeExam, type GradeExamResult, gradeAnswerSheet, type SheetGradingResult } from '@teacher-score/ai';
 import { createStorageProvider, assertKeyBelongsToOrg } from '@teacher-score/storage';
 import { capture as captureAnalytics } from '@teacher-score/analytics';
 import { createHash } from 'node:crypto';
 import type { Logger } from '@teacher-score/logger';
-import type { QuestionResult, Subject } from '@teacher-score/types';
+import type { QuestionResult, Subject, SheetQuestion } from '@teacher-score/types';
 
 export interface GradeExamPayload {
   gradingId: string;
@@ -133,9 +133,12 @@ export async function gradeExamJobHandler(
       ),
     );
 
-  // Optional: load template for reuse path (§九.4)
+  // Optional: load template (旧扁平 + 新 schema 二选一)
   let template:
     | { questions: Array<{ no: string; type: string; stem: string; correctAnswer: string | null; maxScore: number; knowledgeTags?: string[] }> }
+    | undefined;
+  let newSchemaSheet:
+    | { questions: SheetQuestion[]; subject: string }
     | undefined;
   if (record.examPaperId) {
     const tpl = await db
@@ -149,27 +152,44 @@ export async function gradeExamJobHandler(
       )
       .limit(1);
     if (tpl[0]) {
-      template = {
-        questions: (tpl[0].questions as Array<{
-          no: string;
-          type: string;
-          stem: string;
-          correctAnswer: string | null;
-          maxScore: number;
-          knowledgeTags?: string[];
-        }> | null) ?? [],
-      };
+      // layout 非 null → 走新 schema 路径
+      if (tpl[0].layout) {
+        newSchemaSheet = {
+          questions: (tpl[0].questions as unknown as SheetQuestion[]) ?? [],
+          subject: tpl[0].subject,
+        };
+      } else {
+        template = {
+          questions: (tpl[0].questions as Array<{
+            no: string;
+            type: string;
+            stem: string;
+            correctAnswer: string | null;
+            maxScore: number;
+            knowledgeTags?: string[];
+          }> | null) ?? [],
+        };
+      }
     }
   }
 
   const started = Date.now();
   let result: GradeExamResult;
   try {
-    result = await gradeExam({
-      subject: record.subject as Subject,
-      images: imageBuffers,
-      ...(template ? { template } : {}),
-    });
+    if (newSchemaSheet) {
+      // 新路径：gradeAnswerSheet → 转换为 QuestionResult[] 兼容存储
+      const sheetResult = await gradeAnswerSheet({
+        questions: newSchemaSheet.questions,
+        images: imageBuffers,
+      });
+      result = sheetGradingToLegacyResult(sheetResult, newSchemaSheet.questions);
+    } else {
+      result = await gradeExam({
+        subject: record.subject as Subject,
+        images: imageBuffers,
+        ...(template ? { template } : {}),
+      });
+    }
   } catch (err: unknown) {
     const e = err as { code?: string; message?: string; retryable?: boolean };
     const retryable = e.retryable !== false;
@@ -338,4 +358,92 @@ async function collectMistakes(opts: {
         },
       });
   }
+}
+
+/**
+ * Bridge SheetGradingResult → GradeExamResult (QuestionResult[])
+ *
+ * 为什么这么转：
+ *   - mistake_collection / history / share / pdf-report 全部基于 QuestionResult 形
+ *   - 新 schema 的 per-blank 评分要塞回扁平结构，否则下游全要重写
+ *
+ * 映射策略：
+ *   - 一道 SheetQuestion → 一条 QuestionResult
+ *   - MCQ：studentAnswer = 学生选的，correctAnswer = 标准选项
+ *   - 结构化：studentAnswer = 拼接 "Q(1)空1: xxx | (2)空1: yyy"，
+ *             correctAnswer 同结构；score = blanks 之和，cap 到题分
+ *   - isCorrect = 所有 blank.isCorrect && score >= maxScore
+ *   - confidence = blanks 中最低
+ *   - knowledgeTags = SheetQuestion.knowledgeTags ?? []
+ */
+function sheetGradingToLegacyResult(
+  sheet: SheetGradingResult,
+  questions: SheetQuestion[],
+): GradeExamResult {
+  const qById: Record<string, SheetQuestion> = {};
+  for (const q of questions) qById[q.no] = q;
+
+  const results: QuestionResult[] = sheet.questionScores.map((qs) => {
+    const q = qById[qs.no];
+    const blanksForQ = sheet.blankScores.filter((b) => b.questionNo === qs.no);
+
+    if (qs.type === 'mcq') {
+      const b = blanksForQ[0];
+      return {
+        no: qs.no,
+        type: 'multiple_choice' as const,
+        stem: q?.prompt ?? `第 ${qs.no} 题`,
+        studentAnswer: b?.studentAnswer ?? '',
+        correctAnswer: b?.expected ?? '',
+        isCorrect: !!b?.isCorrect,
+        score: qs.scoreAwarded,
+        maxScore: qs.maxScore,
+        knowledgeTags: q?.knowledgeTags ?? [],
+        comment: b?.reason ?? '',
+        confidence: 'medium' as const,
+      };
+    }
+
+    // 结构化：拼接所有 blank
+    const studentAnswer = blanksForQ
+      .map((b) => `${b.subQuestionNo}空${b.blankNo}: ${b.studentAnswer || '（空）'}`)
+      .join(' | ');
+    const correctAnswer = blanksForQ
+      .map((b) => `${b.subQuestionNo}空${b.blankNo}: ${b.expected}`)
+      .join(' | ');
+    const allBlanksCorrect = blanksForQ.every((b) => b.isCorrect);
+    const reasonSummary = blanksForQ
+      .filter((b) => !b.isCorrect)
+      .slice(0, 3)
+      .map((b) => `${b.subQuestionNo}空${b.blankNo}: ${b.reason}`)
+      .join('；') || '全部正确';
+
+    return {
+      no: qs.no,
+      type: 'short_answer' as const,
+      stem: q?.prompt ?? `第 ${qs.no} 题`,
+      studentAnswer,
+      correctAnswer,
+      isCorrect: allBlanksCorrect && qs.scoreAwarded >= qs.maxScore,
+      score: qs.scoreAwarded,
+      maxScore: qs.maxScore,
+      knowledgeTags: q?.knowledgeTags ?? [],
+      comment: reasonSummary,
+      confidence: 'medium' as const,
+    };
+  });
+
+  return {
+    results,
+    totalScore: sheet.totalScore,
+    maxScore: sheet.maxScore,
+    overallComment: sheet.unrecognizedRegions.length > 0
+      ? `${sheet.unrecognizedRegions.length} 处字迹不清需复核`
+      : '',
+    unrecognizedRegions: sheet.unrecognizedRegions,
+    tokensUsed: sheet.extraction.tokensUsed,
+    costCents: Math.round(sheet.extraction.tokensUsed * 0.001),  // 粗估
+    model: sheet.extraction.model,
+    raw: sheet.extraction.raw,
+  };
 }
