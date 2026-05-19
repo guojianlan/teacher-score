@@ -306,12 +306,10 @@ function renderReport(reports: StudentReport[]): string {
         </header>
         ${r.llmError ? `<div class="error">AI 调用错误：${escape(r.llmError)}</div>` : ''}
 
-        <h3 class="section-h">答题卡原图（点击放大看清字）</h3>
+        <h3 class="section-h">答题卡原图（点击放大 · 弹窗内可缩放拖动）</h3>
         <div class="image-wrap">
-          <a href="data:image/png;base64,${r.pngBase64}" target="_blank" title="点击放大">
-            <img src="data:image/png;base64,${r.pngBase64}" alt="answer sheet">
-          </a>
-          <p class="image-tip">↑ 点击图片在新标签页打开原始大图（2480 × 3724 像素）</p>
+          <img class="zoomable" src="data:image/png;base64,${r.pngBase64}" alt="answer sheet" title="点击放大查看">
+          <p class="image-tip">↑ 点击图片在弹窗中查看大图 · 滚轮缩放 · 拖动移动 · ESC 关闭</p>
         </div>
 
         <h3 class="section-h">选择题（${r.mcqRows.length} 题）</h3>
@@ -435,6 +433,61 @@ function renderReport(reports: StudentReport[]): string {
   .conclusion ul { margin: 8px 0; padding-left: 22px; font-size: 14px; line-height: 1.8; }
 
   footer { text-align: center; color: #888; font-size: 13px; margin-top: 40px; padding-top: 20px; border-top: 1px solid #eee; }
+
+  /* ──── Lightbox 弹窗 ──── */
+  .lightbox {
+    display: none;
+    position: fixed; inset: 0;
+    background: rgba(0, 0, 0, 0.92);
+    z-index: 1000;
+    cursor: grab;
+    user-select: none;
+    overflow: hidden;
+  }
+  .lightbox.open { display: flex; align-items: center; justify-content: center; }
+  .lightbox.dragging { cursor: grabbing; }
+  .lightbox img {
+    max-width: none;
+    max-height: none;
+    transition: transform 0.05s ease-out;
+    transform-origin: center center;
+    pointer-events: none;
+  }
+  .lightbox-close {
+    position: fixed; top: 16px; right: 20px;
+    color: #fff; background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.3);
+    width: 40px; height: 40px;
+    border-radius: 50%;
+    font-size: 24px; line-height: 1;
+    cursor: pointer; z-index: 1001;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .lightbox-close:hover { background: rgba(255,255,255,0.2); }
+  .lightbox-info {
+    position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
+    background: rgba(0, 0, 0, 0.6); color: #fff;
+    padding: 8px 16px; border-radius: 24px;
+    font-size: 13px;
+    z-index: 1001;
+    pointer-events: none;
+  }
+  .lightbox-controls {
+    position: fixed; bottom: 70px; left: 50%; transform: translateX(-50%);
+    display: flex; gap: 8px; z-index: 1001;
+  }
+  .lightbox-controls button {
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.3);
+    color: #fff;
+    padding: 8px 14px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    font-family: inherit;
+  }
+  .lightbox-controls button:hover { background: rgba(255,255,255,0.2); }
+  .zoomable { cursor: zoom-in; }
 </style></head>
 <body>
 
@@ -530,6 +583,175 @@ ${studentSections}
 <footer>
   教师批改 AI 系统 · 验证报告 · 单文件离线可读 · 生成于 ${new Date().toLocaleDateString('zh-CN')}
 </footer>
+
+<!-- Lightbox 弹窗 -->
+<div id="lightbox" class="lightbox" aria-hidden="true">
+  <button id="lightbox-close" class="lightbox-close" title="关闭 (ESC)">✕</button>
+  <img id="lightbox-img" src="" alt="zoom">
+  <div class="lightbox-controls">
+    <button id="lb-zoom-out" title="缩小">−</button>
+    <button id="lb-zoom-reset" title="还原">⌂ 还原</button>
+    <button id="lb-zoom-in" title="放大">+</button>
+    <button id="lb-zoom-fit" title="适合屏幕">▢ 适合</button>
+  </div>
+  <div class="lightbox-info" id="lb-info">100%</div>
+</div>
+
+<script>
+(function() {
+  const box = document.getElementById('lightbox');
+  const img = document.getElementById('lightbox-img');
+  const info = document.getElementById('lb-info');
+
+  let scale = 1;
+  let tx = 0, ty = 0;
+  let dragging = false, dragStartX = 0, dragStartY = 0, startTx = 0, startTy = 0;
+
+  function applyTransform() {
+    img.style.transform = 'translate(' + tx + 'px, ' + ty + 'px) scale(' + scale + ')';
+    info.textContent = Math.round(scale * 100) + '%';
+  }
+
+  function fitToScreen() {
+    const w = window.innerWidth - 80;
+    const h = window.innerHeight - 80;
+    const rx = w / img.naturalWidth;
+    const ry = h / img.naturalHeight;
+    scale = Math.min(rx, ry, 1);
+    tx = 0; ty = 0;
+    applyTransform();
+  }
+
+  function resetTo100() {
+    scale = 1; tx = 0; ty = 0;
+    applyTransform();
+  }
+
+  function open(src) {
+    img.src = src;
+    box.classList.add('open');
+    box.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+    // 等图片加载完，自动适合屏幕
+    if (img.complete) fitToScreen();
+    else img.onload = fitToScreen;
+  }
+
+  function close() {
+    box.classList.remove('open');
+    box.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+    img.src = '';
+  }
+
+  // 点击所有 .zoomable 图打开
+  document.querySelectorAll('img.zoomable').forEach(function(el) {
+    el.addEventListener('click', function() {
+      open(el.src);
+    });
+  });
+
+  // 关闭按钮
+  document.getElementById('lightbox-close').addEventListener('click', close);
+
+  // ESC 关闭
+  document.addEventListener('keydown', function(e) {
+    if (!box.classList.contains('open')) return;
+    if (e.key === 'Escape') close();
+    if (e.key === '+' || e.key === '=') { scale *= 1.25; applyTransform(); }
+    if (e.key === '-' || e.key === '_') { scale /= 1.25; applyTransform(); }
+    if (e.key === '0') resetTo100();
+    if (e.key === 'f' || e.key === 'F') fitToScreen();
+  });
+
+  // 点击背景（不是图片本身）关闭
+  box.addEventListener('click', function(e) {
+    if (e.target === box) close();
+  });
+
+  // 滚轮缩放
+  box.addEventListener('wheel', function(e) {
+    e.preventDefault();
+    const delta = -e.deltaY;
+    const factor = delta > 0 ? 1.15 : 1 / 1.15;
+    const newScale = Math.max(0.1, Math.min(10, scale * factor));
+    // 鼠标位置作为缩放中心
+    const rect = img.getBoundingClientRect();
+    const cx = e.clientX - rect.left - rect.width / 2;
+    const cy = e.clientY - rect.top - rect.height / 2;
+    const factorChange = newScale / scale;
+    tx -= cx * (factorChange - 1);
+    ty -= cy * (factorChange - 1);
+    scale = newScale;
+    applyTransform();
+  }, { passive: false });
+
+  // 拖动平移
+  box.addEventListener('mousedown', function(e) {
+    if (e.target === box || e.target === img) {
+      dragging = true;
+      dragStartX = e.clientX; dragStartY = e.clientY;
+      startTx = tx; startTy = ty;
+      box.classList.add('dragging');
+    }
+  });
+  document.addEventListener('mousemove', function(e) {
+    if (!dragging) return;
+    tx = startTx + (e.clientX - dragStartX);
+    ty = startTy + (e.clientY - dragStartY);
+    applyTransform();
+  });
+  document.addEventListener('mouseup', function() {
+    if (dragging) { dragging = false; box.classList.remove('dragging'); }
+  });
+
+  // 控制按钮
+  document.getElementById('lb-zoom-in').addEventListener('click', function() {
+    scale *= 1.25; applyTransform();
+  });
+  document.getElementById('lb-zoom-out').addEventListener('click', function() {
+    scale /= 1.25; applyTransform();
+  });
+  document.getElementById('lb-zoom-reset').addEventListener('click', resetTo100);
+  document.getElementById('lb-zoom-fit').addEventListener('click', fitToScreen);
+
+  // 触摸支持（pinch zoom 简化版）
+  let touchDist = 0;
+  box.addEventListener('touchstart', function(e) {
+    if (e.touches.length === 2) {
+      const dx = e.touches[0].clientX - e.touches[1].clientX;
+      const dy = e.touches[0].clientY - e.touches[1].clientY;
+      touchDist = Math.hypot(dx, dy);
+    } else if (e.touches.length === 1) {
+      dragging = true;
+      dragStartX = e.touches[0].clientX; dragStartY = e.touches[0].clientY;
+      startTx = tx; startTy = ty;
+    }
+  });
+  box.addEventListener('touchmove', function(e) {
+    e.preventDefault();
+    if (e.touches.length === 2) {
+      const dx = e.touches[0].clientX - e.touches[1].clientX;
+      const dy = e.touches[0].clientY - e.touches[1].clientY;
+      const dist = Math.hypot(dx, dy);
+      if (touchDist > 0) {
+        scale = Math.max(0.1, Math.min(10, scale * (dist / touchDist)));
+        applyTransform();
+      }
+      touchDist = dist;
+    } else if (e.touches.length === 1 && dragging) {
+      tx = startTx + (e.touches[0].clientX - dragStartX);
+      ty = startTy + (e.touches[0].clientY - dragStartY);
+      applyTransform();
+    }
+  }, { passive: false });
+  box.addEventListener('touchend', function() {
+    dragging = false;
+    touchDist = 0;
+  });
+})();
+</script>
+
 </body></html>`;
 }
 
