@@ -249,7 +249,7 @@ const MODE_LABEL: Record<string, string> = {
   concept: '意思相近',
 };
 
-function renderReport(reports: StudentReport[]): string {
+function renderReport(reports: StudentReport[], referenceBase64 = ''): string {
   // 全局统计
   const allMcq = reports.flatMap((r) => r.mcqRows);
   const allBlank = reports.flatMap((r) => r.blankRows);
@@ -427,6 +427,10 @@ function renderReport(reports: StudentReport[]): string {
   .mode-breakdown table { font-size: 13px; }
   .mode-breakdown table td { padding: 8px 10px; }
 
+  .reference-block { background: #f0fdf4; border: 2px solid #86efac; border-radius: 10px; padding: 22px 26px; margin: 24px 0 32px; }
+  .reference-block h2 { margin: 0 0 8px; font-size: 18px; color: #166534; }
+  .ref-tip { color: #15803d; font-size: 14px; margin: 0 0 16px; }
+
   .conclusion { background: #fffbeb; border: 1px solid #fde68a; border-radius: 10px; padding: 20px 24px; margin: 24px 0 32px; }
   .conclusion h2 { margin: 0 0 10px; font-size: 18px; color: #92400e; }
   .conclusion p { margin: 6px 0; font-size: 14px; line-height: 1.7; }
@@ -566,6 +570,20 @@ function renderReport(reports: StudentReport[]): string {
     </table>
   </div>
 </div>
+
+${referenceBase64 ? `
+<div class="reference-block">
+  <h2>🎯 标准答案版答题卡（参考）</h2>
+  <p class="ref-tip">
+    这张是所有题<b>正确答案</b>都填好的样子，作为对照基准。下面每个学生的答题卡跟它对比即可。
+    点击图片可在弹窗内放大查看每个空具体写了什么。
+  </p>
+  <div class="image-wrap">
+    <img class="zoomable" src="data:image/png;base64,${referenceBase64}" alt="标准答案版">
+    <p class="image-tip">↑ 标准答案版 · 点击放大可看清每个空的标准答案</p>
+  </div>
+</div>
+` : ''}
 
 <div class="conclusion">
   <h2>📝 怎么看这份报告（建议老师重点关注）</h2>
@@ -769,6 +787,17 @@ async function main() {
   const allTruth = JSON.parse(await fs.readFile(truthPath, 'utf8')) as StudentTruth[];
   const subset = allTruth.slice(0, count);
 
+  // 读「标准答案版」答题卡（如果存在）
+  let referenceBase64 = '';
+  const refPngPath = path.join(synthDir, `${sheetTitle}-reference.png`);
+  if (await fileExists(refPngPath)) {
+    const buf = await fs.readFile(refPngPath);
+    referenceBase64 = buf.toString('base64');
+    console.log(`  ✓ 标准答案版图已加载：${refPngPath}`);
+  } else {
+    console.warn(`  ⚠ 没找到标准答案版图（${refPngPath}），将不展示对照图`);
+  }
+
   console.log(`处理 ${subset.length} 个学生（每个调一次 LLM，预计 30 秒-2 分钟/学生）...\n`);
 
   const reports: StudentReport[] = [];
@@ -786,7 +815,7 @@ async function main() {
     reports.push(r);
   }
 
-  const html = renderReport(reports);
+  const html = renderReport(reports, referenceBase64);
   const outPath = path.join(synthDir, 'validation-report.html');
   await fs.writeFile(outPath, html);
   console.log(`\n✓ 报告已生成：${outPath}`);

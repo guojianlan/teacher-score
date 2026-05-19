@@ -41,9 +41,35 @@ function pickError(options: string[], correct: string): string {
   return others[Math.floor(Math.random() * others.length)] ?? correct;
 }
 
-function maybeMisspell(s: string): string {
-  // 极小概率字符级偏差，模拟笔误（中文不好造，简单返回原文+'…'）
-  return Math.random() < 0.3 ? s.slice(0, -1) : s;
+/**
+ * 真学生错答策略（4 选 1，等概率）：
+ *   1. 留空：直接不写
+ *   2. 只写开头：写 1-3 个字就停了（学生没想出来）
+ *   3. 写错关键词：把正确答案里的某个关键字替换成错的
+ *   4. 答非所问：写跟标答完全无关但听起来沾边的内容
+ *
+ * 避免合成器留下 "（不完整）" 之类的占位符 — 真学生不会这么写。
+ */
+function genWrongAnswer(expected: string): string {
+  const strategies = [
+    // 1) 留空
+    () => '',
+    // 2) 只写开头 1-3 字（中文按字数）
+    () => expected.slice(0, Math.max(1, Math.min(3, Math.floor(expected.length * 0.3)))),
+    // 3) 写一个关键词替换（用 "?" 模拟学生卡住）
+    () => {
+      const parts = expected.split(/[，、,；;。.\s]/).filter(Boolean);
+      if (parts.length === 0) return '？';
+      // 第一个词换成 "?"，其他保留
+      return ['？', ...parts.slice(1)].join('、');
+    },
+    // 4) 答非所问 — 截前半 + 后半省略
+    () => {
+      const half = Math.max(2, Math.floor(expected.length / 2));
+      return expected.slice(0, half);
+    },
+  ];
+  return strategies[Math.floor(Math.random() * strategies.length)]!();
 }
 
 function genStudent(
@@ -71,14 +97,7 @@ function genStudent(
           const isError = !isBlank && Math.random() < opts.errorRate;
           let written = '';
           if (!isBlank) {
-            if (isError) {
-              // 错答策略：要么写错答，要么只写一半
-              written = Math.random() < 0.5
-                ? maybeMisspell(b.expected)
-                : `${b.expected.split(/[，、,]/)[0] ?? b.expected}（不完整）`;
-            } else {
-              written = b.expected;
-            }
+            written = isError ? genWrongAnswer(b.expected) : b.expected;
           }
           truth.blanks.push({
             questionNo: q.no,
@@ -267,12 +286,47 @@ async function main() {
     },
   });
 
+  const safeBase = sheetTitle.replace(/[^\p{L}\p{N}_-]+/gu, '_');
+
+  // 先生成「标准答案版」（所有 MCQ + 填空都填正确答案，标记为"参考"学生）
+  {
+    const refTruth: StudentTruth = {
+      studentName: '【标准答案】',
+      mcq: bioFixture.BIO_2025_MOCK_QUESTIONS
+        .filter((q) => q.type === 'mcq')
+        .map((q) => ({
+          questionNo: q.no,
+          selected: q.correctOption ?? '',
+          correct: q.correctOption ?? '',
+        })),
+      blanks: bioFixture.BIO_2025_MOCK_QUESTIONS
+        .filter((q) => q.type === 'structured')
+        .flatMap((q) =>
+          (q.subQuestions ?? []).flatMap((sq) =>
+            sq.blanks.map((b) => ({
+              questionNo: q.no,
+              subQuestionNo: sq.no,
+              blankNo: b.no,
+              written: b.expected,
+              expected: b.expected,
+            })),
+          ),
+        ),
+    };
+    const refHtml = fillAnswers(baseHtml, refTruth);
+    await fs.writeFile(path.join(outDir, `${safeBase}-reference.html`), refHtml);
+    const refPng = await tryRenderPng(refHtml);
+    if (refPng) {
+      await fs.writeFile(path.join(outDir, `${safeBase}-reference.png`), refPng);
+      console.log(`  ✓ 标准答案版（reference）已生成`);
+    }
+  }
+
   const allTruth: StudentTruth[] = [];
   for (let i = 0; i < opts.count; i++) {
     const truth = genStudent(bioFixture.BIO_2025_MOCK_QUESTIONS, opts, i);
     allTruth.push(truth);
     const html = fillAnswers(baseHtml, truth);
-    const safeBase = sheetTitle.replace(/[^\p{L}\p{N}_-]+/gu, '_');
     const htmlPath = path.join(outDir, `${safeBase}-stu-${i + 1}.html`);
     await fs.writeFile(htmlPath, html);
 
