@@ -154,25 +154,58 @@ function fillAnswers(html: string, truth: StudentTruth): string {
     },
   );
 
-  // 注入手写样式
+  // 注入手写样式 + 放大基础文字
   out = out.replace(
     '</style></head>',
     `
+/* 整体放大，便于 LLM 视觉模型和老师肉眼看 */
+body { font-size: 18px !important; }
+.title { font-size: 22px !important; }
+.subtitle { font-size: 17px !important; }
+.section-h { font-size: 17px !important; }
+.mcq-no { font-size: 18px !important; }
+.mcq-opt { font-size: 18px !important; font-family: 'SF Mono', Menlo, monospace; }
+.q-no { font-size: 19px !important; }
+.q-score { font-size: 16px !important; }
+.sub-no { font-size: 17px !important; }
+.notes { font-size: 14px !important; }
+.header-label { font-size: 17px !important; }
+
+/* 手写答案：明显放大 + 蓝色 + 落在下划线上 */
 .hw {
-  font-family: "Caveat", "Kalam", "STKaiti", "KaiTi", "楷体", cursive;
-  font-size: 14px;
-  color: #1e40af;
+  font-family: "STKaiti", "楷体", "Kaiti SC", "KaiTi", "Caveat", cursive;
+  font-size: 22px;
+  font-weight: 600;
+  color: #1e3a8a;
   display: inline-block;
-  transform: rotate(-1deg);
-  margin: 0 4px;
+  transform: rotate(-0.5deg);
+  margin: 0 6px;
+  line-height: 1.2;
 }
+/* 题号头部里的姓名手写 */
+.header-line .hw {
+  font-size: 20px;
+}
+/* 选择题填涂效果（黑底白字圆点） */
 .mcq-filled .filled {
-  background: #1a1a1a;
-  color: #fff;
   display: inline-block;
-  width: 1em;
+  background: #111;
+  color: #fff;
+  width: 1.4em;
+  height: 1.4em;
+  line-height: 1.4em;
   text-align: center;
   border-radius: 50%;
+  font-weight: 700;
+}
+/* 空（下划线）保留宽度，hw 在它内部行内显示 */
+.blank {
+  border-bottom: 2px solid #1a1a1a !important;
+  min-height: 28px !important;
+  vertical-align: bottom;
+  display: inline-flex !important;
+  align-items: flex-end;
+  padding-bottom: 2px;
 }
 </style></head>`,
   );
@@ -195,14 +228,17 @@ async function tryRenderPng(html: string): Promise<Buffer | null> {
     const browser = await mod.default.launch({ headless: 'new', args: ['--no-sandbox'] });
     try {
       const page = await browser.newPage();
-      await page.setViewport({ width: 800, height: 1131 }); // A4 比例
+      // A4 @ 150 DPI: 1240×1754；deviceScaleFactor=2 → 输出 2480×3508
+      // 这样 LLM 看得清，老师肉眼看 PDF/PNG 也清楚
+      await page.setViewport({ width: 1240, height: 1754, deviceScaleFactor: 2 });
       await page.setContent(html, { waitUntil: 'networkidle0' });
       const buf = await page.screenshot({ fullPage: true, type: 'png' });
       return Buffer.from(buf);
     } finally {
       await browser.close().catch(() => undefined);
     }
-  } catch {
+  } catch (err) {
+    console.error('puppeteer error:', (err as Error).message);
     return null;
   }
 }

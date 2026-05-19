@@ -243,6 +243,12 @@ function pct(n: number): string {
   return (n * 100).toFixed(1) + '%';
 }
 
+const MODE_LABEL: Record<string, string> = {
+  exact: '完全相同',
+  keyword: '关键词命中',
+  concept: '意思相近',
+};
+
 function renderReport(reports: StudentReport[]): string {
   // 全局统计
   const allMcq = reports.flatMap((r) => r.mcqRows);
@@ -263,30 +269,28 @@ function renderReport(reports: StudentReport[]): string {
     if (r.llmAccurate && r.category === 'yellow') errByMode[k].engineDiff++;
   }
 
-  const totalTokens = reports.reduce((s, r) => s + r.llmTokens, 0);
-
-  const studentSections = reports.map((r, i) => {
+  const studentSections = reports.map((r) => {
     const blankRowsHtml = r.blankRows.map((row) => `
       <tr class="cat-${row.category}">
-        <td class="qno">Q${row.questionNo}${row.subQuestionNo} #${row.blankNo}</td>
-        <td><code>${row.scoringMode}</code></td>
+        <td class="qno">第${row.questionNo}题${row.subQuestionNo}<br><span style="color:#888;font-weight:normal;">第${row.blankNo}空</span></td>
+        <td class="mode-cell">${MODE_LABEL[row.scoringMode] ?? row.scoringMode}</td>
         <td class="expected">${escape(row.expected.slice(0, 80))}</td>
-        <td class="written">${escape(row.written || '（空）')}</td>
-        <td class="extracted">${escape(row.extracted || '（空）')}</td>
-        <td>${row.llmAccurate ? '✓' : '✗'}</td>
-        <td>${row.engineIsCorrect ? '✓' : '✗'}</td>
-        <td>${row.engineScore}/${row.maxScore}</td>
+        <td class="written">${escape(row.written || '（学生没写）')}</td>
+        <td class="extracted">${escape(row.extracted || '（AI 没识别出来）')}</td>
+        <td class="status">${row.llmAccurate ? '<span class="ok">✓ 识别准</span>' : '<span class="bad">✗ 识别错</span>'}</td>
+        <td class="status">${row.engineIsCorrect ? '<span class="ok">判对</span>' : '<span class="muted">判错</span>'}</td>
+        <td class="score">${row.engineScore}/${row.maxScore}</td>
       </tr>
     `).join('');
 
     const mcqRowsHtml = r.mcqRows.map((row) => `
       <tr class="cat-${row.category}">
-        <td class="qno">Q${row.questionNo}</td>
-        <td>${escape(row.correct)}</td>
-        <td>${escape(row.written || '（空）')}</td>
-        <td>${escape(row.extracted || '（空）')}</td>
-        <td>${row.llmAccurate ? '✓' : '✗'}</td>
-        <td>${row.engineIsCorrect ? '✓' : '✗'}</td>
+        <td class="qno">第${row.questionNo}题</td>
+        <td class="answer-cell">${escape(row.correct)}</td>
+        <td class="answer-cell">${escape(row.written || '（没涂）')}</td>
+        <td class="answer-cell">${escape(row.extracted || '（没识别到）')}</td>
+        <td class="status">${row.llmAccurate ? '<span class="ok">✓ 识别准</span>' : '<span class="bad">✗ 识别错</span>'}</td>
+        <td class="status">${row.engineIsCorrect ? '<span class="ok">判对</span>' : '<span class="muted">判错</span>'}</td>
       </tr>
     `).join('');
 
@@ -295,152 +299,214 @@ function renderReport(reports: StudentReport[]): string {
         <header class="student-head">
           <h2>${escape(r.studentName)}</h2>
           <div class="stats-mini">
-            <span>MCQ 准确率 <strong>${pct(r.stats.mcqAccuracy)}</strong></span>
-            <span>填空准确率 <strong>${pct(r.stats.blankAccuracy)}</strong></span>
-            <span>LLM 识别率 <strong>${pct(r.stats.llmRecognitionRate)}</strong></span>
-            <span>tokens <strong>${r.llmTokens}</strong></span>
+            <span>选择题准确率 <strong>${pct(r.stats.mcqAccuracy)}</strong></span>
+            <span>填空题准确率 <strong>${pct(r.stats.blankAccuracy)}</strong></span>
+            <span>AI 识别成功率 <strong>${pct(r.stats.llmRecognitionRate)}</strong></span>
           </div>
         </header>
-        ${r.llmError ? `<div class="error">LLM 调用错误：${escape(r.llmError)}</div>` : ''}
-        <div class="student-body">
-          <div class="image-col">
-            <h3>原始答题卡（合成）</h3>
-            <img src="data:image/png;base64,${r.pngBase64}" alt="answer sheet">
-          </div>
-          <div class="tables-col">
-            <h3>选择题（${r.mcqRows.length}）</h3>
-            <table class="mcq-table">
-              <thead>
-                <tr><th>题号</th><th>正确</th><th>学生填涂</th><th>LLM 识别</th><th>LLM 准</th><th>引擎判对</th></tr>
-              </thead>
-              <tbody>${mcqRowsHtml}</tbody>
-            </table>
+        ${r.llmError ? `<div class="error">AI 调用错误：${escape(r.llmError)}</div>` : ''}
 
-            <h3>非选择题（${r.blankRows.length} 个空）</h3>
-            <table class="blank-table">
-              <thead>
-                <tr>
-                  <th>位置</th>
-                  <th>模式</th>
-                  <th>标准答案</th>
-                  <th>学生写的</th>
-                  <th>LLM 识别</th>
-                  <th>LLM 准</th>
-                  <th>引擎对</th>
-                  <th>得分</th>
-                </tr>
-              </thead>
-              <tbody>${blankRowsHtml}</tbody>
-            </table>
-          </div>
+        <h3 class="section-h">答题卡原图（点击放大看清字）</h3>
+        <div class="image-wrap">
+          <a href="data:image/png;base64,${r.pngBase64}" target="_blank" title="点击放大">
+            <img src="data:image/png;base64,${r.pngBase64}" alt="answer sheet">
+          </a>
+          <p class="image-tip">↑ 点击图片在新标签页打开原始大图（2480 × 3724 像素）</p>
         </div>
+
+        <h3 class="section-h">选择题（${r.mcqRows.length} 题）</h3>
+        <table class="mcq-table">
+          <thead>
+            <tr>
+              <th>题号</th>
+              <th>正确答案</th>
+              <th>学生涂的</th>
+              <th>AI 识别出来的</th>
+              <th>AI 识别是否准</th>
+              <th>系统判定</th>
+            </tr>
+          </thead>
+          <tbody>${mcqRowsHtml}</tbody>
+        </table>
+
+        <h3 class="section-h">非选择题（${r.blankRows.length} 个空）</h3>
+        <table class="blank-table">
+          <thead>
+            <tr>
+              <th>位置</th>
+              <th>判分方式</th>
+              <th>标准答案</th>
+              <th>学生写的</th>
+              <th>AI 识别出来的</th>
+              <th>AI 识别是否准</th>
+              <th>系统判定</th>
+              <th>得分</th>
+            </tr>
+          </thead>
+          <tbody>${blankRowsHtml}</tbody>
+        </table>
       </section>
     `;
   }).join('');
 
+  const mcqRate = mcqGreen / Math.max(1, allMcq.length);
+  const blankRate = blankGreen / Math.max(1, allBlank.length);
+  const llmRate = llmGreen / Math.max(1, totalRows);
+  const totalRate = totalGreen / Math.max(1, totalRows);
+
   return `<!doctype html>
 <html lang="zh-CN"><head><meta charset="utf-8">
-<title>LLM 批改验证报告 · 给老师审阅</title>
+<title>AI 答题卡批改 · 给老师审阅的验证报告</title>
 <style>
   * { box-sizing: border-box; }
-  body { font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif; line-height: 1.55; color: #1a1a1a; max-width: 1400px; margin: 0 auto; padding: 32px 24px; background: #fafafa; }
-  h1 { font-size: 28px; margin: 0 0 4px; }
-  .subtitle { color: #666; font-size: 14px; margin: 0 0 24px; }
-  .summary { background: #fff; border: 1px solid #e0e0e0; border-radius: 10px; padding: 20px 24px; margin-bottom: 32px; }
+  body { font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif; line-height: 1.6; color: #1a1a1a; max-width: 1400px; margin: 0 auto; padding: 32px 24px; background: #fafafa; }
+  h1 { font-size: 30px; margin: 0 0 6px; }
+  .subtitle { color: #666; font-size: 14px; margin: 0 0 28px; }
+
+  /* 关键术语解释 */
+  .glossary { background: #f0f9ff; border: 1px solid #bae6fd; border-radius: 10px; padding: 18px 22px; margin-bottom: 24px; }
+  .glossary h2 { font-size: 16px; margin: 0 0 12px; color: #075985; }
+  .glossary dl { display: grid; grid-template-columns: 140px 1fr; gap: 8px 16px; margin: 0; font-size: 14px; }
+  .glossary dt { font-weight: 600; color: #0c4a6e; }
+  .glossary dd { margin: 0; color: #1a1a1a; }
+
+  .summary { background: #fff; border: 1px solid #e0e0e0; border-radius: 10px; padding: 24px 26px; margin-bottom: 32px; }
   .summary h2 { margin: 0 0 16px; font-size: 18px; }
-  .stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 16px; }
-  .stat { padding: 14px 16px; background: #f5f5f5; border-radius: 8px; }
-  .stat .label { font-size: 12px; color: #666; text-transform: uppercase; letter-spacing: 0.06em; }
-  .stat .value { font-size: 24px; font-weight: 600; margin-top: 4px; }
+  .stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; }
+  .stat { padding: 16px 18px; background: #f5f5f5; border-radius: 8px; border-left: 4px solid transparent; }
+  .stat .label { font-size: 13px; color: #555; font-weight: 500; }
+  .stat .value { font-size: 28px; font-weight: 600; margin-top: 6px; }
+  .stat .sub { font-size: 12px; color: #888; margin-top: 2px; }
+  .stat.good { border-left-color: #16a34a; }
   .stat.good .value { color: #0a7f3f; }
+  .stat.warn { border-left-color: #f59e0b; }
   .stat.warn .value { color: #b45309; }
+  .stat.bad { border-left-color: #dc2626; }
   .stat.bad .value { color: #b91c1c; }
-  .legend { font-size: 13px; color: #555; margin-top: 12px; }
-  .legend .badge { display: inline-block; padding: 2px 8px; border-radius: 4px; margin-right: 6px; font-size: 12px; font-weight: 500; }
+
+  .legend { font-size: 14px; color: #444; margin-top: 18px; padding: 12px 14px; background: #fafafa; border-radius: 6px; }
+  .legend .badge { display: inline-block; padding: 3px 10px; border-radius: 4px; margin-right: 8px; font-size: 13px; font-weight: 600; }
   .legend .green { background: #dcfce7; color: #166534; }
   .legend .yellow { background: #fef9c3; color: #854d0e; }
   .legend .red { background: #fee2e2; color: #991b1b; }
+  .legend .item { display: block; margin: 6px 0; }
 
-  .student { background: #fff; border: 1px solid #e0e0e0; border-radius: 10px; padding: 20px 24px; margin-bottom: 24px; }
-  .student-head { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 16px; padding-bottom: 12px; border-bottom: 1px solid #eee; flex-wrap: wrap; gap: 12px; }
-  .student-head h2 { margin: 0; font-size: 20px; }
-  .stats-mini { display: flex; gap: 16px; font-size: 13px; color: #555; flex-wrap: wrap; }
-  .stats-mini strong { color: #1a1a1a; font-family: "SF Mono", Menlo, monospace; }
+  .student { background: #fff; border: 1px solid #e0e0e0; border-radius: 10px; padding: 24px 28px; margin-bottom: 28px; }
+  .student-head { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 18px; padding-bottom: 14px; border-bottom: 2px solid #f0f0f0; flex-wrap: wrap; gap: 12px; }
+  .student-head h2 { margin: 0; font-size: 22px; }
+  .stats-mini { display: flex; gap: 20px; font-size: 14px; color: #555; flex-wrap: wrap; }
+  .stats-mini strong { color: #1a1a1a; font-family: "SF Mono", Menlo, monospace; font-size: 15px; }
 
-  .error { background: #fee2e2; color: #991b1b; padding: 8px 12px; border-radius: 6px; margin-bottom: 12px; font-size: 13px; }
+  .error { background: #fee2e2; color: #991b1b; padding: 10px 14px; border-radius: 6px; margin-bottom: 12px; font-size: 14px; }
 
-  .student-body { display: grid; grid-template-columns: 380px 1fr; gap: 24px; }
-  @media (max-width: 1000px) { .student-body { grid-template-columns: 1fr; } }
-  .image-col h3, .tables-col h3 { margin: 16px 0 8px; font-size: 14px; color: #555; font-weight: 600; }
-  .image-col img { width: 100%; border: 1px solid #ddd; border-radius: 6px; }
+  .section-h { font-size: 16px; color: #444; font-weight: 600; margin: 24px 0 10px; padding-bottom: 4px; border-bottom: 1px solid #eee; }
 
-  table { width: 100%; border-collapse: collapse; font-size: 12px; margin-bottom: 8px; }
-  table th, table td { padding: 6px 8px; border-bottom: 1px solid #eee; text-align: left; vertical-align: top; }
-  table th { background: #f5f5f5; font-weight: 600; font-size: 11px; text-transform: uppercase; letter-spacing: 0.04em; color: #555; }
-  .qno { font-family: "SF Mono", Menlo, monospace; white-space: nowrap; }
-  .expected, .written, .extracted { max-width: 240px; word-break: break-word; }
-  code { font-family: "SF Mono", Menlo, monospace; font-size: 11px; background: #f3f3f3; padding: 1px 6px; border-radius: 3px; }
+  /* 图片：默认大图 + 点击新标签页查看原图 */
+  .image-wrap { background: #fafafa; padding: 12px; border-radius: 8px; border: 1px solid #e5e5e5; text-align: center; }
+  .image-wrap img { max-width: 100%; max-height: 700px; height: auto; border: 1px solid #ccc; border-radius: 4px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); cursor: zoom-in; transition: transform 0.15s; }
+  .image-wrap img:hover { transform: scale(1.005); box-shadow: 0 4px 16px rgba(0,0,0,0.12); }
+  .image-tip { color: #666; font-size: 13px; margin: 8px 0 0; }
+
+  table { width: 100%; border-collapse: collapse; font-size: 14px; margin-bottom: 8px; background: #fff; }
+  table th, table td { padding: 10px 12px; border-bottom: 1px solid #eee; text-align: left; vertical-align: middle; }
+  table th { background: #f5f5f5; font-weight: 600; font-size: 13px; color: #444; }
+  .qno { font-weight: 600; white-space: nowrap; min-width: 80px; }
+  .expected, .written, .extracted, .answer-cell { word-break: break-word; max-width: 280px; }
+  .answer-cell { font-family: "SF Mono", Menlo, monospace; }
+  .mode-cell { font-size: 13px; color: #666; white-space: nowrap; }
+  .score { font-family: "SF Mono", Menlo, monospace; font-weight: 600; }
+  .status { white-space: nowrap; }
+  .ok { color: #15803d; font-weight: 500; }
+  .bad { color: #b91c1c; font-weight: 500; }
+  .muted { color: #888; }
 
   tr.cat-green { background: rgba(34, 197, 94, 0.05); }
   tr.cat-yellow { background: rgba(245, 158, 11, 0.08); }
   tr.cat-red { background: rgba(239, 68, 68, 0.06); }
 
-  .mode-breakdown { margin-top: 12px; font-size: 13px; color: #555; }
-  .mode-breakdown table td:first-child { width: 100px; }
-  .mode-breakdown table td:last-child { color: #888; }
+  .mode-breakdown { margin-top: 16px; }
+  .mode-breakdown h3 { font-size: 15px; margin: 0 0 8px; color: #444; }
+  .mode-breakdown table { font-size: 13px; }
+  .mode-breakdown table td { padding: 8px 10px; }
 
-  footer { text-align: center; color: #888; font-size: 12px; margin-top: 40px; padding-top: 20px; border-top: 1px solid #eee; }
+  .conclusion { background: #fffbeb; border: 1px solid #fde68a; border-radius: 10px; padding: 20px 24px; margin: 24px 0 32px; }
+  .conclusion h2 { margin: 0 0 10px; font-size: 18px; color: #92400e; }
+  .conclusion p { margin: 6px 0; font-size: 14px; line-height: 1.7; }
+  .conclusion ul { margin: 8px 0; padding-left: 22px; font-size: 14px; line-height: 1.8; }
+
+  footer { text-align: center; color: #888; font-size: 13px; margin-top: 40px; padding-top: 20px; border-top: 1px solid #eee; }
 </style></head>
 <body>
-<h1>LLM 答题卡批改 · 验证报告</h1>
+
+<h1>AI 答题卡批改 · 验证报告</h1>
 <p class="subtitle">
   生成时间：${new Date().toLocaleString('zh-CN')}
-  · 模型：${process.env.AI_VISION_MODEL ?? 'gpt-5.5'}
-  · 共 ${reports.length} 张样本 · 总 tokens ${totalTokens}
+  · 测试样本：${reports.length} 张合成答题卡（生物 2025 一模）
 </p>
 
+<div class="glossary">
+  <h2>📖 术语说明（看报告前先看这里）</h2>
+  <dl>
+    <dt>AI 识别</dt>
+    <dd>系统通过 AI 视觉模型，读取学生在答题卡上写的内容（类似"AI 看图认字"）</dd>
+    <dt>系统判定</dt>
+    <dd>AI 识别后，自动比对标准答案，判断学生这题对错（"自动批改"那一步）</dd>
+    <dt>选择题</dt>
+    <dd>答题卡上 ABCD 涂卡的题。系统识别涂哪个选项，对比正确选项</dd>
+    <dt>非选择题</dt>
+    <dd>需要填空 / 写文字的题。一道大题里可能有多个"空"，每个空单独判分</dd>
+    <dt>判分方式</dt>
+    <dd>每个空有三种判分规则：<br>
+      · <b>完全相同</b>：必须和标答一字不差（适合化学式、数字、专有名词）<br>
+      · <b>关键词命中</b>：含有几个关键词就给几分（适合简答题）<br>
+      · <b>意思相近</b>：让 AI 判断意思是否一致（适合长篇论述）</dd>
+  </dl>
+</div>
+
 <div class="summary">
-  <h2>总览</h2>
+  <h2>📊 总览数据</h2>
   <div class="stat-grid">
-    <div class="stat ${mcqGreen / allMcq.length >= 0.95 ? 'good' : mcqGreen / allMcq.length >= 0.6 ? 'warn' : 'bad'}">
+    <div class="stat ${mcqRate >= 0.95 ? 'good' : mcqRate >= 0.6 ? 'warn' : 'bad'}">
       <div class="label">选择题准确率</div>
-      <div class="value">${pct(mcqGreen / Math.max(1, allMcq.length))}</div>
-      <div style="font-size:11px;color:#888">${mcqGreen}/${allMcq.length}</div>
+      <div class="value">${pct(mcqRate)}</div>
+      <div class="sub">${mcqGreen} 题对 / 共 ${allMcq.length} 题</div>
     </div>
-    <div class="stat ${blankGreen / allBlank.length >= 0.8 ? 'good' : blankGreen / allBlank.length >= 0.5 ? 'warn' : 'bad'}">
-      <div class="label">非选择题准确率</div>
-      <div class="value">${pct(blankGreen / Math.max(1, allBlank.length))}</div>
-      <div style="font-size:11px;color:#888">${blankGreen}/${allBlank.length}</div>
+    <div class="stat ${blankRate >= 0.8 ? 'good' : blankRate >= 0.5 ? 'warn' : 'bad'}">
+      <div class="label">填空题准确率</div>
+      <div class="value">${pct(blankRate)}</div>
+      <div class="sub">${blankGreen} 空对 / 共 ${allBlank.length} 空</div>
     </div>
-    <div class="stat ${llmGreen / totalRows >= 0.8 ? 'good' : 'warn'}">
-      <div class="label">LLM 识别率</div>
-      <div class="value">${pct(llmGreen / Math.max(1, totalRows))}</div>
-      <div style="font-size:11px;color:#888">${llmGreen}/${totalRows}</div>
+    <div class="stat ${llmRate >= 0.8 ? 'good' : 'warn'}">
+      <div class="label">AI 识别成功率</div>
+      <div class="value">${pct(llmRate)}</div>
+      <div class="sub">AI 能读出学生写的内容</div>
     </div>
-    <div class="stat ${totalGreen / totalRows >= 0.8 ? 'good' : totalGreen / totalRows >= 0.5 ? 'warn' : 'bad'}">
+    <div class="stat ${totalRate >= 0.8 ? 'good' : totalRate >= 0.5 ? 'warn' : 'bad'}">
       <div class="label">综合一致率</div>
-      <div class="value">${pct(totalGreen / Math.max(1, totalRows))}</div>
-      <div style="font-size:11px;color:#888">${totalGreen}/${totalRows}</div>
+      <div class="value">${pct(totalRate)}</div>
+      <div class="sub">AI 识别 + 系统判定都对</div>
     </div>
   </div>
-  <p class="legend">
-    <span class="badge green">绿 一致</span>LLM 识别准 + 引擎判定与"学生实际写的"一致
-    <span class="badge yellow" style="margin-left:12px;">黄 偏差</span>LLM 识别准但引擎判定有差异（如关键词阈值）
-    <span class="badge red" style="margin-left:12px;">红 LLM 错</span>LLM 没识别准（漏 / 错 / 编）
-  </p>
+
+  <div class="legend">
+    <strong>表格颜色含义：</strong>
+    <span class="item"><span class="badge green">绿色行</span>AI 识别准确，系统判定与"学生实际写的"一致 — 系统行为正常</span>
+    <span class="item"><span class="badge yellow">黄色行</span>AI 识别准确，但系统给分与人工预期不同（评分阈值可调）</span>
+    <span class="item"><span class="badge red">红色行</span>AI 没识别准（看错 / 漏看 / 凭空编）— 通常是图像质量问题</span>
+  </div>
 
   <div class="mode-breakdown">
-    <h3 style="font-size:14px;margin:16px 0 8px;">按评分模式拆分（非选择题）</h3>
+    <h3>按判分方式拆分（仅非选择题）</h3>
     <table>
-      <thead><tr><th>模式</th><th>总数</th><th>LLM 错</th><th>引擎偏差</th><th>说明</th></tr></thead>
+      <thead><tr><th>判分方式</th><th>总空数</th><th>AI 识别错</th><th>系统判定偏差</th><th>使用场景</th></tr></thead>
       <tbody>
         ${Object.entries(errByMode).map(([m, s]) => `
           <tr>
-            <td><code>${m}</code></td>
+            <td>${MODE_LABEL[m] ?? m}</td>
             <td>${s.total}</td>
             <td>${s.llmMiss}（${pct(s.llmMiss / s.total)}）</td>
             <td>${s.engineDiff}（${pct(s.engineDiff / s.total)}）</td>
-            <td>${m === 'exact' ? '字面一致比对' : m === 'keyword' ? '关键词命中比例' : 'LLM 概念等价判定'}</td>
+            <td style="color:#666;font-size:13px">${m === 'exact' ? '化学式、数字、专有名词' : m === 'keyword' ? '简答题（含若干关键词）' : '长篇论述（要看意思）'}</td>
           </tr>
         `).join('')}
       </tbody>
@@ -448,10 +514,21 @@ function renderReport(reports: StudentReport[]): string {
   </div>
 </div>
 
+<div class="conclusion">
+  <h2>📝 怎么看这份报告（建议老师重点关注）</h2>
+  <ul>
+    <li><b>选择题部分</b>：如果准确率 ≥95%，说明 ABCD 自动批改可生产使用</li>
+    <li><b>红色行</b>：看 AI 把学生写的内容读成了什么 — 判断这种错误在真实手写场景下是否能接受</li>
+    <li><b>黄色行</b>：AI 看准了但系统判分有偏差 — 判断给分规则是否合理，可调整阈值</li>
+    <li><b>图像质量</b>：本报告用的是<b>电脑合成</b>的答题卡（模拟手写），真实学生手写卡片识别率可能不同。建议老师提供 5-10 张<b>真实手写</b>答题卡再跑一次报告对比</li>
+  </ul>
+  <p style="margin-top:12px;color:#92400e;"><b>核心问题：</b>当前系统的 AI 识别能力，能否替代/辅助您的批改工作？</p>
+</div>
+
 ${studentSections}
 
 <footer>
-  教师批改 SaaS · 验证报告 · 单文件可离线打开
+  教师批改 AI 系统 · 验证报告 · 单文件离线可读 · 生成于 ${new Date().toLocaleDateString('zh-CN')}
 </footer>
 </body></html>`;
 }
