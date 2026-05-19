@@ -25,6 +25,7 @@
     "seed:bio": "dotenv -e .env -- tsx scripts/seed-bio-sheet.ts",
     "synth:sheet": "dotenv -e .env -- tsx scripts/synth-answer-sheet.ts",
     "e2e:grading": "dotenv -e .env -- tsx scripts/e2e-grading.ts",
+    "report:validation": "dotenv -e .env -- tsx scripts/build-validation-report.ts",
     "fixtures:synth": "tsx scripts/generate-synthetic-fixtures.ts",
     "tokens:sync": "tsx apps/web/src/styles/tokens/sync.ts",
     "tokens:export-json": "tsx scripts/export-tokens-json.ts",
